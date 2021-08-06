@@ -355,11 +355,7 @@ def eighties():
     # tweet.convertSVGtoTweet(s.svgfile, "back in the 80ties")
 
 
-# eighties()
-# lotsalines()
-# squares()
-# someplanets()
-# landscape()
+
 def linetest():
     s.svgfile = 'linetest.svg'
     s.openfile(s.svgfile)
@@ -405,4 +401,43 @@ def linetest():
 
 
 
-linetest()
+
+
+
+###################################
+#####   81ties!!!!!!!!!!  #########]
+###################################
+
+def eighty1ties():
+    s.svgfile = '81ties.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    horizon = 30
+    #    s.setLineSpace(12)
+    divs = 20
+    for i in range(divs):
+        inc = int(columns/divs)
+        print (int(columns/2) , horizon, i*inc , height)
+        buffer = sd.line(int(columns/2) , horizon+1, 4 * columns - 8 * i * inc  , height+1, 'auto')
+        for i,l in enumerate(buffer.splitlines()):
+            # print(l)
+            s.printXY(l, 0, i)
+    s.printXY('.', 0, horizon)
+    for i in range(18):
+        s.setLineSpace(3+i*4)
+        s.printXY(columns * '-', 0 , horizon + i)
+    # s.currentTop()
+ 
+       
+
+    s.closefile() 
+    tweet.convertSVGtoTweet(s.svgfile, "4 seasons landscaping")
+
+# eighties()
+# lotsalines()
+# squares()
+# someplanets()
+# landscape()
+#linetest()
+eighty1ties()
