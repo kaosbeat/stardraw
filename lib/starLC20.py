@@ -142,6 +142,7 @@ def printXY(string,x,y):
     string = whitespace + string
     print(cursorY)
     printstuff(string)
+    lf()
 
 
 

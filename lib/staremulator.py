@@ -10,12 +10,18 @@ font = 'Courier New'
 lineCursorY = 0 # pixel position of the cursor, because of changing linefeed this is not simply "linefeed * cursorY"
 cursorY = 0   #integer line index
 cursorYoffset = 0 # used for extending pages longer than 1 page setTopAtCurrent
+svgfile = "page 0"
+currentdwg = ""
+pagecounter = 0
 
 def openfile(filename):
-    dwg = svgwrite.Drawing(filename, size=("210mm","297mm"), profile='full')
-    dwg.defs.add(dwg.style('svg {background-color: white;'))
-    dwg.defs.add(dwg.style('.txt {white-space: pre; }'))
-    return dwg
+    global svgfile
+    global currentdwg
+    svgfile = filename
+    currentdwg = svgwrite.Drawing(filename, size=("210mm","297mm"), profile='full')
+    currentdwg.defs.add(currentdwg.style('svg {background-color: white;'))
+    currentdwg.defs.add(currentdwg.style('.txt {white-space: pre; }'))
+    # return dwg
 
 def lf():
     #linefeed
@@ -33,11 +39,12 @@ def rlf():
     lineCursorY = lineCursorY - linefeed
     # print (cursorY)
 
-def closefile(dwg):
-    dwg.save()
+def closefile():
+    global currentdwg
+    currentdwg.save()
 
 
-def printXY(dwg,string,x,y):
+def printXY(string,x,y):
     global cursorY
     if (len(string) + x > 80):
         if warnings:
@@ -46,18 +53,19 @@ def printXY(dwg,string,x,y):
             print("Line =" , str(len(string) + x) )
         string = string[0:80-x]
     if (y > cursorY):
-        print ("emu advancing ", y - cursorY) 
+        # print ("emu advancing ", y - cursorY) 
         for i in range(y-cursorY):
             lf()
     if (y < cursorY):
-        print ("emu reversing ", cursorY - y) 
+        # print ("emu reversing ", cursorY - y) 
         for i in range(cursorY-y):
             rlf()
     if (y == cursorY):
-        print ("emu not advancing")
-    svg = dwg.add(dwg.g(id="txt", class_="txt", style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
-    svg.add(dwg.text(string, insert=(fontproportion*basefontsize*x,lineCursorY)))  #  n * 7.5 >>> from linefeed units to px
-
+        # print ("emu not advancing")
+        pass
+    svg = currentdwg.add(currentdwg.g(id="txt", class_="txt", style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
+    svg.add(currentdwg.text(string, insert=(fontproportion*basefontsize*x,lineCursorY)))  #  n * 7.5 >>> from linefeed units to px
+    lf()
 
 def setLineSpace(n):
     # sets the distance the paper advances or reverses in subsequent linefeeds to n/72 inch, where n is between O and 255..  ## 0.35 * 12
@@ -77,22 +85,27 @@ def setTopAtCurrent():
     cursorYoffset = cursorY
     cursorY = 0
 
+def nextTop():
+    #needs to init newsvg
+    global pagecounter
+    pagecounter = pagecounter + 1
+    openfile("page" + pagecounter + ".svg")
 
 
-def unitTest(dwg):
-
-    printXY(dwg,"line1", 0, 1)
-    printXY(dwg,"line2", 0, 2)
-    printXY(dwg,"line3", 0, 3)
-    printXY(dwg,"line4", 0, 4)
+def unitTest():
+    global currentdwg
+    printXY(currentdwg,"line1", 0, 1)
+    printXY(currentdwg,"line2", 0, 2)
+    printXY(currentdwg,"line3", 0, 3)
+    printXY(currentdwg,"line4", 0, 4)
 
     setTopAtCurrent()
-    printXY(dwg,"lineA", 10, 0)
-    printXY(dwg,"lineB", 10, 2)
-    printXY(dwg,"lineC", 10, 3)
-    printXY(dwg,"lineD", 10, 4)
+    printXY(currentdwg,"lineA", 10, 0)
+    printXY(currentdwg,"lineB", 10, 2)
+    printXY(currentdwg,"lineC", 10, 3)
+    printXY(currentdwg,"lineD", 10, 4)
 
-    printXY(dwg,"line1", 20, 0)
-    printXY(dwg,"line2", 20, -2)
-    printXY(dwg,"line3", 20, 3)
-    printXY(dwg,"line4", 20, 4)
+    printXY(currentdwg,"line1", 20, 0)
+    printXY(currentdwg,"line2", 20, -2)
+    printXY(currentdwg,"line3", 20, 3)
+    printXY(currentdwg,"line4", 20, 4)

@@ -35,11 +35,12 @@
 
 
 
-import starLC20 as p
-import staremulator as s
+import lib.starLC20 as p
+import lib.staremulator as s
 import random
 import datetime
-import starDraw as sd
+import lib.starDraw as sd
+import lib.tweetprint as tweet
 
 printit = False
 svg = True
@@ -49,12 +50,12 @@ strat = False
 shape = False
 landscape = False
 
-def sign(dwg, title, y):
+def sign(title, y):
     s.setLineSpace(12)
     p.setLineSpace(12)
     string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
     string = "kaotec []<> " + title + " " + string
-    s.printXY(dwg, string, s.columns - len(string), y) 
+    s.printXY(string, s.columns - len(string), y) 
 
 
 def signstring(title):
@@ -67,7 +68,7 @@ def signstring(title):
 ### strategies page ####
 ########################
 if strat:
-    dwg = s.openfile('strategies.svg')
+    s.openfile('strategies.svg')
     strategies = [ "(Organic) machinery", "A line has two sides", "A very small object: Its center", "Abandon desire", "Abandon normal instructions", "Abandon normal instruments", "Accept advice", "Accretion", "Adding on", "Allow an easement (an easement is the abandonment of a stricture)", "Always first steps", "Always give yourself credit for having more than personality (given by Arto Lindsay)", "Always the first steps", "Are there sections?  Consider transitions", "Ask people to work against their better judgement", "Ask your body", "Assemble some of the elements in a group and treat the group", "Balance the consistency principle with the inconsistency principle", "Be dirty", "Be extravagant", "Be less critical", "Breathe more deeply", "Bridges   -build   -burn", "Bridges -build -burn", "Cascades", "Change ambiguities to specifics", "Change instrument roles", "Change nothing and continue consistently", "Change nothing and continue with immaculate consistency", "Change specifics to ambiguities", "Children   -speaking     -singing", "Cluster analysis", "Consider different fading systems", "Consider transitions", "Consult other sources   -promising   -unpromising", "Convert a melodic element into a rhythmic element", "Courage!", "Cut a vital conenction", "Cut a vital connection", "Decorate, decorate", "Define an area as `safe' and use it as an anchor", "Destroy  -nothing   -the most important thing", "Destroy nothing; Destroy the most important thing", "Discard an axiom", "Disciplined self-indulgence", "Disconnect from desire", "Discover the recipes you are using and abandon them", "Discover your formulas and abandon them", "Display your talent", "Distort time", "Distorting time", "Do nothing for as long as possible", "Do something boring", "Do something sudden, destructive and unpredictable", "Do the last thing first", "Do the washing up", "Do the words need changing?", "Do we need holes?", "Don't avoid what is easy", "Don't be frightened of cliches", "Don't break the silence", "Don't stress on thing more than another [sic]", "Don't stress one thing more than another", "Dont be afraid of things because they're easy to do", "Dont be frightened to display your talents", "Emphasize differences", "Emphasize repetitions", "Emphasize the flaws", "Faced with a choice, do both (from Dieter Rot)", "Faced with a choice, do both (given by Dieter Rot)", "Feed the recording back out of the medium", "Fill every beat with something", "Find a safe part and use it as an anchor", "Get your neck massaged", "Ghost echoes", "Give the game away", "Give the name away", "Give way to your worst impulse", "Go outside.  Shut the door.", "Go outside. Shut the door.", "Go slowly all the way round the outside", "Go to an extreme, come part way back", "Honor thy error as a hidden intention", "Honor thy mistake as a hidden intention", "How would someone else do it?", "How would you have done it?", "Humanize something free of error", "Idiot glee (?)", "Imagine the piece as a set of disconnected events", "In total darkness, or in a very large room, very quietly", "Infinitesimal gradations", "Intentions   -nobility of  -humility of   -credibility of", "Into the impossible", "Is it finished?", "Is something missing?", "Is the information correct?", "Is the style right?", "Is there something missing", "It is quite possible (after all)", "It is simply a matter or work", "Just carry on", "Left channel, right channel, center channel", "Listen to the quiet voice", "Look at the order in which you do things", "Look closely at the most embarrassing details & amplify them", "Lost in useless territory", "Lowest common denominator", "Magnify the most difficult details", "Make a blank valuable by putting it in an exquisite frame", "Make a sudden, destructive unpredictable action; incorporate", "Make an exhaustive list of everything you might do & do the last thing on the list", "Make it more sensual", "Make what's perfect more human", "Mechanicalize something idiosyncratic", "Move towards the unimportant", "Mute and continue", "Not building a wall but making a brick", "Not building a wall; making a brick", "Once the search has begun, something will be found", "Only a part, not the whole", "Only one element of each kind", "Openly resist change", "Overtly resist change", "Pae White's non-blank graphic metacard", "Put in earplugs", "Question the heroic", "Question the heroic approach", "Reevaluation (a warm feeling)", "Remember quiet evenings", "Remember those quiet evenings", "Remove a restriction", "Remove ambiguities and convert to specifics", "Remove specifics and convert to ambiguities", "Repetition is a form of change", "Retrace your steps", "Reverse", "Short circuit (example; a man eating peas with the idea that they will improve  his virility shovels them straight into his lap)", "Simple Subtraction", "Simple subtraction", "Simply a matter of work", "Slow preparation, fast execution", "Spectrum analysis", "State the problem as clearly as possible", "State the problem in words as clearly as possible", "Take a break", "Take away the elements in order of apparent non-importance", "Take away the important parts", "Tape your mouth (given by Ritva Saarikko)", "The inconsistency principle", "The most easily forgotten thing is the most important", "The most important thing is the thing most easily forgotten", "The tape is now the music", "Think - inside the work -outside the work", "Think of the radio", "Tidy up", "Towards the insignificant", "Trust in the you of now", "Try faking it (from Stewart Brand)", "Turn it upside down", "Twist the spine", "Use 'unqualified' people", "Use `unqualified' people", "Use an old idea", "Use an unacceptable color", "Use cliches", "Use fewer notes", "Use filters", "Use something nearby as a model", "Use your own ideas", "Voice your suspicions", "Water", "What are the sections sections of?    Imagine a caterpillar moving", "What are you really thinking about just now?", "What context would look right?", "What is the reality of the situation?", "What is the simplest solution?", "What mistakes did you make last time?", "What to increase? What to reduce? What to maintain?", "What were you really thinking about just now?", "What would your closest friend do?", "What wouldn't you do?", "When is it for?", "Where is the edge?", "Which parts can be grouped?", "Work at a different speed", "Would anyone want it?", "You are an engineer", "You can only make one dot at a time", "You don't have to be ashamed of using your own ideas"]
     if printit:
         p.setOnLine()
@@ -81,15 +82,15 @@ if strat:
         if printit:
             p.printXY(strategie, i%10, i)
         if svg:
-            s.printXY(dwg,strategie, i%10, i)
-    s.closefile(dwg)
+            s.printXY(strategie, i%10, i)
+    s.closefile()
 
 
 #######################
 ### shape fill page ###
 #######################
 if shape:
-    dwg = s.openfile('shape.svg')
+    s.openfile('shape.svg')
     if printit:
         p.setOnLine()
         p.reset()
@@ -127,7 +128,7 @@ if shape:
             if printit:
                 p.printXY(line, 0, i)
             if svg:
-                s.printXY(dwg,line, 0, i+1)
+                s.printXY(line, 0, i+1)
             c1 = c1 - direction
             # c3 = c3 + direction
             i = i +1
@@ -137,7 +138,7 @@ if shape:
         c1 = random.randint(0, int(columns / 2)) +1
         c2 = random.randint(0, int((columns - c1)/2))
         c3 = columns - c1 - c2
-    s.closefile(dwg)
+    s.closefile()
 
 
 
@@ -146,7 +147,7 @@ if shape:
 ### lanscape fill page ###
 ##########################
 def landscape():
-    dwg = s.openfile('landscape.svg')
+    s.openfile('landscape.svg')
     signature = signstring("landscape")
     p.setOnLine()
     p.reset()
@@ -154,8 +155,8 @@ def landscape():
     p.noMargins()
     # p.beep()
 
-    columns = 83
-    height = 4
+    columns = 80
+    height = 72
 
     c1 = random.randint(0, int(columns / 2)) +1
     c2 = random.randint(0, int((columns - c1)/2))
@@ -183,7 +184,7 @@ def landscape():
                 line = line[0:columns-len(signature)] + signature
             print(line)
             p.printXY(line, 0, i)
-            s.printXY(dwg,line, 0, i+1)
+            s.printXY(line, 0, i+1)
             c1 = c1 - direction
             # c3 = c3 + direction
             i = i +1
@@ -195,9 +196,9 @@ def landscape():
         # c1 = random.randint(0, int(columns / 2)) +1
         c2 = random.randint(0, int((columns - c1)/2))
         # c3 = columns - c1 - c2
-    # sign(dwg,"landscape",70)
-    s.closefile(dwg) 
-
+    # sign("landscape",70)
+    s.closefile() 
+    tweet.convertSVGtoTweet(s.svgfile, "landscapes")
 
 
 #########################
@@ -230,27 +231,22 @@ def planet(radius, proportion, char):
 
 def someplanets():
     p.reset()
-    dwg = s.openfile('planet.svg')
+    s.openfile('planet.svg')
     pl = planet(10,1, '%')
     p.setLineSpace(10)
     s.setLineSpace(10)
     for i,line in enumerate(pl.splitlines()):
         print(line)
-        s.printXY(dwg,line, 0, i+11)
+        s.printXY(line, 0, i+11)
         p.printXY(line, 0, i+11)
-        s.lf()
-        p.lf()
-
 
     pl = planet(20,1, '^')
     p.setLineSpace(4)
     s.setLineSpace(4)
     for i,line in enumerate(pl.splitlines()):
         print(line)
-        s.printXY(dwg,line, 0,  20 + i+1)
+        s.printXY(line, 0,  20 + i+1)
         p.printXY(line, 0,  20 + i+1)
-        s.lf()
-        p.lf()
 
     p.setTopAtCurrent()
     s.setTopAtCurrent()
@@ -261,41 +257,152 @@ def someplanets():
     for i,line in enumerate(pl.splitlines()):
         print("printing line at ", i)
         # print(line)
-        s.printXY(dwg,line, 0, i-5)
+        s.printXY(line, 0, i-5)
         p.printXY(line, 0, i-5)
-        s.lf()
-        p.lf()
-    s.closefile(dwg) 
-
-
-
- 
-# landscape()
+    s.closefile() 
+    tweet.convertSVGtoTweet(s.svgfile, "a billion planets")
 
 
 ########################
 #### stardraw test #####
 ########################
-dwg = s.openfile('stardraw.svg')
+def lotsalines():
+    columns = 80
+    height = 69
+    s.openfile('stardraw.svg')
 
-# import random.randint as ri
-chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    # import random.randint as ri
+    chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    for i in range(15):
+        x1 = random.randint(1,columns)
+        x2 = random.randint(1,columns)
+        y1 = random.randint(1,height)
+        y2 = random.randint(1,height)
+        char = chars[random.randint(0,len(chars)-1)]
+        buffer = sd.line(x1,y1,x2,y2,char)
+        for i,l in enumerate(buffer.splitlines()):
+            print(l)
+            s.printXY(l, 0, i)
+            p.printXY(l, 0, i)
+    signature = signstring("lines")
+    p.printXY(signature, columns-len(signature) , height)
+    s.printXY(signature, columns-len(signature) , height)
+    s.closefile() 
+    tweet.convertSVGtoTweet(s.svgfile, "testing some more lines")
 
 
 
 
-for i in range(100):
-    x1 = random.randint(1,80)
-    x2 = random.randint(1,80)
-    y1 = random.randint(1,72)
-    y2 = random.randint(1,72)
-    char = chars[random.randint(0,len(chars)-1)]
-    buffer = sd.line(x1,y1,x2,y2,char)
-    for i,l in enumerate(buffer.splitlines()):
-        print(l)
-        s.printXY(dwg,l, 0, i)
-        p.printXY(l, 0, i)
-        s.lf()
-        p.lf()
-s.closefile(dwg) 
+##########################
+#### squares #############
+##########################
 
+def squares():
+    s.svgfile = 'squares.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    for i in range(15):
+        x1 = random.randint(1,columns)
+        x2 = random.randint(1,columns)
+        y1 = random.randint(1,height)
+        y2 = random.randint(1,height)
+        charh = chars[random.randint(0,len(chars)-1)]
+        charv = chars[random.randint(0,len(chars)-1)]
+        bufferlist = sd.square(x1,y1,x2,y2,charh,charv)
+        for buffer in bufferlist:
+            for i,l in enumerate(buffer.splitlines()):
+                print(l)
+                s.printXY(l, 0, i)
+                p.printXY(l, 0, i)
+    signature = signstring("lines")
+    p.printXY(signature, columns-len(signature) , height)
+    s.printXY(signature, columns-len(signature) , height)
+    s.closefile() 
+    tweet.convertSVGtoTweet(s.svgfile, "testing squares")
+
+
+
+#######################
+#### 80ties ########
+#######################
+
+def eighties():
+    s.svgfile = '80ties.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    horizon = 30
+    #    s.setLineSpace(12)
+    divs = 20
+    for i in range(divs):
+        inc = int(columns/divs)
+        print (int(columns/2) , horizon, i*inc , height)
+        buffer = sd.brokenline(int(columns/2) , horizon+1, i*inc , height+1, '!')
+        for i,l in enumerate(buffer.splitlines()):
+            # print(l)
+            s.printXY(l, 0, i)
+    s.printXY('.', 0, horizon)
+    for i in range(18):
+        s.setLineSpace(3+i*4)
+        s.printXY(columns * '-', 0 , horizon + i)
+    # s.currentTop()
+ 
+       
+
+    s.closefile() 
+    # tweet.convertSVGtoTweet(s.svgfile, "back in the 80ties")
+
+
+# eighties()
+# lotsalines()
+# squares()
+# someplanets()
+# landscape()
+def linetest():
+    s.svgfile = 'linetest.svg'
+    s.openfile(s.svgfile)
+    xoff = 4
+    yoff = 4
+
+    s.printXY("000000000011111111112222222222", 0+xoff, 1)
+    s.printXY("012345678901234567890123456789", 0+xoff, 2)
+    s.setLineSpace(7.5)
+    y=0
+    for y in range(30):
+        s.printXY(str(y),0, y + yoff)
+        y = y + 1
+    bufferlist = []
+    # bufferlist.append(sd.line(0+xoff,0+yoff,10+xoff,10+yoff,'1'))
+    # bufferlist.append(sd.line(20+xoff,20+yoff,10+xoff,10+yoff,'2'))
+    # bufferlist.append(sd.line(10+xoff,0+yoff,0+xoff,0+yoff,'3'))
+    # bufferlist.append(sd.line(10+xoff,0+yoff,20+xoff,0+yoff,'4'))
+    # bufferlist.append(sd.line(0+xoff,0+yoff,0+xoff,10+yoff,'5'))
+    # bufferlist.append(sd.line(0+xoff,20+yoff,0+xoff,10+yoff,'6'))
+    # bufferlist.append(sd.line(20+xoff,0+yoff,10+xoff,10+yoff,'7'))
+    # bufferlist.append(sd.line(0+xoff,20+yoff,10+xoff,10+yoff,'8'))
+    # bufferlist.append(sd.line(20+xoff,0+yoff,20+xoff,10+yoff,'9'))
+    # bufferlist.append(sd.line(20+xoff,20+yoff,20+xoff,10+yoff,'0'))
+    bufferlist.append(sd.line(0+xoff,0+yoff,10+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(20+xoff,20+yoff,10+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(10+xoff,0+yoff,0+xoff,0+yoff,'auto'))
+    bufferlist.append(sd.line(10+xoff,0+yoff,20+xoff,0+yoff,'auto'))
+    bufferlist.append(sd.line(0+xoff,0+yoff,0+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(0+xoff,20+yoff,0+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(20+xoff,0+yoff,10+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(0+xoff,20+yoff,10+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(20+xoff,0+yoff,20+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(20+xoff,20+yoff,20+xoff,10+yoff,'auto'))
+    bufferlist.append(sd.line(10+xoff,20+yoff,0+xoff,20+yoff,'auto'))
+    bufferlist.append(sd.line(10+xoff,20+yoff,20+xoff,20+yoff,'auto'))
+
+    print (bufferlist)
+    for buffer in bufferlist:
+        for i,l in enumerate(buffer.splitlines()):
+            s.printXY(l, 0, i)
+        s.closefile() 
+
+
+
+linetest()
