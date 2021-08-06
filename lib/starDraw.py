@@ -49,7 +49,10 @@ def line(x1,y1,x2,y2, char):
                 x = x1
             else: 
                 x = j/rc + xoff
-            line = int(x) * ' ' + char
+            if x >= 0:
+                line = int(x) * ' ' + char
+            else:
+                line = ''
             buffer = buffer + line + '\n'
     if y2 < y1:
         for j in range(y1-y2+1):
@@ -57,7 +60,10 @@ def line(x1,y1,x2,y2, char):
                 x = x1
             else:
                 x = j/rc + xoff
-            line = int(x) * ' ' + char
+            if x >= 0:
+                line = int(x) * ' ' + char
+            else:
+                line = ''
             buffer = buffer + line + '\n'
     if y1 == y2:
         print("horizontal!")
