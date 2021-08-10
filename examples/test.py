@@ -144,7 +144,7 @@ if shape:
 
 
 ##########################
-### lanscape fill page ###
+### landscape fill page ###
 ##########################
 def landscape():
     s.openfile('landscape.svg')
