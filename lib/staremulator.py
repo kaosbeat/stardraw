@@ -21,6 +21,8 @@ def openfile(filename):
     currentdwg = svgwrite.Drawing(filename, size=("210mm","297mm"), profile='full')
     currentdwg.defs.add(currentdwg.style('svg {background-color: white;'))
     currentdwg.defs.add(currentdwg.style('.txt {white-space: pre; }'))
+    currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm","297mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')
+)
     # return dwg
 
 def lf():
@@ -77,7 +79,13 @@ def currentTop():
     # feeds paper to top of current page
     # we probably don't need this, as we use absolute printing coordinates and use rlf/lf accordingly
     global cursorY
+    global lineCursorY
+    global cursorYoffset 
+    print( cursorY, lineCursorY, cursorYoffset)
+    # for i in range(cursorY):
+    #     rlf()
     cursorY = 0
+    lineCursorY = 0
 
 def setTopAtCurrent():
     global cursorY

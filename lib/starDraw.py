@@ -17,16 +17,16 @@ def line(x1,y1,x2,y2, char):
     buffer = yoff * '\n'
     if (x2-x1 == 0):
         #vertical div by zero
-        print("vertical!")
+        # print("vertical!")
         rc = 1000000
     else:
         rc = (y2-y1)/(x2-x1)
-        print("rico = ", rc)
+        # print("rico = ", rc)
 
     if rc < 0:
         # xoff = xoff + min(x1,x2)
-        print ("x1= " ,x1) 
-        print ("x2= " ,x2) 
+        # print ("x1= " ,x1) 
+        # print ("x2= " ,x2) 
         xoff = xoff + abs(x2-x1)
 
     if char == 'auto':
@@ -66,11 +66,11 @@ def line(x1,y1,x2,y2, char):
                 line = ''
             buffer = buffer + line + '\n'
     if y1 == y2:
-        print("horizontal!")
+        # print("horizontal!")
         line = ' ' * (xoff) + (abs(x2-x1)+1) * char
         buffer = buffer + line + '\n'
 
-    print("done")
+    # print("done")
     return buffer
 
 

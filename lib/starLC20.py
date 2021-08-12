@@ -8,7 +8,7 @@ import time
 warnings = False  ## enable to see emulation problems at stdout
 # allowLineWrap = True
 dropOverPrint = True ## if trying to print beyond column 80 drop it so lines don't wrap
-lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
+# lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
 dummy = os.open("/dev/null", os.O_RDWR)
 dev = dummy
 columns = 80
@@ -127,20 +127,20 @@ def printXY(string,x,y):
         if dropOverPrint:
             string = string[0:columns - x]
     if (y > cursorY):
-        print ("advancing ", y - cursorY) 
+        # print ("advancing ", y - cursorY) 
         for i in range(y-cursorY):
             lf()
     if (y < cursorY):
-        print ("reversing ", cursorY - y) 
+        # print ("reversing ", cursorY - y) 
         for i in range(cursorY-y):
             rlf()
     if (y == cursorY):
-        print ("not advancing")
+        # print ("not advancing")
         cr()
     # for i in range(x):
         # string = ' ' + string
     string = whitespace + string
-    print(cursorY)
+    # print(cursorY)
     printstuff(string)
     lf()
 
