@@ -1,4 +1,5 @@
 import random
+import math
 
 def line(x1,y1,x2,y2, char):
     #draws line from.(x1,y1) to (x2,y2)  both points included using char
@@ -137,4 +138,37 @@ def square(x1,y1,x2,y2,charv,charh):
     return [a, b, c, d]
 
 
+# def filledsquare(size, angle, char):
+#     # 0 < angle < size/2 
+#     buffer  = ""
+#     for x in range(size+1):
+#         if x < size/2:
+#             line = " " * int(size/2-x) + char*int((x*4)/2+1)
+#         elif x == size/2:
+#             line = char*(size+1)
+#         else:
+#             line = " " * int(x-size/2) + char*int(((size-x)*4)/2+1)
+#         buffer = buffer + line + "\n"
+#     print(buffer)
+#     return buffer
 
+
+def filledsquare(size, angle, char):
+    # 0 < angle < size/2 
+    buffer  = ""
+    step = (size/2)/angle
+    pre = (size/2) - angle
+    for x in range(size+1):
+        if x < size/2:
+            x+1
+            line = " " * int(pre - x*step) + char*int((x*4)/2+1)
+        elif x == size/2:
+            line = char*(size+1)
+        else:
+            line = " " * int(x-size/2 + angle * (x-size/2)/2 ) + char*int(((size-x)*4)/2+1)
+        buffer = buffer + line + "\n"
+    print(buffer)
+    return buffer
+
+
+# filledsquare(10,2,"d")

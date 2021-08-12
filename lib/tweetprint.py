@@ -2,6 +2,8 @@ import sys
 import tweepy
 from lib.tweetkeys import *
 from wand.image import Image
+import platform
+import os
 ## for second version, because problems with Wand on OSX
 #from svglib.svglib import svg2rlg
 #from reportlab.graphics import renderPM
@@ -9,7 +11,7 @@ import subprocess               # May want to use subprocess32 instead
 
 
 print("invoking TWEEEEEETING")
-
+print(platform.system())
 # ## get ourselves the image we need (convert svg to jpg)
 # with Image(filename=sys.argv[2]) as img:
 #     img.format = 'jpeg'
@@ -39,10 +41,13 @@ print("invoking TWEEEEEETING")
 
 def convertSVGtoTweet(svg, tweettext):
     print(svg)
-    cmd_list = [ '/Applications/Inkscape.app/Contents/MacOS/inkscape','--export-filename=tweet.png', svg ]
+    pltfrm = platform.system()
+    if (plftrm == 'Darwin'):
+        cmd_list = [ '/Applications/Inkscape.app/Contents/MacOS/inkscape','--export-filename=tweet.png', svg ]
+    else:
+        cmd_list = [ '/usr/bin/inkscape','--export-filename=tweet.png', svg ]
     p = subprocess.Popen( cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
     out, err = p.communicate()
-
     if p.returncode:
         raise Exception( 'Inkscape error: ' + (err or '?')  )
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
