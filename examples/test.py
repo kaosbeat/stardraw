@@ -1,10 +1,5 @@
 #!/usr/bin/python3
 
-
-
-
-
-
 import lib.starLC20 as p
 import lib.staremulator as s
 import random
@@ -13,6 +8,7 @@ import lib.starDraw as sd
 import lib.tweetprint as tweet
 
 printit = False
+tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -375,33 +371,7 @@ def linetest():
 #####   81ties!!!!!!!!!!  #########]
 ###################################
 
-def building(w,h):
-    vert = [["[", "]"], ["I"], ["|"],["!"],["(",")"], ["/","\\"],[":"]]
-    wall=["#","o","H","U",".","O","="," ","±","+","-"]
-    roof=["_", "=", "^","~"]
-    buffer = []
-    v = vert[random.randint(0,len(vert)-1)]
-    wl = wall[random.randint(0,len(wall)-1)]
-    r = roof[random.randint(0,len(roof)-1)]
-    for i in range(h+1):
-        line = ""
-        for j in range(w+1):
-            if i > 0:
-                if (j == 0): 
-                    v = v[0]
-                    line = line + v
-                elif (j == w):
-                    if (len(v)==2):
-                        v = v[1]
-                    else:
-                        v = v[0]
-                    line = line + v
-                else:
-                    line = line + wl
-            if i == 0:
-                line = line + r                
-        buffer.append(line)
-    return buffer
+
 
 
 
@@ -437,7 +407,7 @@ def eighty1ties():
         h = random.randint(w*2, w*4)
         if h > maxheight:
             h = maxheight
-        b = building(w,h)
+        b = sd.building(w,h)
         # print (b)
         for i,l in enumerate(b):
             printheight = horizon - h + i
@@ -470,8 +440,9 @@ def eighty1ties():
     #     p.printXY(line, px,  py + i+1)
 
 
-    s.closefile() 
-    tweet.convertSVGtoTweet2(s.svgfile, "skysc(r)aping eighty1ties")
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet2(s.svgfile, "skysc(r)aping eighty1ties")
 
 
 #############################    
@@ -512,7 +483,9 @@ def overlapscape():
             s.printXY(line, 0,  x+1)
             p.printXY(line, 0,  x+1)
         print(lbuffer)
-    s.closefile() 
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "overlapscape")
 
 ###########################
 ### feed me weird texts ###
@@ -570,6 +543,8 @@ def feedmeweirdtxt():
         s.printXY(line,0,row)
     print(xcounter)
     s.closefile() 
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "weird texts")
 
 ###########################
 ### perspective squares ###
@@ -612,7 +587,8 @@ def perspsquares():
         p.printXY(signature, 0, int(height*(12/density)))
         s.printXY(signature, 0, int(height*(12/density)))
     s.closefile() 
-    # tweet.convertSVGtoTweet(s.svgfile, "testing squares")
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "testing squares")
 
 def perspsquares2():
     s.svgfile = 'perspsquares.svg'
@@ -649,14 +625,15 @@ def perspsquares2():
         signature = signstring("squares")
         p.printXY(signature, 0, int(height*(12/density)))
         s.printXY(signature, 0, int(height*(12/density)))
-    s.closefile() 
-    tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
 
 
 
 
 
-shapes()
+# shapes()
 # eighties()
 # lotsalines()
 # squares()
@@ -667,7 +644,7 @@ shapes()
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
-# perspsquares2()
+perspsquares2()
 
 
 # prefilledbuffer = ""
