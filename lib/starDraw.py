@@ -152,7 +152,36 @@ def square(x1,y1,x2,y2,charv,charh):
 #     print(buffer)
 #     return buffer
 
+def building(w,h):
+    vert = [["[", "]"], ["I"], ["|"],["!"],["(",")"], ["/","\\"],[":"]]
+    wall=["#","o","H","U",".","O","="," ","±","+","-"]
+    roof=["_", "=", "^","~"]
+    buffer = []
+    v = vert[random.randint(0,len(vert)-1)]
+    wl = wall[random.randint(0,len(wall)-1)]
+    r = roof[random.randint(0,len(roof)-1)]
+    for i in range(h+1):
+        line = ""
+        for j in range(w+1):
+            if i > 0:
+                if (j == 0): 
+                    v = v[0]
+                    line = line + v
+                elif (j == w):
+                    if (len(v)==2):
+                        v = v[1]
+                    else:
+                        v = v[0]
+                    line = line + v
+                else:
+                    line = line + wl
+            if i == 0:
+                line = line + r                
+        buffer.append(line)
+    return buffer
 
+
+    
 def filledsquare(size, angle, char):
     # 0 < angle < size/2 
     buffer  = ""
