@@ -654,15 +654,21 @@ def intersect():
     buffer3 = sd.parallelogram(5, 0,10, "8")
     buffer4 = sd.parallelogram(3, 10,25, "+")
     s.printBuffer(buffer1,0,0,height)
-    s.printBuffer(buffer2,0,0,height)
-    s.printBuffer(buffer3,0,0,height)    
-    s.printBuffer(buffer4,0,0,height)
+    s.printBuffer(buffer2,10,20,height)
+    # s.printBuffer(buffer3,20,0,height)    
+    # s.printBuffer(buffer4,10,10,height)
+
+    print(sd.padBuffer(buffer1,10,10, 4,4))
+
+    sd.mergeBuffers(buffer1,buffer2,10)
     signature = signstring("intersect")
     p.printXY(signature, 80-len(signature), int(height))
     s.printXY(signature, 80-len(signature), int(height))
     s.closefile()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
+
+
 
 
 

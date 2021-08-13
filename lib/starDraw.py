@@ -229,3 +229,41 @@ def parallelogram(height, dirchange, width, char):
             buffer = buffer + line + "\n"
     return buffer
 
+def dimensions(buffer):
+    width = len(max(buffer.splitlines(), key = len))
+    height = len(buffer.splitlines())
+    return width, height
+
+def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
+    #pad multiline buffer
+    print("padding buffer")
+    #widest bufferline?
+    maxlength = len(max(buffer.splitlines(), key = len))
+    print(maxlength)
+    buffer1 = ""
+    for y in range(ypad):
+        line = " "*(xpad+maxlength+Xpad)  +"\n"
+        buffer1 = buffer1 + line
+    for i,l in enumerate(buffer.splitlines()):
+        l = l.ljust(maxlength, ' ')
+        line = xpad*" " + l + Xpad*" " + "\n"
+        buffer1 = buffer1 + line
+    for y in range(Ypad):
+        line = " "*(xpad+maxlength+Xpad) + "\n"
+        buffer1 = buffer1 + line
+    return buffer1
+
+
+def mergeBuffers(buffer1,buffer2,xpos):
+    # merge 2 buffers leaving buffer1 in front until xpos
+    # pad until same height and width using padBuffer
+    print(dimensions(buffer1))
+    buffer1 = buffer1.splitlines()
+    buffer2 = buffer2.splitlines()
+    
+    buffer = []
+    for i,l in enumerate(buffer2):
+        if l.isspace:
+            buffer[i] = buffer1[i]
+        else: 
+            test = 1

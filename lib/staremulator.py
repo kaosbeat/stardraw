@@ -104,7 +104,7 @@ def printBuffer(buffer,x,y,maxheight):
     for i,l in enumerate(buffer.splitlines()):
         if (i<=maxheight-1):
             if (l != ""): # don't print empty lines, it's time consuming
-                printXY(l, 0, i)
+                printXY(l, x, i+y)
 
 
 def unitTest():
