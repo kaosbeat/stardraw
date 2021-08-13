@@ -141,7 +141,6 @@ def square(x1,y1,x2,y2,charh,charv):
     d = line(x2,y1,x2,y2,charv)
     return [a, b, c, d]
 
-
 # def filledsquare(size, angle, char):
 #     # 0 < angle < size/2 
 #     buffer  = ""
@@ -205,3 +204,28 @@ def filledsquare(size, angle, char):
 
 
 # filledsquare(10,2,"d")
+
+def parallelogram(height, dirchange, width, char):
+    # parallelogram is (int(width/dirchange)+height high and width wide)
+    buffer = ""
+    h = height
+    a = dirchange
+    b = width
+    c = char
+    line =""
+    if a == 0:
+        r = h
+        a = width
+    else:
+        r = int(b/a)+h+1
+    for y in range(r):
+        # print("y =", y)
+        if (y > h):
+            line = " "*a + line
+        elif len(line) < b:
+            line = line + a*c
+        line = line[:b-1]
+        if not line.isspace():
+            buffer = buffer + line + "\n"
+    return buffer
+

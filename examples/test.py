@@ -644,6 +644,21 @@ def perspsquares2():
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
 
 
+def intersect():
+    s.svgfile = 'intersect.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    buffer1 = sd.parallelogram(3, 0,10, "e")
+    print(buffer1)
+    
+    signature = signstring("intersect")
+    p.printXY(signature, 80-len(signature), int(height))
+    s.printXY(signature, 80-len(signature), int(height))
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
+
 
 
  
@@ -657,9 +672,9 @@ def perspsquares2():
 # eighty1ties()
 # overlapscape()
 # feedmeweirdtxt()
-perspsquares()
+# perspsquares()
 # perspsquares2()
-
+intersect()
 
 # prefilledbuffer = ""
 # for i in range(maxheight):
