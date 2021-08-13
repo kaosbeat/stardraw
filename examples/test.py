@@ -581,7 +581,7 @@ def perspsquares():
             bufferlist = sd.square(x1,y1,x2,y2,charh,charv)
             for buffer in bufferlist:
                 for i,l in enumerate(buffer.splitlines()):
-                    if (i<=height):
+                    if (i<=height-1):
                         if (l != ""):
                             s.printXY(l, 0, i)
                             p.printXY(l, 0, i)
@@ -651,8 +651,8 @@ def perspsquares2():
 # eighty1ties()
 # overlapscape()
 # feedmeweirdtxt()
-# perspsquares()
-perspsquares2()
+perspsquares()
+# perspsquares2()
 
 
 # prefilledbuffer = ""
