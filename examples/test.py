@@ -566,6 +566,7 @@ def perspsquares():
         sx = random.randint(1,columns)
         sy =  random.randint(1,height)
         size =  random.randint(8,18)
+        # size = 10
         dx = random.randint(0,4) - 2
         dy = random.randint(0,4) - 2
         ds = random.randint(0,4) - 2
@@ -575,16 +576,20 @@ def perspsquares():
             x2 = sx + i + i*dx 
             y1 = sy + i*dy
             y2 = sy + i + i*dy
+            print (x1,y1,x2,y2)
             # szie = size - 1
             charh = chars[random.randint(0,len(chars)-1)]
             charv = chars[random.randint(0,len(chars)-1)]
+            charh = "-"
+            charv = "|"
             bufferlist = sd.square(x1,y1,x2,y2,charh,charv)
             for buffer in bufferlist:
-                for i,l in enumerate(buffer.splitlines()):
+                # print(buffer)
+                for j,l in enumerate(buffer.splitlines()):
                     if (i<=height-1):
                         if (l != ""):
-                            s.printXY(l, 0, i)
-                            p.printXY(l, 0, i)
+                            s.printXY(l, 0, j)
+                            p.printXY(l, 0, j)
     signature = signstring("squares")
     p.printXY(signature, 0, int(height))
     s.printXY(signature, 0, int(height))
