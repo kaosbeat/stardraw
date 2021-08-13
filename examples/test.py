@@ -558,17 +558,18 @@ def perspsquares():
     s.openfile(s.svgfile)
     chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
     # chars= ["o"]
-
-    for k in range(25):
+    density = 8
+    p.setLineSpace(density)
+    s.setLineSpace(density) 
+    height = int(height*12/density)
+    for k in range(15):
         sx = random.randint(1,columns)
         sy =  random.randint(1,height)
         size =  random.randint(8,18)
         dx = random.randint(0,4) - 2
         dy = random.randint(0,4) - 2
         ds = random.randint(0,4) - 2
-        density = 8
-        p.setLineSpace(density)
-        s.setLineSpace(density) 
+
         for i in range(size):
             x1 = sx + i*dx
             x2 = sx + i + i*dx 
@@ -580,12 +581,13 @@ def perspsquares():
             bufferlist = sd.square(x1,y1,x2,y2,charh,charv)
             for buffer in bufferlist:
                 for i,l in enumerate(buffer.splitlines()):
-                    # print(l)
-                    s.printXY(l, 0, i)
-                    p.printXY(l, 0, i)
-        signature = signstring("squares")
-        p.printXY(signature, 0, int(height*(12/density)))
-        s.printXY(signature, 0, int(height*(12/density)))
+                    if (i<=height):
+                        if (l != ""):
+                            s.printXY(l, 0, i)
+                            p.printXY(l, 0, i)
+    signature = signstring("squares")
+    p.printXY(signature, 0, int(height))
+    s.printXY(signature, 0, int(height))
     s.closefile() 
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "testing squares")
@@ -600,7 +602,8 @@ def perspsquares2():
     density = 8
     p.setLineSpace(density)
     s.setLineSpace(density)
-    height = height*12/density
+    height = int(height*12/density)
+    flip = True
     for k in range(2):
         sx = 1 + k
         sy =  1 + k
@@ -621,6 +624,9 @@ def perspsquares2():
                 for i,l in enumerate(buffer.splitlines()):
                     if (i<=height):
                         if (l != ""):
+                            if flip:
+                                l = l[:80]
+                                l = "{:<80}".format(l)[::-1]
                             s.printXY(l, 0, i)
                             p.printXY(l, 0, i)
     signature = signstring("squares")
@@ -645,7 +651,6 @@ def perspsquares2():
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
-# p.nextTop()
 perspsquares2()
 
 
