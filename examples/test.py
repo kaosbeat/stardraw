@@ -597,17 +597,17 @@ def perspsquares2():
     s.openfile(s.svgfile)
     chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
     # chars= ["o"]
-
+    density = 8
+    p.setLineSpace(density)
+    s.setLineSpace(density)
+    height = height*12/density
     for k in range(2):
         sx = 1 + k
         sy =  1 + k
         size =  40
-        dx = 2
+        dx = 2 
         dy = 2 - k
         ds = random.randint(0,4) - 2
-        density = 8
-        p.setLineSpace(density)
-        s.setLineSpace(density) 
         for i in range(size):
             x1 = sx + i*dx
             x2 = sx + i + i*dx 
@@ -619,12 +619,13 @@ def perspsquares2():
             bufferlist = sd.square(x1,y1,x2,y2,charh,charv)
             for buffer in bufferlist:
                 for i,l in enumerate(buffer.splitlines()):
-                    # print(l)
-                    s.printXY(l, 0, i)
-                    p.printXY(l, 0, i)
+                    if (i<=height):
+                        if (l != ""):
+                            s.printXY(l, 0, i)
+                            p.printXY(l, 0, i)
     signature = signstring("squares")
-    p.printXY(signature, 0, int(height*(12/density)))
-    s.printXY(signature, 0, int(height*(12/density)))
+    p.printXY(signature, 0, int(height))
+    s.printXY(signature, 0, int(height))
     s.closefile()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
@@ -632,7 +633,7 @@ def perspsquares2():
 
 
 
-
+ 
 # shapes()
 # eighties()
 # lotsalines()
@@ -644,6 +645,7 @@ def perspsquares2():
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
+# p.nextTop()
 perspsquares2()
 
 
