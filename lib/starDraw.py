@@ -68,6 +68,10 @@ def line(x1,y1,x2,y2, char):
             buffer = buffer + line + '\n'
     if y1 == y2:
         # print("horizontal!")
+        if x1 < 1:
+            x1 = 1
+        if x2 < 1:
+            x2 = 1
         line = ' ' * (xoff) + (abs(x2-x1)+1) * char
         buffer = buffer + line + '\n'
 
