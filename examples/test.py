@@ -630,8 +630,8 @@ def perspsquares2():
                             s.printXY(l, 0, i)
                             p.printXY(l, 0, i)
     signature = signstring("squares")
-    p.printXY(signature, 0, int(height))
-    s.printXY(signature, 0, int(height))
+    p.printXY(signature, 80-len(signature), int(height))
+    s.printXY(signature, 80-len(signature), int(height))
     s.closefile()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
