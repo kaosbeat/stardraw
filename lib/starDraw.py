@@ -129,7 +129,7 @@ def brokenline(x1,y1,x2,y2, char):
     return buffer
 
 
-def square(x1,y1,x2,y2,charv,charh):
+def square(x1,y1,x2,y2,charh,charv):
     # returns a bufferlist of lines, print using
     a = line(x1,y1,x2,y1,charh)
     b = line(x1,y1,x1,y2,charv)
