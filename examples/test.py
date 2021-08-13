@@ -603,7 +603,8 @@ def perspsquares2():
     p.setLineSpace(density)
     s.setLineSpace(density)
     height = int(height*12/density)
-    flip = True
+    # flip = True
+    flip = False
     for k in range(2):
         sx = 1 + k
         sy =  1 + k
