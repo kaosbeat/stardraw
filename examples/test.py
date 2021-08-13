@@ -649,9 +649,14 @@ def intersect():
     columns = 80
     height = 69
     s.openfile(s.svgfile)
-    buffer1 = sd.parallelogram(3, 0,10, "e")
-    print(buffer1)
-    
+    buffer1 = sd.parallelogram(3, 2,10, "e")
+    buffer2 = sd.parallelogram(7, 3,45, "w")
+    buffer3 = sd.parallelogram(5, 0,10, "8")
+    buffer4 = sd.parallelogram(3, 10,25, "+")
+    s.printBuffer(buffer1,0,0,height)
+    s.printBuffer(buffer2,0,0,height)
+    s.printBuffer(buffer3,0,0,height)    
+    s.printBuffer(buffer4,0,0,height)
     signature = signstring("intersect")
     p.printXY(signature, 80-len(signature), int(height))
     s.printXY(signature, 80-len(signature), int(height))

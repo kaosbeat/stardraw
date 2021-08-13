@@ -156,6 +156,14 @@ def printstuff(stuff):
 
 
 
+def printBuffer(buffer,x,y,maxheight):
+    # print a multiline buffer  
+    for i,l in enumerate(buffer.splitlines()):
+        if (i<=maxheight-1):
+            if (l != ""): # don't print empty lines, it's time consuming
+                printXY(l, 0, i)
+
+
 # setLineSpace(100)
 
 # nextTop()
