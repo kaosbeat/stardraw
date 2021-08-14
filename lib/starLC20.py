@@ -139,9 +139,9 @@ def printXY(string,x,y):
         cr()
     # for i in range(x):
         # string = ' ' + string
-    string = whitespace + string
-    # print(cursorY)
-    printstuff(string)
+    if (string != ""):
+        string = whitespace + string
+        printstuff(string)
     lf()
 
 
