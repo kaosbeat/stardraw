@@ -714,6 +714,7 @@ def intersect2():
 
     # print(sd.dimensions(b1))
     # print(b1)
+    p.printBuffer(mb, 0, 0, height)
     s.printBuffer(mb, 0, 0, height)
     signature = signstring("intersect study")
     p.printXY(signature, 80-len(signature), int(height))
