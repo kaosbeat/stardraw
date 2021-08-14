@@ -382,6 +382,7 @@ def eighty1ties():
     s.openfile(s.svgfile)
     horizon = 40
     s.setLineSpace(12)
+    p.setLineSpace(12)
     divs = 20
     for i in range(divs):
         inc = int(columns/divs)
@@ -390,12 +391,18 @@ def eighty1ties():
         for i,l in enumerate(buffer.splitlines()):
             # print(l)
             s.printXY(l, 0, i)
+            p.printXY(l, 0, i)
     s.printXY('.', 0, horizon)
+    p.printXY('.', 0, horizon)
     for i in range(15):
         s.setLineSpace(3+i*4)
+        p.setLineSpace(3+i*4)
         s.printXY(columns * '-', 0 , horizon + i)
+        p.printXY(columns * '-', 0 , horizon + i)
     s.currentTop()
+    p.currentTop()
     s.setLineSpace(12)
+    p.setLineSpace(12)
     ch = 0
     maxheight =35
     # prefilledbuffer = ""
@@ -413,10 +420,13 @@ def eighty1ties():
             printheight = horizon - h + i
             # print(printheight)
             s.printXY(l,ch,printheight)
+            p.printXY(l,ch,printheight)
         ch = ch + w + 2
 
     s.currentTop()
+    p.currentTop()
     s.setLineSpace(12)
+    p.setLineSpace(12)
     for i in range(20):
         px = random.randint(0,70)
         py = random.randint(0,45)-5
@@ -429,16 +439,6 @@ def eighty1ties():
             print(line)
             s.printXY(line, px,  py + i+1)
             p.printXY(line, px,  py + i+1)
-        # px = 5
-    # py = 10
-    # pl = planet(20, 0.8, 'o')
-    # p.setLineSpace(6)
-    # s.setLineSpace(6)
-    # for i,line in enumerate(pl.splitlines()):
-    #     print(line)
-    #     s.printXY(line, px,  py + i+1)
-    #     p.printXY(line, px,  py + i+1)
-
 
     s.closefile()
     if tweetit:

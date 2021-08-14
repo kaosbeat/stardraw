@@ -8,9 +8,9 @@ import time
 warnings = False  ## enable to see emulation problems at stdout
 # allowLineWrap = True
 dropOverPrint = True ## if trying to print beyond column 80 drop it so lines don't wrap
-# lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
+lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
 dummy = os.open("/dev/null", os.O_RDWR)
-dev = dummy
+dev = lp0
 columns = 80
 lines = 120
 
@@ -148,6 +148,7 @@ def printXY(string,x,y):
 
 def printstuff(stuff):
     global cursorX
+    global cursorY
     os.write(dev,bytes(stuff, 'utf-8'))
     cursorX = cursorX + len(stuff)
     if (cursorX > columns):
