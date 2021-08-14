@@ -442,7 +442,7 @@ def eighty1ties():
 
     s.closefile()
     if tweetit:
-        tweet.convertSVGtoTweet2(s.svgfile, "skysc(r)aping eighty1ties")
+        tweet.convertSVGtoTweet(s.svgfile, "skysc(r)aping eighty1ties")
 
 
 #############################    
@@ -734,13 +734,13 @@ def intersect2():
 # someplanets()
 # landscape()
 # linetest()
-# eighty1ties()
+eighty1ties()
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
 # perspsquares2()
 # intersect()
-intersect2()
+# intersect2()
 
 # prefilledbuffer = ""
 # for i in range(maxheight):
