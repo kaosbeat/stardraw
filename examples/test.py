@@ -687,23 +687,24 @@ def intersect():
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
 
-
+ 
 def intersect2():
     s.svgfile = 'intersect2.svg'
     columns = 80
     height = 69
     s.openfile(s.svgfile)
     # bufferlist=[]
-    charlist = ["O","|","-","+","/"]
+    charlist1 = ["O","|","-","+","/"]
+    charlist2 = ['!','#','%','^', '&', '}', "o", ">", "~"]
     maxx = 0
     maxy = 0
     ra = random.randint(3,8)
-    b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, "|")
+    b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, charlist1[len(charlist1)-1])
     # print(b1)
     pb1 = sd.padMidMax(b1,columns,height)
     # print(pb1)
     b2w = random.randint(6,35)
-    b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), "0")
+    b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), charlist2[len(charlist2)-1])
     pb2 = sd.padMidMax(b2,columns,height)
 
     b2start = int((columns - b2w)/2 )
@@ -720,6 +721,7 @@ def intersect2():
     p.printXY(signature, 80-len(signature), int(height))
     s.printXY(signature, 80-len(signature), int(height))
     s.closefile()
+    p.nextTop()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "intersections")
 
