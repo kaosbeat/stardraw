@@ -257,11 +257,34 @@ def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
 def mergeBuffers(buffer1,buffer2,xpos):
     # merge 2 buffers leaving buffer1 in front until xpos
     # pad until same height and width using padBuffer
+    # buffers should have equal width/height
     print(dimensions(buffer1))
+    print(dimensions(buffer2))
+    
     buffer1 = buffer1.splitlines()
     buffer2 = buffer2.splitlines()
-    
-    buffer = []
+    buffer = ""
+    for y in range(len(buffer1)):
+        line = ""
+        for x in range(len(buffer1[0])):
+            if x < xpos:
+                c = buffer1[y][x]
+                if (c != " "):
+                    c = buffer1[y][x]
+                else:
+                    c = buffer2[y][x]
+            else:
+                c = buffer2[y][x]
+                if (c != " "):
+                    c = buffer2[y][x]
+                else:
+                    c = buffer1[y][x]
+            line = line + c
+        print (line)
+        buffer = buffer + line + "\n"
+    return buffer
+
+
     for i,l in enumerate(buffer2):
         if l.isspace:
             buffer[i] = buffer1[i]
