@@ -12,6 +12,7 @@ import subprocess               # May want to use subprocess32 instead
 
 print("invoking TWEEEEEETING")
 print(platform.system())
+
 # ## get ourselves the image we need (convert svg to jpg)
 # with Image(filename=sys.argv[2]) as img:
 #     img.format = 'jpeg'
@@ -42,7 +43,7 @@ print(platform.system())
 def convertSVGtoTweet(svg, tweettext):
     print(svg)
     pltfrm = platform.system()
-    if (plftrm == 'Darwin'):
+    if (pltfrm == 'Darwin'):
         cmd_list = [ '/Applications/Inkscape.app/Contents/MacOS/inkscape','--export-filename=tweet.png', svg ]
     else:
         cmd_list = [ '/usr/bin/inkscape','--export-filename=tweet.png', svg ]

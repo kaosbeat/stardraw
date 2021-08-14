@@ -205,7 +205,7 @@ def filledsquare(size, angle, char):
 
 # filledsquare(10,2,"d")
 
-def parallelogram(height, dirchange, width, char):
+def parallelogram(height, width, dirchange, char):
     # parallelogram is (int(width/dirchange)+height high and width wide)
     buffer = ""
     h = height
@@ -253,6 +253,56 @@ def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
         buffer1 = buffer1 + line
     return buffer1
 
+def padMax(buffer,columns,height):
+    x,y = dimensions(buffer)
+    padx = columns - x
+    pady = height - y
+    if padx > 1:
+        prex = random.randint(0,padx)
+        postx = padx - prex
+    elif padx == 1:
+        prex = 1
+        postx = 0
+    else:
+        prex = 0
+        postx = 0
+    if pady > 1:
+        prey = random.randint(0,pady)
+        posty = pady - prey
+    elif pady == 1:
+        prey = 1
+        posty = 0
+    else:
+        prey = 0
+        posty = 0
+    paddedbuffer = padBuffer(buffer,prex,prey,postx,posty)
+    return paddedbuffer
+
+def padMidMax(buffer,columns,height):
+    x,y = dimensions(buffer)
+    padx = columns - x
+    pady = height - y
+    if padx > 1:
+        prex = int(padx/2)
+        postx = padx - prex
+    elif padx == 1:
+        prex = 1
+        postx = 0
+    else:
+        prex = 0
+        postx = 0
+    if pady > 1:
+        prey = int(pady/2)
+        posty = pady - prey
+    elif pady == 1:
+        prey = 1
+        posty = 0
+    else:
+        prey = 0
+        posty = 0
+    paddedbuffer = padBuffer(buffer,prex,prey,postx,posty)
+    return paddedbuffer
+
 
 def mergeBuffers(buffer1,buffer2,xpos):
     # merge 2 buffers leaving buffer1 in front until xpos
@@ -285,8 +335,8 @@ def mergeBuffers(buffer1,buffer2,xpos):
     return buffer
 
 
-    for i,l in enumerate(buffer2):
-        if l.isspace:
-            buffer[i] = buffer1[i]
-        else: 
-            test = 1
+
+
+def consoleBuffer(buffer):
+    for l in buffer.splitlines():
+        print(l)

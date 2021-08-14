@@ -8,7 +8,7 @@ import lib.starDraw as sd
 import lib.tweetprint as tweet
 
 printit = False
-tweetit = False
+tweetit = True
 svg = True
 sign = True
 title = "starLC20"
@@ -649,10 +649,14 @@ def intersect():
     columns = 80
     height = 69
     s.openfile(s.svgfile)
-    buffer1 = sd.parallelogram(8, 6,30, "O")
-    buffer2 = sd.parallelogram(7, 3,45, "!")
-    buffer3 = sd.parallelogram(5, 0,10, "8")
-    buffer4 = sd.parallelogram(3, 10,25, "+")
+    buffer1 = sd.parallelogram(8, 30,6, "O")
+    buffer2 = sd.parallelogram(7, 45,3, "!")
+    buffer3 = sd.parallelogram(5, 10,0, "8")
+    buffer4 = sd.parallelogram(3, 25,10, "+")
+
+    sd.consoleBuffer(buffer1)
+    sd.consoleBuffer(buffer2)
+
     # s.printBuffer(buffer1,0,0,height)
     # s.printBuffer(buffer2,10,2,height)
     # s.printBuffer(buffer3,20,0,height)    
@@ -661,9 +665,13 @@ def intersect():
     b1 = sd.padBuffer(buffer1,10,5,11,12)
     b2 = sd.padBuffer(buffer2,3,4,3,4)
 
+    sd.consoleBuffer(b1)
+    sd.consoleBuffer(b2)
+
     s.printBuffer(b1,0,0,height)
     s.printBuffer(b2,0,0,height)
     
+
     b3 = sd.mergeBuffers(b1,b2,20)
 
     s.printBuffer(b3,0,30,height)
@@ -672,7 +680,7 @@ def intersect():
     # print(sd.padBuffer(buffer1,10,10, 4,4))
 
    
-    signature = signstring("intersect")
+    signature = signstring("intersect study")
     p.printXY(signature, 80-len(signature), int(height))
     s.printXY(signature, 80-len(signature), int(height))
     s.closefile()
@@ -680,7 +688,39 @@ def intersect():
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
 
 
+def intersect2():
+    s.svgfile = 'intersect2.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    # bufferlist=[]
+    charlist = ["O","|","-","+","/"]
+    maxx = 0
+    maxy = 0
+    ra = random.randint(3,8)
+    b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, "|")
+    # print(b1)
+    pb1 = sd.padMidMax(b1,columns,height)
+    # print(pb1)
+    b2w = random.randint(6,35)
+    b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), "0")
+    pb2 = sd.padMidMax(b2,columns,height)
 
+    b2start = int((columns - b2w)/2 )
+    cutpos = random.randint(b2start+1,b2start+b2w-1)
+    cutpos = int(columns/2)
+    mb = sd.mergeBuffers(pb1, pb2, cutpos )
+    # # print(mb)
+
+    # print(sd.dimensions(b1))
+    # print(b1)
+    s.printBuffer(mb, 0, 0, height)
+    signature = signstring("intersect study")
+    p.printXY(signature, 80-len(signature), int(height))
+    s.printXY(signature, 80-len(signature), int(height))
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "intersections")
 
 
  
@@ -696,7 +736,8 @@ def intersect():
 # feedmeweirdtxt()
 # perspsquares()
 # perspsquares2()
-intersect()
+# intersect()
+intersect2()
 
 # prefilledbuffer = ""
 # for i in range(maxheight):
