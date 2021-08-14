@@ -45,12 +45,15 @@ def convertSVGtoTweet(svg, tweettext):
     pltfrm = platform.system()
     if (pltfrm == 'Darwin'):
         cmd_list = [ '/Applications/Inkscape.app/Contents/MacOS/inkscape','--export-filename=tweet.png', svg ]
+        p = subprocess.Popen( cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+        out, err = p.communicate()
+        if p.returncode:
+            raise Exception( 'Inkscape error: ' + (err or '?')  )
     else:
-        cmd_list = [ '/usr/bin/inkscape','--export-filename=tweet.png', svg ]
-    p = subprocess.Popen( cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
-    out, err = p.communicate()
-    if p.returncode:
-        raise Exception( 'Inkscape error: ' + (err or '?')  )
+        # cmd_list = [ '/usr/bin/inkscape','--export-filename=tweet.png', svg ]
+        with Image(filename=svg) as img:
+            img.format = 'png'
+            img.save(filename='tweet.png')
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
     auth.set_access_token(access_token, access_token_secret) 
     api = tweepy.API(auth) 
