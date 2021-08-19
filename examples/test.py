@@ -731,8 +731,8 @@ def overlapstudy():
     s.svgfile = 'overlapstudy.svg'
     columns = 80
     height = 69
-    size = 16
     s.openfile(s.svgfile)
+    size = 16
     charlist = ['!','#','%','^', '&', '}', "o", ">", "~"]
     bufferlist =[]
     for x in range(size):
@@ -775,8 +775,20 @@ def overlapstudy():
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "looking for overlap")
 
- 
+def interferencepatterns():
+    s.svgfile = 'interferencepatterns.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    buffer = ""
+    size = 15
+    for x in range(size):
+        line = (size - x)*"V"
+        # print(line)
+        buffer = buffer + liner + "\n"
+    
 
+    print buffer
  
 # shapes()
 # eighties()
@@ -792,8 +804,8 @@ def overlapstudy():
 # perspsquares2()
 # intersect()
 # intersect2()
-overlapstudy()
-
+# overlapstudy()
+interferencepatterns()
 # prefilledbuffer = ""
 # for i in range(maxheight):
 #     prefilledbuffer = prefilledbuffer + columns * " " + "\n"
