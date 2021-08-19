@@ -9,6 +9,7 @@ import lib.tweetprint as tweet
 
 printit = False
 tweetit = True
+# tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -726,6 +727,56 @@ def intersect2():
         tweet.convertSVGtoTweet(s.svgfile, "intersections")
 
 
+def overlapstudy():
+    s.svgfile = 'overlapstudy.svg'
+    columns = 80
+    height = 69
+    size = 16
+    s.openfile(s.svgfile)
+    charlist = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    bufferlist =[]
+    for x in range(size):
+        hght = random.randint(3,15)  
+        wdth = random.randint(10,40)        
+        dirchange = random.randint(1,6)      
+        buffer = sd.parallelogram(hght, wdth,dirchange, charlist[random.randint(0,len(charlist)-1)])
+        bufferlist.append(buffer)
+        # print(buffer)
+        b = buffer.splitlines()
+        maxx = columns - len(b[-1])
+        maxy = height - len(b)
+        x = random.randint(0,maxx)         
+        y = random.randint(0,maxy)         
+        s.printBuffer(buffer,x,y,height)
+        p.printBuffer(buffer,x,y,height)
+    
+    # b1 = sd.padBuffer(buffer1,10,5,11,12)
+    # b2 = sd.padBuffer(buffer2,3,4,3,4)
+
+    # sd.consoleBuffer(b1)
+    # sd.consoleBuffer(b2)
+
+    # s.printBuffer(b1,0,0,height)
+    # s.printBuffer(b2,0,0,height)
+    
+
+    # b3 = sd.mergeBuffers(b1,b2,20)
+
+    # s.printBuffer(b3,0,30,height)
+
+
+    # print(sd.padBuffer(buffer1,10,10, 4,4))
+
+   
+    signature = signstring("overlap study")
+    p.printXY(signature, 80-len(signature), int(height))
+    s.printXY(signature, 80-len(signature), int(height))
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "looking for overlap")
+
+ 
+
  
 # shapes()
 # eighties()
@@ -734,13 +785,14 @@ def intersect2():
 # someplanets()
 # landscape()
 # linetest()
-eighty1ties()
+# eighty1ties()
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
 # perspsquares2()
 # intersect()
 # intersect2()
+overlapstudy()
 
 # prefilledbuffer = ""
 # for i in range(maxheight):

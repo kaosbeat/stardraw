@@ -254,6 +254,7 @@ def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
     return buffer1
 
 def padMax(buffer,columns,height):
+    # pad buffer to match columns/height
     x,y = dimensions(buffer)
     padx = columns - x
     pady = height - y
