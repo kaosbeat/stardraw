@@ -829,8 +829,8 @@ def fillingSquares():
     columns = 80
     height = 69
     s.openfile(s.svgfile)
-    s.setLineSpace(8)
-    p.setLineSpace(8)
+    s.setLineSpace(7)
+    p.setLineSpace(7)
     x = 4
     y = 5
     size = int(columns/(x+1))
@@ -853,16 +853,21 @@ def fillingSquares():
                 linebuf = noisebuf*chars[k+l] + (size-noisebuf)*"#"
                 if anomalyx[k] < size:
                     anomalyx[k] = anomalyx[k] + 1
-                line = line + " "*int(margin/2) + linebuf + " "*int(margin/2) 
+                line = line + linebuf + " "*int(margin) 
             buffer = buffer + line + "\n"
         for i in range(margin):
             line =""
             buffer = buffer + line + "\n"
     print(buffer)
-    s.printBuffer(buffer,1,2,height*12/p.linefeed)
+    s.printBuffer(buffer,0,5,int(height*12/p.linefeed))
+    p.printBuffer(buffer,0,5,int(height*12/p.linefeed))
+
+    signature = signstring("anomaly squares")
+    p.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(2*12/p.linefeed))
+    s.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(2*12/p.linefeed))
     s.closefile()
     if tweetit:
-        tweet.convertSVGtoTweet(s.svgfile, "squareresearch")
+        tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
 # shapes()
 # eighties()
 # lotsalines()
