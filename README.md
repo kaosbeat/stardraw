@@ -21,3 +21,8 @@ depends on SVGwrite > pip3 install svgwrite (or similar)
 
 # stardraw 
 library of convenient ascii elements ready to be printed
+
+
+# activate
+. bin/activate stardraw
+

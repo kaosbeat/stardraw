@@ -106,6 +106,13 @@ def printBuffer(buffer,x,y,maxheight):
             if (l != ""): # don't print empty lines, it's time consuming
                 printXY(l, x, i+y)
 
+def debugCircle(x,y,r):
+    global currentdwg
+    # 16 # 4.233 mm 
+    # currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm","297mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')
+    currentdwg.add(currentdwg.circle((str(x)+"mm", str(y)+"mm"), str(r)+"mm", stroke=svgwrite.rgb(10, 10, 160, '%'), fill='white'))
+
+
 
 def unitTest():
     global currentdwg

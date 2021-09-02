@@ -3,6 +3,7 @@
 import lib.starLC20 as p
 import lib.staremulator as s
 import random
+from perlin_noise import PerlinNoise
 import datetime
 import lib.starDraw as sd
 import lib.tweetprint as tweet
@@ -750,24 +751,6 @@ def overlapstudy():
         s.printBuffer(buffer,x,y,height)
         p.printBuffer(buffer,x,y,height)
     
-    # b1 = sd.padBuffer(buffer1,10,5,11,12)
-    # b2 = sd.padBuffer(buffer2,3,4,3,4)
-
-    # sd.consoleBuffer(b1)
-    # sd.consoleBuffer(b2)
-
-    # s.printBuffer(b1,0,0,height)
-    # s.printBuffer(b2,0,0,height)
-    
-
-    # b3 = sd.mergeBuffers(b1,b2,20)
-
-    # s.printBuffer(b3,0,30,height)
-
-
-    # print(sd.padBuffer(buffer1,10,10, 4,4))
-
-   
     signature = signstring("overlap study")
     p.printXY(signature, 80-len(signature), int(height))
     s.printXY(signature, 80-len(signature), int(height))
@@ -781,15 +764,105 @@ def interferencepatterns():
     height = 69
     s.openfile(s.svgfile)
     buffer = ""
-    size = 15
+    size = height
     for x in range(size):
         line = (size - x)*"V"
         # print(line)
-        buffer = buffer + liner + "\n"
-    
-
-    print buffer
+        buffer = buffer + line + "\n"
+    s.printBuffer(buffer,0,1,height)
+    p.printBuffer(buffer,0,1,height)
+    buffer = ""
+    for x in range(size):
+        line = x*"A"
+        # print(line)
+        buffer = buffer + line + "\n"
+    s.printBuffer(buffer,0,1,height)
+    p.printBuffer(buffer,0,1,height)
+    buffer = ""
+    size = int(height/2)
+    for x in range(size):
+        line = (size - x)*"-"
+        # print(line)
+        buffer = buffer + line + "\n"
+    s.printBuffer(buffer,0,1,height)
+    p.printBuffer(buffer,0,1,height)
+    buffer = ""
+    for x in range(size):
+        line = x*"I"
+        # print(line)
+        buffer = buffer + line + "\n"
+    s.printBuffer(buffer,0,int(height/2),height)
+    p.printBuffer(buffer,0,int(height/2),height)
+    signature = signstring("interference study")
+    p.printXY(signature, 80-len(signature), int(height))
+    s.printXY(signature, 80-len(signature), int(height))
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "interference and overlap")
+    # print (buffer)
  
+
+def circletime():
+    s.svgfile = 'circles.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    s.setLineSpace(8)
+    p.setLineSpace(8)
+
+    print (p.linefeed)
+    circleradius = 40
+    buffer = sd.circle(circleradius,p.basefontsize,p.linefeed,"0")
+    #16 # 4.233 mm
+    chartomm = 4.233/p.linefeed
+    xsize,ysize = sd.dimensions(buffer) 
+
+    print(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed )
+    s.debugCircle(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed*chartomm)
+    s.printBuffer(buffer,int(1),0,height*12/p.linefeed)
+    
+    s.closefile()
+
+
+def fillingSquares():
+    s.svgfile = 'fillingsquares.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    s.setLineSpace(8)
+    p.setLineSpace(8)
+    x = 4
+    y = 5
+    size = int(columns/(x+1))
+    margin = int((columns - (x*size)) / x)
+    chars = ["*","X", "#","+", "=", "-", "<", ">" ,".", "*","X", "#","+", "=", "-", "<", ">" ,"."]
+    # chars = ["1","2", "3","4", "5", "6", "7", "8" ,"9", "0","a", "b","c", "d", "e", "f", "g" ,"h"]
+    count=0 
+    buffer = ""
+    noise = PerlinNoise()
+    for l in range(y):
+        size = 30
+        anomalyx = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        anomalyy = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        size = int(columns/(x+1))
+        for i in range(size):
+            line=""
+            for k in range(x):
+                xstep = 1 / (anomalyy[k]+0.1)
+                noisebuf = int(anomalyx[k] * noise(xstep*i))
+                linebuf = noisebuf*chars[k+l] + (size-noisebuf)*"#"
+                if anomalyx[k] < size:
+                    anomalyx[k] = anomalyx[k] + 1
+                line = line + " "*int(margin/2) + linebuf + " "*int(margin/2) 
+            buffer = buffer + line + "\n"
+        for i in range(margin):
+            line =""
+            buffer = buffer + line + "\n"
+    print(buffer)
+    s.printBuffer(buffer,1,2,height*12/p.linefeed)
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "squareresearch")
 # shapes()
 # eighties()
 # lotsalines()
@@ -805,8 +878,41 @@ def interferencepatterns():
 # intersect()
 # intersect2()
 # overlapstudy()
-interferencepatterns()
+# interferencepatterns()
+# circletime()
+fillingSquares()
+
 # prefilledbuffer = ""
 # for i in range(maxheight):
 #     prefilledbuffer = prefilledbuffer + columns * " " + "\n"
+
+
+
+
+
+def testTop():
+    p.reset()
+    p.printXY("line 1", 1,1)
+    p.printXY("line 2", 1,2)
+    p.printXY("line 3", 1,3)
+    # p.currentTop() 
+    p.gotoCurrentTop()
+    p.setLineSpace(4)
+    p.printXY("line 1", 10,1)
+    p.printXY("line 2", 10,2)
+    p.printXY("line 3", 10,3)
+    # p.lf()
+    p.gotoCurrentTop()
+
+    p.setLineSpace(12)
+    p.printXY("line 1", 20,1)
+    p.printXY("line 2", 20,2)
+    p.printXY("line 3", 20,3)
+    # p.currentTop()
+    # p.lf()
+    p.gotoCurrentTop()
+    p.setLineSpace(4)
+    p.printXY("line 1", 30,1)
+    p.printXY("line 2", 30,2)
+    p.printXY("line 3", 30,3)
 

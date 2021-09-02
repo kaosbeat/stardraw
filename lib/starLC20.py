@@ -176,3 +176,5 @@ def printBuffer(buffer,x,y,maxheight):
 
 # os.lseek(dev,0,os.SEEK_SET)
 # print os.read(dev,16)
+
+

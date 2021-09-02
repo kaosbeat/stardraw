@@ -229,8 +229,70 @@ def parallelogram(height, width, dirchange, char):
             buffer = buffer + line + "\n"
     return buffer
 
+
+def circle(radius, basefontsize, linefeed, char):
+    #density is current linefeed density >> n/72inch,
+    buffer = ""
+    proportion = 1.5
+    #at linefeed = 8 > prop = 1
+    
+    radiusv = radius*linefeed
+
+    #    print("proportion = " ,proportion)
+    radiush = radius * basefontsize
+    # radiusv = 
+    
+    for r in range(int(radius * 2 +1 )):
+        v = (radius-r)
+        if v == radius:
+            v = radius - 0.1
+        if v == -radius:
+            v = -radius + 0.1
+        if v == 1:
+            v = 0 
+        # print ("corrected:" , v)
+        v = v*linefeed
+        
+        # factor = linefeed*(basefontsize + linefeed)/basefontsize / 2 # (ok for linespace 9)
+        # factor = 7.03125 # ok for linespace 9  
+        # factor = 8.125 # ok for linespace ??
+        factor = 7.5 # ok for linespace 10, size 10 
+        factor = 7 # ok for linespace 14, size 14
+        # factor = 6.5 # ok for linespace 16, size 16
+
+
+        h = math.sqrt( abs(math.pow(radiusv ,2 ) -  math.pow(v,2) ))  / factor 
+
+
+        # basefontsize*(basefontsize + linefeed)/linefeed
+        
+        buffer = buffer + int(h)*char + "\n"
+    # print(buffer)
+    buffer2 = ""
+    xsize,ysize = dimensions(buffer)
+    print("xsize = ",xsize)
+
+    for i,l in enumerate(buffer.splitlines()):
+        # print("t"+l+"t")
+        print (len(l))
+
+        pad = xsize - len(l)
+        line = "\n" +" " * pad + 2*l + " " * pad
+        # print("t"+line+"t")
+        buffer2 = buffer2 + line
+        # print(line)
+    # print(basefontsize*(basefontsize + linefeed)/linefeed)
+    # print(linefeed*(basefontsize + linefeed)/basefontsize)
+    print("factor = ",factor)
+    print(buffer2)
+    return buffer2
+
+
+
+
+
 def dimensions(buffer):
-    width = len(max(buffer.splitlines(), key = len))
+    width = len(max(buffer.splitlines(), key = len))    
     height = len(buffer.splitlines())
     return width, height
 
