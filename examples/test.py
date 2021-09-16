@@ -808,9 +808,10 @@ def circletime():
     columns = 80
     height = 69
     s.openfile(s.svgfile)
-    s.setLineSpace(8)
-    p.setLineSpace(8)
-
+    density = 8
+    s.setLineSpace(density)
+    p.setLineSpace(density)
+    height = int(height*12/density)
     print (p.linefeed)
     circleradius = 40
     buffer = sd.circle(circleradius,p.basefontsize,p.linefeed,"0")
@@ -821,8 +822,13 @@ def circletime():
     print(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed )
     s.debugCircle(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed*chartomm)
     s.printBuffer(buffer,int(1),0,height*12/p.linefeed)
-    
+    p.printBuffer(buffer,int(1),0,height*12/p.linefeed)
+    signature = signstring("circle study")
+    p.printXY(signature, 80-len(signature), int(height)-5)
+    s.printXY(signature, 80-len(signature), int(height))
     s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "circle study")
 
 
 def fillingSquares():
