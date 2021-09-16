@@ -824,7 +824,7 @@ def circletime():
     s.printBuffer(buffer,int(1),0,height*12/p.linefeed)
     p.printBuffer(buffer,int(1),0,height*12/p.linefeed)
     signature = signstring("circle study")
-    p.printXY(signature, 80-len(signature), int(height)-5)
+    p.printXY(signature, 80-len(signature), int(height)-10)
     s.printXY(signature, 80-len(signature), int(height))
     s.closefile()
     if tweetit:
