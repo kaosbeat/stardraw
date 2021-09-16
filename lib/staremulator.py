@@ -112,7 +112,9 @@ def debugCircle(x,y,r):
     # currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm","297mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')
     currentdwg.add(currentdwg.circle((str(x)+"mm", str(y)+"mm"), str(r)+"mm", stroke=svgwrite.rgb(10, 10, 160, '%'), fill='white'))
 
-
+def setNewDensityAndGotoTop(newdensity, pageheight, linefeed):
+    printBuffer(" ",int(1),0,pageheight*12/linefeed)
+    setLineSpace(newdensity)
 
 def unitTest():
     global currentdwg
