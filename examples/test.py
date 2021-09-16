@@ -7,6 +7,7 @@ from perlin_noise import PerlinNoise
 import datetime
 import lib.starDraw as sd
 import lib.tweetprint as tweet
+from pyfiglet import Figlet
 
 printit = False
 tweetit = True
@@ -831,8 +832,8 @@ def fillingSquares():
     s.openfile(s.svgfile)
     s.setLineSpace(7)
     p.setLineSpace(7)
-    x = 4
-    y = 5
+    x = 6
+    y = 8
     size = int(columns/(x+1))
     margin = int((columns - (x*size)) / x)
     chars = ["*","X", "#","+", "=", "-", "<", ">" ,".", "*","X", "#","+", "=", "-", "<", ">" ,"."]
@@ -841,10 +842,10 @@ def fillingSquares():
     buffer = ""
     noise = PerlinNoise()
     for l in range(y):
-        size = 30
-        anomalyx = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
-        anomalyy = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
-        size = int(columns/(x+1))
+        # size = 30
+        anomalyx = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        anomalyy = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        # size = int(columns/(x+1))
         for i in range(size):
             line=""
             for k in range(x):
@@ -868,6 +869,32 @@ def fillingSquares():
     s.closefile()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
+
+
+def datafragments(input, data):
+    data = 20*data
+    text = input.replace(" ","")
+    #print
+    f = Figlet(font='doh')
+    # print (f.renderText('FACEBOOK SUCKS'))
+    buffer = f.renderText('FACEBOOK SUCKS')
+    # print (buffer)
+    buffer2 = ""
+    for l in buffer:
+        # if (l != " " or l != "\n"):
+        #     l = "X"
+        if (l == " "):
+            l = l
+        elif (l == "\n"):
+            l = l
+        else:
+            l = "K"
+        buffer2 = buffer2+l
+        # print(l)
+    print(buffer2)
+    #reprint
+
+
 # shapes()
 # eighties()
 # lotsalines()
@@ -885,7 +912,9 @@ def fillingSquares():
 # overlapstudy()
 # interferencepatterns()
 # circletime()
-fillingSquares()
+# fillingSquares()
+datafragments("dddadad", "324")
+
 
 # prefilledbuffer = ""
 # for i in range(maxheight):
