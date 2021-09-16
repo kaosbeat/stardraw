@@ -11,7 +11,7 @@ from pyfiglet import Figlet
 
 printit = False
 tweetit = True
-# tweetit = False
+tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -911,9 +911,9 @@ def datafragments(input, data):
 # intersect2()
 # overlapstudy()
 # interferencepatterns()
-# circletime()
+circletime()
 # fillingSquares()
-datafragments("dddadad", "324")
+# datafragments("dddadad", "324")
 
 
 # prefilledbuffer = ""
