@@ -1019,6 +1019,10 @@ def fillingSquares():
         tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
 
 
+
+
+
+
 def datafragments(input, data):
     data = 20*data
     text = input.replace(" ","")
