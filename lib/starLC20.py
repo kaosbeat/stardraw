@@ -11,14 +11,14 @@ dropOverPrint = True ## if trying to print beyond column 80 drop it so lines don
 lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
 dummy = os.open("/dev/null", os.O_RDWR)
 dev = lp0 
-dev = dummy
+# dev = dummy
 columns = 80
 # lines = 120
 
 basefontsize = 16 # 4.233 mm or 1.666 inch  or 120/7.5
 linefeed = 16 # setLineSpace(120/7.5)  120 matches default 16
 fontproportion = 0.6 #calculated from rules measurements
-pageheight = 69
+pageheight = 68
 
 cursorX = 0
 cursorY = 0

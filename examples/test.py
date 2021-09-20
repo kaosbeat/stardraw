@@ -11,7 +11,7 @@ from pyfiglet import Figlet
 
 printit = False
 tweetit = True
-tweetit = False
+# tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -806,30 +806,172 @@ def interferencepatterns():
 def circletime():
     s.svgfile = 'circles.svg'
     columns = 80
-    height = 69
-    s.openfile(s.svgfile)
-    density = 8
-    s.setLineSpace(density)
-    p.setLineSpace(density)
-    height = int(height*12/density)
-    print (p.linefeed)
-    circleradius = 40
-    buffer = sd.circle(circleradius,p.basefontsize,p.linefeed,"0")
+    # pageheight = 69 # height at density 12
+    s.openfile(s.svgfile) 
+    # print (p.linefeed)
+    circleradius = 16
     #16 # 4.233 mm
     chartomm = 4.233/p.linefeed
-    xsize,ysize = sd.dimensions(buffer) 
+    # print(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed )
+    # s.debugCircle(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed*chartomm)
+    p.setNewDensityAndGotoTop(11, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(11, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    buffer = sd.circle(27,p.basefontsize,p.linefeed,"Z")
+    # xsize,ysize = sd.dimensions(buffer) 
+    s.printBuffer(buffer,int(1),1,height*12/p.linefeed)
+    p.printBuffer(buffer,int(1),1,height*12/p.linefeed)
 
-    print(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed )
-    s.debugCircle(xsize*p.basefontsize*chartomm/2,ysize*p.linefeed*chartomm/2,circleradius*p.linefeed*chartomm)
-    s.printBuffer(buffer,int(1),0,height*12/p.linefeed)
-    p.printBuffer(buffer,int(1),0,height*12/p.linefeed)
+    p.setNewDensityAndGotoTop(6, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(6, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+
+   
+    buffer2 = sd.circle(16,p.basefontsize,p.linefeed,"'")
+    s.printBuffer(buffer2,int(5),8,height*12/p.linefeed)
+    p.printBuffer(buffer2,int(5),8,height*12/p.linefeed) 
+    
+    p.setNewDensityAndGotoTop(16, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(16, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+
+
+    buffer3 = sd.circle(12,p.basefontsize,p.linefeed,"X")
+    s.printBuffer(buffer3,int(8),14,height*12/p.linefeed)
+    p.printBuffer(buffer3,int(8),14,height*12/p.linefeed) 
+
+    p.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+
+
+
+
+
     signature = signstring("circle study")
-    p.printXY(signature, 80-len(signature), int(height)-10)
-    s.printXY(signature, 80-len(signature), int(height))
+    p.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(1*12/p.linefeed))
+    s.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(1*12/p.linefeed))
+    p.printXY(" ", 80-len(signature), int(height*12/p.linefeed)+int(1*12/p.linefeed))
+    s.printXY(" ", 80-len(signature), int(height*12/p.linefeed)+int(1*12/p.linefeed))
+
     s.closefile()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "circle study")
 
+def bettercircle(radius, x, y, density, char):
+    #draws a circle
+    p.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    buffer = sd.circle(radius,p.basefontsize,p.linefeed,char)
+    s.printBuffer(buffer,x,y,height-1)
+    p.printBuffer(buffer,x,y,height-1) 
+
+def randomCircles(times):
+    s.svgfile = 'randomcircles.svg'
+    # pageheight = 69 # height at density 12
+    s.openfile(s.svgfile) 
+
+    # do some drawing
+    for x in range(times):
+        chars = ['!','#','%','^', '&', '}', "o", ">", "~", "X", "K", "S", "?"]
+        char = chars[random.randint(0,len(chars)-1)]
+        bettercircle(random.randint(12,40), random.randint(0,35), random.randint(0,50), random.randint(6,16), char)
+    #reset linefeed
+    p.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    
+    signature = signstring("random circle study")
+    p.printXY(signature, 80-len(signature), height-1)
+    s.printXY(signature, 80-len(signature), height-1)
+    p.printXY(" ", 80-len(signature), height+1)
+    s.printXY(" ", 80-len(signature), height+1)
+
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "circle study")
+
+def noisecircle(circleradius, x, y, density, noisechar, circlechar, octaves, seed):
+    # s.svgfile = 'noisecircles.svg'
+    # columns = 80
+    # height = p.pageheight
+    # s.openfile(s.svgfile)
+
+    # density = random.randint(6,12)
+    # s.setLineSpace(density)
+    # p.setLineSpace(density)
+    # height = int(p.pageheight*12/density)
+    
+    # chars = ['!','#','%','^', '&', '}']
+    # nchars = [ "o", ">", "~", "X", "K", "S", "?"]
+    # circleradius = random.randint(20,50)
+    # circlechar =chars[random.randint(0,len(chars)-1)]
+    p.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    buffer = sd.circle(circleradius,p.basefontsize,p.linefeed,circlechar)
+    xnoise, ynoise = sd.dimensions(buffer)
+    noise = PerlinNoise(octaves=octaves, seed=seed)
+    noisebuffer = [[noise([i/xnoise, j/ynoise]) for j in range(xnoise)] for i in range(ynoise)]
+    # noisechar = nchars[random.randint(0,len(nchars)-1)]
+    mergedbuffer = ""
+    for i,l in enumerate(buffer.splitlines()):
+        line = ""
+        for j,c in enumerate(l):
+            if c != " ":
+                if noisebuffer[i][j] > 0:
+                    c = noisechar
+            line = line + c
+        mergedbuffer = mergedbuffer + line + "\n"
+    # return mergedbuffer
+    s.printBuffer(mergedbuffer,x,y,height-1)
+    p.printBuffer(mergedbuffer,x,y,height-1) 
+    # p.printBuffer(mergedbuffer, 0 ,int((height-ynoise)/2) , height-1)
+    # s.printBuffer(mergedbuffer, 0 ,int((height-ynoise)/2) , height-1)
+
+    # signature = signstring("noise circle study")
+    # p.printXY(signature, 80-len(signature), height)
+    # s.printXY(signature, 80-len(signature), height)
+    # p.printXY(" ", 1, height+1)
+    # s.printXY(" ", 1, height+1)
+    # s.closefile()
+    # if tweetit:
+    #     tweet.convertSVGtoTweet(s.svgfile, "noise circle study")
+
+def randomNoiseCircles(times):
+    s.svgfile = 'randomcircles.svg'
+    # pageheight = 69 # height at density 12
+    s.openfile(s.svgfile) 
+
+    # do some drawing
+    for x in range(times):
+        chars = ['!','#','%','^', '&', '}']
+        nchars = [ "o", ">", "~", "X", "K", "S", "?"]
+        circlechar = chars[random.randint(0,len(chars)-1)]
+        noisechar = chars[random.randint(0,len(nchars)-1)]
+        noiseoctaves = random.randint(1,10)
+        circleradius = random.randint(12,40)
+        x = random.randint(0,35)
+        y = random.randint(0,50)
+        density = random.randint(6,16)
+        octaves = random.randint(1,10)
+        seed = random.randint(0,5000)
+        noisecircle(circleradius, x,y, density, circlechar, noisechar, octaves, seed)
+    #reset linefeed
+    p.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    
+    signature = signstring("random circle study")
+    p.printXY(signature, 80-len(signature), height-1)
+    s.printXY(signature, 80-len(signature), height-1)
+    p.printXY(" ", 80-len(signature), height+1)
+    s.printXY(" ", 80-len(signature), height+1)
+
+    s.closefile()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "random noise circle study")
 
 def fillingSquares():
     s.svgfile = 'fillingsquares.svg'
@@ -917,7 +1059,10 @@ def datafragments(input, data):
 # intersect2()
 # overlapstudy()
 # interferencepatterns()
-circletime()
+# circletime()
+# randomCircles(3)
+# noisecircle()
+randomNoiseCircles(3)
 # fillingSquares()
 # datafragments("dddadad", "324")
 
