@@ -25,6 +25,19 @@ def openfile(filename):
 )
     # return dwg
 
+
+def openmultipagefile(filename, pages):
+    global svgfile
+    global currentdwg
+    svgfile = filename
+    length = str(297*pages)
+    currentdwg = svgwrite.Drawing(filename, size=("210mm",length+"mm"), profile='full')
+    currentdwg.defs.add(currentdwg.style('svg {background-color: white;'))
+    currentdwg.defs.add(currentdwg.style('.txt {white-space: pre; }'))
+    currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm",length+"mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')
+)
+    # return dwg
+
 def lf():
     #linefeed
     global cursorY

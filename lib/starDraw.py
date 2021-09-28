@@ -288,6 +288,87 @@ def circle(radius, basefontsize, linefeed, char):
     return buffer2
 
 
+def cube(w,h,d,c1,c2,c3):
+    # if w < h:
+    #     b = w
+    #     w = h
+    #     h = b
+    if d > w:
+        d = w
+    if d > h:
+        d = h
+    buffer = '''
+                                _
+                               /__
+                              //___
+                             ///____
+                            ////_____
+                           /////______
+                          ///// _______
+                         ///// \ ______
+                        ///// \ \ _____
+                       ///// \ \ \ ____
+                       //// \ \ \ \ ___
+                       /// \ \ \ \ \ __
+                       // \ \ \ \ \ \ _
+                       / \ \ \ \ \ \ \\
+                        \ \ \ \ \ \ \\
+                         \ \ \ \ \ \\
+                          \ \ \ \ \\
+                           \ \ \ \\
+                            \ \ \\
+                             \ \\
+                              \\
+                        
+    
+    '''
+    buffer = ""
+    # w = 28
+    # h = 28
+    # d = 15
+    # c1 = "+"
+    # c2 = "."
+    # c3 = "*"
+    for y in range(h):
+        line = ""
+        for x in range(w):
+            if x>=d:
+                x = d
+            line = line + (w-x)*" " + x*c1 + (x+1)*c2 + "\n"
+    buffer = buffer + line
+    for y in range(int(h)):
+        line = ""
+        for x in range(int(w)):
+            if x<d:
+                x1 = d
+            else:
+                x1 = w -x
+
+            # line = line +
+            # line = line + (w-x)*" " + x1*c1 + x*c3 + (x1+1)*c2 + "\n"
+            line = line + (w-d)*" " + (d-x)*c1 + x*2*c3+c3 + (d-x)*c2 +"\n"
+            if len(x*2*c3+c3) > w:
+                break
+    for y in range(d):
+        line = ""
+        for x in range(int(w)):
+            # print("fix needed")
+            if x>=d:
+                x = d
+            line = line + " "*((w-d) ) + (d-x)*c1 + ((2*x)+1)*c3 + (d-x)*c2 + "\n"
+            # line = line + (w-x)*" " 
+            # line = line + (w-x)*c3 +"\n"
+            if (2*x)+1 >= 2 * d:
+                break
+    
+    buffer = buffer + line
+
+    for y in range(d):
+        line = ""
+        line = line + " "*((w-d) + y) + 2*(d-y)*c3 + "\n"
+        buffer = buffer + line
+    
+    return buffer
 
 
 

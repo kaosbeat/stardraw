@@ -7,11 +7,12 @@ from perlin_noise import PerlinNoise
 import datetime
 import lib.starDraw as sd
 import lib.tweetprint as tweet
+import lib.font_anomaly as fa
 from pyfiglet import Figlet
 
 printit = False
 tweetit = True
-# tweetit = False
+tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -499,11 +500,22 @@ def feedmeweirdtxt():
     columns = 80
     invert = True
     height = 69
-    pages = 1
-    s.openfile(s.svgfile)
-    density = 6
-    p.setLineSpace(density)
-    s.setLineSpace(density) 
+    # pages = 1
+    # s.openfile(s.svgfile)
+    # density = 6
+    # p.setLineSpace(density)
+    # s.setLineSpace(density) 
+
+    pages =20
+    density = 2
+    s.openmultipagefile(s.svgfile,pages)
+    p.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    totalheight = height*pages
+
+
+
     xcounter = 0
     # dirty hack, append "" as first element in cols if not... troubles
     cols = ["","feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles"]
@@ -511,6 +523,10 @@ def feedmeweirdtxt():
     cols = ["]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O","]","[","q","w","5","%","#","^","&","O"]
     cols = []
     colssentence = "I wish I had duck feet, so I could swim like a pro"
+    colssentence = "your data is being used against you, encrypt or be exploited"
+    colssentence = "No, I have no facebook, but I'm following you anyway. Here's friend request"
+
+
     for c in colssentence:
         cols.append(c)
     # the sume of the cols words should be <= to columns
@@ -519,7 +535,7 @@ def feedmeweirdtxt():
         xcounter = xcounter + len(w)
         colsstate.append(1)
     # print(xcounter)
-    for row in range(1,int(height*12/density)):
+    for row in range(1,int(totalheight*12/density)):
         line = ""
         for col in range(len(cols)):
             # print("col = ", col)
@@ -1046,6 +1062,105 @@ def datafragments(input, data):
     print(buffer2)
     #reprint
 
+def anomalybanner():
+    s.svgfile = 'anomalyletters.svg'
+    pages = 10
+    s.openmultipagefile(s.svgfile,pages)
+    p.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    totalheight = height*pages
+    x = 5
+    y = 7
+    size = int(p.columns/(x+1))
+    margin = int((p.columns - (x*size)) / x)
+    for i,l in enumerate("testing"):
+        buffer = fa.letter2page(l, (x,y), margin)
+        # print(buffer)
+        s.printBuffer(buffer,0,(height*i)+5,totalheight)
+        p.printBuffer(buffer,0,(height*i)+5,totalheight)
+
+    signature = signstring("anomaly squares")
+    p.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed))
+    s.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed))
+    s.closefile()
+
+
+def cuber():
+    s.svgfile = 'cube.svg'
+    s.openfile(s.svgfile)
+    p.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    
+    charset1 = ["+","\\", "/", "|", ">", "<", ":" ]
+    charset2 = ["Y","#", "%", "&", "^", "!", "}" ]
+    charset3 = [")","`", "'", ".", "@", "*", "{" ]
+
+
+    for c in range(5):
+        w,h,d = random.randint(3,25), random.randint(3,25), random.randint(3,25)
+        x,y = random.randint(0,45),random.randint(0,55)
+        buffer = sd.cube(w,h,d,charset1[random.randint(0,len(charset1)-1)],charset2[random.randint(0,len(charset2)-1)],charset3[random.randint(0,len(charset3)-1)])
+        s.printBuffer(buffer,x,y,height)
+        p.printBuffer(buffer,x,y,height)
+    # buffer = sd.cube(5,35,1222,"+","u",">")
+    # x,y = 0,0
+    # s.printBuffer(buffer,x,y,height)
+    # p.printBuffer(buffer,x,y,height)
+
+    # signature = signstring("cube")
+    # p.printXY(signature, 80-len(signature), height-int(2*12/p.linefeed))
+    # s.printXY(signature, 80-len(signature), height-int(2*12/p.linefeed))
+    s.closefile()
+
+def xorPoints():
+    # thanks @aemkei
+    s.svgfile = 'xorpoints.svg'
+    pages = 10
+    s.openmultipagefile(s.svgfile,pages)
+    p.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    totalheight = height*pages
+    buffer = ""
+    count = 0
+    phone = "+32474436640"
+    for y in range(totalheight):
+        line = ""
+        for x in range(p.columns):
+            count = count + 1
+            if count % 12 == 0:
+                phone = "+324" + str(random.randint(0,9)) + str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))
+            char = "#"
+            # if (x^y)%9:
+            # if (x+y^y)%5:
+                            
+            # if (x+y^y)%3:
+
+            # if (x^y)%7:
+            if (((64+x+y)^(128+x-y))%11) <= 3 :
+            # if (((64+x+y)^(64+x-y))%7) <= 3 :
+
+                char = " "
+                # char = phone[count%12]
+            if x%8 == 0:
+                if char == "#":
+                    char = "#" 
+            line = line + char
+        buffer = buffer + line + "\n"
+    print (buffer)
+
+    s.printBuffer(buffer,0,1,totalheight)
+    p.printBuffer(buffer,0,1,totalheight)
+
+    signature = signstring("xorpoints")
+    p.printXY(signature, 80-len(signature), totalheight-int(2))
+    s.printXY(signature, 80-len(signature), totalheight-int(2))
+    s.closefile()
+
+# def bytebeats():
+
 
 # shapes()
 # eighties()
@@ -1056,7 +1171,7 @@ def datafragments(input, data):
 # linetest()
 # eighty1ties()
 # overlapscape()
-# feedmeweirdtxt()
+feedmeweirdtxt()
 # perspsquares()
 # perspsquares2()
 # intersect()
@@ -1066,10 +1181,12 @@ def datafragments(input, data):
 # circletime()
 # randomCircles(3)
 # noisecircle()
-randomNoiseCircles(3)
+# randomNoiseCircles(3)
 # fillingSquares()
 # datafragments("dddadad", "324")
-
+# anomalybanner()
+# cuber()
+# xorPoints()
 
 # prefilledbuffer = ""
 # for i in range(maxheight):

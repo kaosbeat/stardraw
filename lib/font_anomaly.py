@@ -1,5 +1,9 @@
+import random
+from perlin_noise import PerlinNoise
+import lib.starLC20 as p
+
 font5x7 = {"a":[
-    [0,0,0,0,0]
+    [0,0,0,0,0],
     [0,0,0,0,0],
     [0,1,1,1,0],
     [1,0,0,0,1],
@@ -123,7 +127,7 @@ font5x7 = {"a":[
     [1,0,0,0,1],
     [1,0,0,0,1],
     [1,0,0,0,1],
-    [1,1,1,1,0]
+    [1,1,1,1,0],
     [1,0,0,0,0],
     [1,0,0,0,0]
     ],"q":[
@@ -131,7 +135,7 @@ font5x7 = {"a":[
     [1,0,0,0,1],
     [1,0,0,0,1],
     [1,0,0,0,1],
-    [0,1,1,1,1]
+    [0,1,1,1,1],
     [0,0,0,0,1],
     [0,0,0,0,1]
     ],"r":[
@@ -233,23 +237,17 @@ font5x7 = {"a":[
     ]}
 
 
-def string2buffer(str, pxw, pxh, pw, ph, font):
-    # returns str as a multiline buffer, ready to plot to a page (pw*ph)  # font5x7["a"]
-    s.svgfile = 'fillingsquares.svg'
-    columns = 80
-    height = 69
-    s.openfile(s.svgfile)
-    s.setLineSpace(7)
-    p.setLineSpace(7)
-    x = 6
-    y = 8
-    size = int(columns/(x+1))
-    margin = int((columns - (x*size)) / x)
+def letter2page(letter, dim, margin):
+    # returns str as a multiline buffer, ready to plot to a page (pw*ph)  # font5x7["a"
+
     chars = ["*","X", "#","+", "=", "-", "<", ">" ,".", "*","X", "#","+", "=", "-", "<", ">" ,"."]
     # chars = ["1","2", "3","4", "5", "6", "7", "8" ,"9", "0","a", "b","c", "d", "e", "f", "g" ,"h"]
     count=0 
     buffer = ""
     noise = PerlinNoise()
+    y = dim[1]
+    size = int(p.columns/(dim[0]+1))
+    margin = int((p.columns - (dim[0]*size)) / dim[0])
     for l in range(y):
         # size = 30
         anomalyx = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
@@ -257,10 +255,14 @@ def string2buffer(str, pxw, pxh, pw, ph, font):
         # size = int(columns/(x+1))
         for i in range(size):
             line=""
-            for k in range(x):
+            for k in range(dim[0]):
+                if font5x7[letter][l][k] == 1:
+                    curchar = "#"
+                else:
+                    curchar = "."
                 xstep = 1 / (anomalyy[k]+0.1)
                 noisebuf = int(anomalyx[k] * noise(xstep*i))
-                linebuf = noisebuf*chars[k+l] + (size-noisebuf)*"#"
+                linebuf = noisebuf*chars[k+l] + (size-noisebuf)*curchar
                 if anomalyx[k] < size:
                     anomalyx[k] = anomalyx[k] + 1
                 line = line + linebuf + " "*int(margin) 
@@ -268,13 +270,4 @@ def string2buffer(str, pxw, pxh, pw, ph, font):
         for i in range(margin):
             line =""
             buffer = buffer + line + "\n"
-    print(buffer)
-    s.printBuffer(buffer,0,5,int(height*12/p.linefeed))
-    p.printBuffer(buffer,0,5,int(height*12/p.linefeed))
-
-    signature = signstring("anomaly squares")
-    p.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(2*12/p.linefeed))
-    s.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(2*12/p.linefeed))
-    s.closefile()
-    if tweetit:
-        tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
+    return buffer
