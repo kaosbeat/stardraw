@@ -236,7 +236,7 @@ def someplanets():
 def lotsalines():
     columns = 80
     height = 69
-    s.openfile('stardraw.svg')
+    s.openfile('lotsalines.svg')
 
     # import random.randint as ri
     chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
@@ -1164,14 +1164,14 @@ def xorPoints():
 
 # shapes()
 # eighties()
-# lotsalines()
+lotsalines()
 # squares()
 # someplanets()
 # landscape()
 # linetest()
 # eighty1ties()
 # overlapscape()
-feedmeweirdtxt()
+# feedmeweirdtxt()
 # perspsquares()
 # perspsquares2()
 # intersect()

@@ -62,5 +62,16 @@ def convertSVGtoTweet(svg, tweettext):
     print(image_path, tweet)
     # to attach the media file 
     #status = 
-    api.update_with_media(image_path, tweet)  
+
+    ## deprecated method
+    #api.update_with_media(image_path, tweet)  
     # api.update_status(status = tweet) 
+    ## new method
+    file=open(image_path, 'rb')
+    media_id = api.simple_upload(filename=image_path, file=file)
+    print(media_id)
+    #https://docs.tweepy.org/en/v4.0.0/api.html#tweepy.API.simple_upload
+    api.update_status(tweet, media_ids=[media_id.media_id_string])
+    #https://stackoverflow.com/questions/37050450/tweepy-python-library-media-ids-parameter-is-invalid-and-tweet-must-not-have
+    
+    
