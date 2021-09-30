@@ -12,7 +12,7 @@ from pyfiglet import Figlet
 
 printit = False
 tweetit = True
-tweetit = False
+# tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -46,10 +46,10 @@ def strategies():
     for i in range(80):
         # print(strategies[i%len(strategies)])
         strategie = strategies[random.randint(0,len(strategies))-1]
-        if printit:
-            p.printXY(strategie, i%10, i)
-        if svg:
-            s.printXY(strategie, i%10, i)
+        # if printit:
+        p.printXY(strategie, i%10, i)
+        # if svg:
+        s.printXY(strategie, i%10, i)
     s.closefile()
     # tweet.convertSVGtoTweet(s.svgfile, "strategies")
 
@@ -506,8 +506,8 @@ def feedmeweirdtxt():
     # p.setLineSpace(density)
     # s.setLineSpace(density) 
 
-    pages =20
-    density = 2
+    pages=10
+    density = 3
     s.openmultipagefile(s.svgfile,pages)
     p.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
     s.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
@@ -524,7 +524,7 @@ def feedmeweirdtxt():
     cols = []
     colssentence = "I wish I had duck feet, so I could swim like a pro"
     colssentence = "your data is being used against you, encrypt or be exploited"
-    colssentence = "No, I have no facebook, but I'm following you anyway. Here's friend request"
+    colssentence = "No, I have no facebook, following you anyway. Didn't you get my friend request"
 
 
     for c in colssentence:
@@ -558,7 +558,7 @@ def feedmeweirdtxt():
                 else:
                     line = line + cols[col]
         print (line)
-
+        p.printXY(line,0,row)
         s.printXY(line,0,row)
     print(xcounter)
     s.closefile() 
@@ -1064,21 +1064,23 @@ def datafragments(input, data):
 
 def anomalybanner():
     s.svgfile = 'anomalyletters.svg'
-    pages = 10
+    words = "No, I have no Facebook!"
+    pages = len(words)
     s.openmultipagefile(s.svgfile,pages)
-    p.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
-    s.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    density = 6
+    p.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
     height = int(p.pageheight*12/p.linefeed)
     totalheight = height*pages
     x = 5
     y = 7
     size = int(p.columns/(x+1))
     margin = int((p.columns - (x*size)) / x)
-    for i,l in enumerate("testing"):
+    for i,l in enumerate(words):
         buffer = fa.letter2page(l, (x,y), margin)
         # print(buffer)
-        s.printBuffer(buffer,0,(height*i)+5,totalheight)
-        p.printBuffer(buffer,0,(height*i)+5,totalheight)
+        s.printBuffer(buffer,0,(height*i)+15,totalheight)
+        p.printBuffer(buffer,0,(height*i)+15,totalheight)
 
     signature = signstring("anomaly squares")
     p.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed))
@@ -1134,12 +1136,12 @@ def xorPoints():
                 phone = "+324" + str(random.randint(0,9)) + str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))
             char = "#"
             # if (x^y)%9:
-            # if (x+y^y)%5:
+            if (x+y^y)%5:
                             
             # if (x+y^y)%3:
 
             # if (x^y)%7:
-            if (((64+x+y)^(128+x-y))%11) <= 3 :
+            # if (((64+x+y)^(128+x-y))%11) <= 3 :
             # if (((64+x+y)^(64+x-y))%7) <= 3 :
 
                 char = " "
@@ -1155,16 +1157,16 @@ def xorPoints():
     p.printBuffer(buffer,0,1,totalheight)
 
     signature = signstring("xorpoints")
-    p.printXY(signature, 80-len(signature), totalheight-int(2))
-    s.printXY(signature, 80-len(signature), totalheight-int(2))
+    p.printXY(signature, 80-len(signature), totalheight+int(2))
+    s.printXY(signature, 80-len(signature), totalheight+int(2))
     s.closefile()
 
 # def bytebeats():
 
-
+# strategies()
 # shapes()
 # eighties()
-lotsalines()
+# lotsalines()
 # squares()
 # someplanets()
 # landscape()
@@ -1186,7 +1188,7 @@ lotsalines()
 # datafragments("dddadad", "324")
 # anomalybanner()
 # cuber()
-# xorPoints()
+xorPoints()
 
 # prefilledbuffer = ""
 # for i in range(maxheight):
