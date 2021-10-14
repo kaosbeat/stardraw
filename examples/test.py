@@ -11,8 +11,8 @@ import lib.font_anomaly as fa
 from pyfiglet import Figlet
 
 printit = False
-tweetit = True
-# tweetit = False
+# tweetit = True
+tweetit = False
 svg = True
 sign = True
 title = "starLC20"
@@ -1127,7 +1127,7 @@ def xorPoints():
     totalheight = height*pages
     buffer = ""
     count = 0
-    phone = "+32474436640"
+    phone = "+32"
     for y in range(totalheight):
         line = ""
         for x in range(p.columns):
@@ -1161,6 +1161,56 @@ def xorPoints():
     s.printXY(signature, 80-len(signature), totalheight+int(2))
     s.closefile()
 
+
+
+def xorPointsReturn(xorsize):
+    totalheight = xorsize[1]
+    buffer = ""
+    count = 0
+    for y in range(totalheight):
+        line = ""
+        for x in range(xorsize[0]):
+            count = count + 1
+            char = "#"
+            # if (x^y)%9:
+            # if (x+y^y)%5:
+                            
+            # if (x+y^y)%3:
+
+            # if (x^y)%7:
+            # if (((64+x+y)^(128+x-y))%11) <= 3 :
+            if (((64+x+y)^(64+x-y))%7) <= 3 :
+
+                char = " "
+                # char = phone[count%12]
+            if x%8 == 0:
+                if char == "#":
+                    char = "#" 
+            line = line + char
+        buffer = buffer + line + "\n"
+    print (buffer)
+    return buffer
+
+def xorfield():
+    #prints a field of XORpoints, 1 per page
+    xorPointsReturn((128,128))
+
+
+def stripessquares():
+    s.svgfile = 'cube.svg'
+    s.openfile(s.svgfile)
+    p.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    sqh = 20 #squareheight
+    sqw = 25 #sqwidth 
+    sqm = 3 #squaremargin
+    buffer = ""
+    notfilled = True
+    while notfilled == True:
+
+
+
 # def bytebeats():
 
 # strategies()
@@ -1188,8 +1238,8 @@ def xorPoints():
 # datafragments("dddadad", "324")
 # anomalybanner()
 # cuber()
-xorPoints()
-
+# xorPoints()
+xorfield()
 # prefilledbuffer = ""
 # for i in range(maxheight):
 #     prefilledbuffer = prefilledbuffer + columns * " " + "\n"
