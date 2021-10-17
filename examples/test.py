@@ -8,10 +8,11 @@ import datetime
 import lib.starDraw as sd
 import lib.tweetprint as tweet
 import lib.font_anomaly as fa
-from pyfiglet import Figlet
+import lib.recaptcha as rc
+from pyfiglet import Figlet, figlet_format
 
 printit = False
-# tweetit = True
+tweetit = True
 tweetit = False
 svg = True
 sign = True
@@ -617,19 +618,22 @@ def perspsquares():
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "testing squares")
 
-def perspsquares2():
+def perspsquares2(flip, flipV):
     s.svgfile = 'perspsquares.svg'
-    columns = 80
-    height = 69
+    # columns = 80
+    # height = 69
     s.openfile(s.svgfile)
     chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
     # chars= ["o"]
     density = 8
+    # p.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
+    # s.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
     p.setLineSpace(density)
     s.setLineSpace(density)
-    height = int(height*12/density)
-    # flip = True
-    flip = False
+    height = int(p.pageheight*12/density) - 2
+    print ("height = " , height)
+    # # flip = True
+    # flip = False
     for k in range(2):
         sx = 1 + k
         sy =  1 + k
@@ -653,14 +657,23 @@ def perspsquares2():
                             if flip:
                                 l = l[:80]
                                 l = "{:<80}".format(l)[::-1]
-                            s.printXY(l, 0, i)
-                            p.printXY(l, 0, i)
+                            if flipV:
+                                v = height - i
+                            else:
+                                v = i 
+                            s.printXY(l, 0, v)
+                            p.printXY(l, 0, v)
     signature = signstring("squares")
-    p.printXY(signature, 80-len(signature), int(height))
-    s.printXY(signature, 80-len(signature), int(height))
-    s.closefile()
+    if (flip and flipV) or (not flip and not flipV):
+        sigX = 0    
+    else:
+        sigX = 80-len(signature)
+    p.printXY(signature, sigX, int(height))
+    s.printXY(signature, sigX, int(height))
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "looking for perspective")
+    s.closefile()
+
 
 
 def intersect():
@@ -823,7 +836,7 @@ def circletime():
     s.svgfile = 'circles.svg'
     columns = 80
     # pageheight = 69 # height at density 12
-    s.openfile(s.svgfile) 
+    s.openfile(s.svgfile)
     # print (p.linefeed)
     circleradius = 16
     #16 # 4.233 mm
@@ -1030,9 +1043,10 @@ def fillingSquares():
     signature = signstring("anomaly squares")
     p.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(2*12/p.linefeed))
     s.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(2*12/p.linefeed))
-    s.closefile()
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
+    s.closefile()
+
 
 
 
@@ -1064,7 +1078,8 @@ def datafragments(input, data):
 
 def anomalybanner():
     s.svgfile = 'anomalyletters.svg'
-    words = "No, I have no Facebook!"
+    # words = "No, I have no Facebook!"
+    words = "data communism"
     pages = len(words)
     s.openmultipagefile(s.svgfile,pages)
     density = 6
@@ -1089,6 +1104,7 @@ def anomalybanner():
 
 
 def cuber():
+    # prints a full page when p.pageheight = 68
     s.svgfile = 'cube.svg'
     s.openfile(s.svgfile)
     p.setNewDensityAndGotoTop(7, p.pageheight, p.linefeed)
@@ -1099,10 +1115,17 @@ def cuber():
     charset2 = ["Y","#", "%", "&", "^", "!", "}" ]
     charset3 = [")","`", "'", ".", "@", "*", "{" ]
 
+    recaptchatitle = rc.recaptcha[1]['words'][random.randint(0,len(rc.recaptcha[1]['words'])-1)]
+    f = Figlet(font='standard')
+    # print (f.renderText('FACEBOOK SUCKS'))
+    buffer = f.renderText(recaptchatitle)
+    s.printBuffer(buffer,2,1,height)
+    p.printBuffer(buffer,2,1,height)
+
 
     for c in range(5):
         w,h,d = random.randint(3,25), random.randint(3,25), random.randint(3,25)
-        x,y = random.randint(0,45),random.randint(0,55)
+        x,y = random.randint(0,45),random.randint(15,55)
         buffer = sd.cube(w,h,d,charset1[random.randint(0,len(charset1)-1)],charset2[random.randint(0,len(charset2)-1)],charset3[random.randint(0,len(charset3)-1)])
         s.printBuffer(buffer,x,y,height)
         p.printBuffer(buffer,x,y,height)
@@ -1111,9 +1134,14 @@ def cuber():
     # s.printBuffer(buffer,x,y,height)
     # p.printBuffer(buffer,x,y,height)
 
-    # signature = signstring("cube")
-    # p.printXY(signature, 80-len(signature), height-int(2*12/p.linefeed))
-    # s.printXY(signature, 80-len(signature), height-int(2*12/p.linefeed))
+    signature = signstring("cube")
+    p.printXY(signature, 80-len(signature), height-int(2*12/p.linefeed))
+    s.printXY(signature, 80-len(signature), height-int(2*12/p.linefeed))
+    # p.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    # s.setNewDensityAndGotoTop(12, p.pageheight, p.linefeed)
+    p.lf()
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "recaptcha cubes")
     s.closefile()
 
 def xorPoints():
@@ -1207,7 +1235,7 @@ def stripessquares():
     sqm = 3 #squaremargin
     buffer = ""
     notfilled = True
-    while notfilled == True:
+    # while notfilled == True:
 
 
 
@@ -1225,11 +1253,11 @@ def stripessquares():
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
-# perspsquares2()
+perspsquares2(False, True)
 # intersect()
 # intersect2()
 # overlapstudy()
-# interferencepatterns()
+# interference1patterns()
 # circletime()
 # randomCircles(3)
 # noisecircle()
@@ -1239,12 +1267,12 @@ def stripessquares():
 # anomalybanner()
 # cuber()
 # xorPoints()
-xorfield()
+# xorfield()
 # prefilledbuffer = ""
 # for i in range(maxheight):
 #     prefilledbuffer = prefilledbuffer + columns * " " + "\n"
 
-
+# p.nextTop()
 
 
 

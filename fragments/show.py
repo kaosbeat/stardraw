@@ -25,8 +25,8 @@ data = list(cur)
 
 # listen to MIDI from AXO
 print(mido.get_input_names())
-# inport = mido.open_input('Axoloti Core:Axoloti Core MIDI 1 20:0')
-inport = mido.open_input('Pure Data:Pure Data Midi-Out 1 128:1')
+inport = mido.open_input('Axoloti Core:Axoloti Core MIDI 1 24:0')
+#inport = mido.open_input('Pure Data:Pure Data Midi-Out 1 128:1')
 
 def putPersonInTable():
     #print random persons name from the data in a hokje
