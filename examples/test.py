@@ -626,10 +626,10 @@ def perspsquares2(flip, flipV):
     chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
     # chars= ["o"]
     density = 8
-    # p.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
-    # s.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
-    p.setLineSpace(density)
-    s.setLineSpace(density)
+    p.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
+    # p.setLineSpace(density)
+    # s.setLineSpace(density)
     height = int(p.pageheight*12/density) - 2
     print ("height = " , height)
     # # flip = True
@@ -1253,7 +1253,7 @@ def stripessquares():
 # overlapscape()
 # feedmeweirdtxt()
 # perspsquares()
-perspsquares2(False, True)
+# perspsquares2(True, True)
 # intersect()
 # intersect2()
 # overlapstudy()
@@ -1302,3 +1302,8 @@ def testTop():
     p.printXY("line 2", 30,2)
     p.printXY("line 3", 30,3)
 
+
+# testTop()
+def testLinefeed():
+    p.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(8, p.pageheight, p.linefeed)
