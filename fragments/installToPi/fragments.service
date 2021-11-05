@@ -1,0 +1,14 @@
+[Unit]
+Description="fragments print and audio service"
+
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+PrivateTmp=true
+WorkingDirectory=/home/pi/stardraw/fragments
+Environment=""
+User=pi
+ExecStart=python3 show.py
