@@ -1164,12 +1164,12 @@ def xorPoints():
                 phone = "+324" + str(random.randint(0,9)) + str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))+ str(random.randint(0,9))
             char = "#"
             # if (x^y)%9:
-            if (x+y^y)%5:
+            # if (x+y^y)%5:
                             
             # if (x+y^y)%3:
 
             # if (x^y)%7:
-            # if (((64+x+y)^(128+x-y))%11) <= 3 :
+            if (((64+x+y)^(128+x-y))%11) <= 3 :
             # if (((64+x+y)^(64+x-y))%7) <= 3 :
 
                 char = " "
@@ -1266,7 +1266,7 @@ def stripessquares():
 # datafragments("dddadad", "324")
 # anomalybanner()
 # cuber()
-# xorPoints()
+xorPoints()
 # xorfield()
 # prefilledbuffer = ""
 # for i in range(maxheight):

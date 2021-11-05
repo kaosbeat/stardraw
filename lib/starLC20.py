@@ -18,7 +18,7 @@ columns = 80
 basefontsize = 16 # 4.233 mm or 1.666 inch  or 120/7.5
 linefeed = 16 # setLineSpace(120/7.5)  120 matches default 16
 fontproportion = 0.6 #calculated from rules measurements
-pageheight = 68 # pageheight at linefeed 16  # 68 works IF pagetop is at printhead
+pageheight = 69 # pageheight at linefeed 16  # 68 works IF pagetop is at printhead
 
 cursorX = 0
 cursorY = 0
@@ -163,7 +163,7 @@ def printstuff(stuff):
 def printBuffer(buffer,x,y,maxheight):
     # print a multiline buffer  
     for i,l in enumerate(buffer.splitlines()):
-        if (i<=maxheight-1-y):
+        if (i<=maxheight-y):
             if (l != ""): # don't print empty lines, it's time consuming
                 printXY(l, x, i+y)
 
