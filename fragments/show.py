@@ -170,23 +170,26 @@ def imnotarobot(blah):
 global printing
 printing = False
 
-imnotarobot("blah")
-rt = RepeatedTimer(500, imnotarobot, "World") # it auto-starts, no need of rt.start()
+# imnotarobot("blah")
+# rt = RepeatedTimer(500, imnotarobot, "World") # it auto-starts, no need of rt.start()
 
-def app():
-    global printing
-    try:
-        while True:
-            pass
-            time.sleep(5)
-            print ("this ir sunning from the main")
-            # putPersonInTable()
-    except KeyboardInterrupt:
-        pass    
+# def app():
+#     global printing
+#     try:
+#         while True:
+#             pass
+#             time.sleep(5)
+#             print ("this ir sunning from the main")
+#             # putPersonInTable()
+#     except KeyboardInterrupt:
+#         pass    
 
 
 # inport.callback = midiparse
-app()
+# app()
+
+
+printbanner()
 
 
 

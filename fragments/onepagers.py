@@ -61,9 +61,9 @@ def cuber():
 ####
     
 def printbanner():
-    rev = True
+    rev = False
     mirror = False
-    relationshipstatusses = [" In a relationship",  " It\'s complicated", " Divorced", " Engaged", " Widowed", " Single", " Married", ""] 
+    relationshipstatusses = ["In a relationship ",  "It\'s complicated ", "Divorced ", "Engaged ", " Widowed ", "Single ", "Married ", ""] 
     zone = random.randint(0,6)
     rs = relationshipstatusses[zone]
     fap.getnewList(zone)
@@ -101,11 +101,10 @@ def printbanner():
         p.printBuffer(buffer,0,(height*i)+15,totalheight)
         s.printBuffer(buffer,0,(height*i)+15,totalheight)
 
-    signature = signstring("anomaly squares")
-    p.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed))
-    s.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed))
+    signature = signstring("data anomaly squares - " + rs)
+    p.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed)+ 10)
+    s.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed)+ 10)
     s.closefile()
-
 
 
 

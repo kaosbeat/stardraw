@@ -721,7 +721,7 @@ def intersect():
 
  
 def intersect2():
-    s.svgfile = 'intersect2.svg'
+    s.svgfile = 'intersect'+str(cutpos)+'.svg'
     columns = 80
     height = 69
     s.openfile(s.svgfile)
@@ -757,6 +757,82 @@ def intersect2():
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "intersections")
 
+
+def intersect3(cutpos, pb1, pb2, height):
+    # buffersvg = s.currentdwg
+    svggroup = s.currentdwg.add(s.currentdwg.g(id="intersect"+str(cutpos), class_="intersector"))
+    # s.currentdwg = svggroup
+    mb = sd.mergeBuffers(pb1, pb2, cutpos )
+    s.printBufferToGroup(mb, 0, 0, height, svggroup)
+    signature = signstring("intersect study")
+    s.printXYtoGroup(signature, 80-len(signature), int(height),svggroup)
+    # s.currentdwg = buffersvg
+
+
+####intersect3
+columns = 80
+height = 69
+charlist1 = ["O","|","-","+","/"]
+charlist2 = ['!','#','%','^', '&', '}', "o", ">", "~"]
+ra = random.randint(3,8)
+b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, charlist1[random.randint(0,len(charlist1)-1)])
+# print(b1)
+pb1 = sd.padMidMax(b1,columns,height)
+# print(pb1)
+b2w = random.randint(6,35)
+b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), charlist2[random.randint(0,len(charlist2)-1)])
+pb2 = sd.padMidMax(b2,columns,height)
+
+b2start = int((columns - b2w)/2 )
+# s.svgfile = 'intersect'+str(cutpos)+'.svg'
+s.svgfile = 'intersectmulti.svg'
+s.openfile(s.svgfile)
+for x in range(10,70):
+    intersect3(x, pb1, pb2, height)
+
+jsscript = '''
+
+    startframe = 10;
+    endframe = 69;
+    var frame = startframe;
+    var framemult = 1;
+    var framecounter = 0;
+    var scrollspeed = 1;
+    function animate() {
+        if (framecounter%scrollspeed == 0) {
+            var hideElements = document.getElementsByClassName("intersector");
+            for(var counter = 0; counter < hideElements.length; counter++){
+                hideElements[counter].setAttribute("visibility", "hidden");
+            }
+            showframe = document.getElementById("intersect" + String(frame));
+            showframe.setAttribute("visibility", "visible");
+            
+            if (frame >= endframe){
+                framemult = -1;
+            } else if (frame <= startframe) {
+                framemult = 1;
+            } 
+            if (frame > 35 && frame < 45 ) {
+                scrollspeed = 10;
+                console.log("changing scrollspeed");
+            }
+            else {
+                scrollspeed = 1;
+                console.log("changing scrollspeed again");
+            }
+            frame = frame + framemult;
+        // console.log(frame);
+        }
+        framecounter = framecounter +1;
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+
+'''
+svgscript = s.currentdwg.add(s.currentdwg.script(href=None,  type="text/javascript"))
+svgscript.append(jsscript)
+s.closefile()
 
 def overlapstudy():
     s.svgfile = 'overlapstudy.svg'
@@ -1266,7 +1342,7 @@ def stripessquares():
 # datafragments("dddadad", "324")
 # anomalybanner()
 # cuber()
-xorPoints()
+# xorPoints()
 # xorfield()
 # prefilledbuffer = ""
 # for i in range(maxheight):

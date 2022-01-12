@@ -82,6 +82,31 @@ def printXY(string,x,y):
     svg.add(currentdwg.text(string, insert=(fontproportion*basefontsize*x,lineCursorY)))  #  n * 7.5 >>> from linefeed units to px
     lf()
 
+###for printing to specific group
+def printXYtoGroup(string,x,y, svggroup):
+    global cursorY
+    if (len(string) + x > 80):
+        if warnings:
+            print("WARNING LINE WILL WRAP ON PRINTER!!!!")
+            print("CUTTING LINE TO PREVENT WRAP")
+            print("Line =" , str(len(string) + x) )
+        string = string[0:80-x]
+    if (y > cursorY):
+        # print ("emu advancing ", y - cursorY) 
+        for i in range(y-cursorY):
+            lf()
+    if (y < cursorY):
+        # print ("emu reversing ", cursorY - y) 
+        for i in range(cursorY-y):
+            rlf()
+    if (y == cursorY):
+        # print ("emu not advancing")
+        pass
+    
+    svg = svggroup.add(currentdwg.g(id="txt", class_="txt", style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
+    svg.add(currentdwg.text(string, insert=(fontproportion*basefontsize*x,lineCursorY)))  #  n * 7.5 >>> from linefeed units to px
+    lf()
+
 def setLineSpace(n):
     # sets the distance the paper advances or reverses in subsequent linefeeds to n/72 inch, where n is between O and 255..  ## 0.35 * 12
     global linefeed
@@ -118,6 +143,14 @@ def printBuffer(buffer,x,y,maxheight):
         if (i<=maxheight-1-y):
             if (l != ""): # don't print empty lines, it's time consuming
                 printXY(l, x, i+y)
+
+### for printing to specific SVGgroup
+def printBufferToGroup(buffer,x,y,maxheight,svggroup):
+    # print a multiline buffer  
+    for i,l in enumerate(buffer.splitlines()):
+        if (i<=maxheight-1-y):
+            if (l != ""): # don't print empty lines, it's time consuming
+                printXYtoGroup(l, x, i+y, svggroup)
 
 def debugCircle(x,y,r):
     global currentdwg
