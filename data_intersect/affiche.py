@@ -16,7 +16,7 @@ import db
 from pyfiglet import Figlet
 
 
-printit = False
+printit = True
 tweetit = True
 tweetit = False
 svg = True
