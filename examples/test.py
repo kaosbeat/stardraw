@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+# from numpy import convolve  
 import lib.starLC20 as p
 import lib.staremulator as s
 import random
@@ -721,9 +722,12 @@ def intersect():
 
  
 def intersect2():
-    s.svgfile = 'intersect'+str(cutpos)+'.svg'
+    # global columns
     columns = 80
     height = 69
+    cutpos = int(columns/2)
+    s.svgfile = 'intersect'+str(cutpos)+'.svg'
+
     s.openfile(s.svgfile)
     # bufferlist=[]
     charlist1 = ["O","|","-","+","/"]
@@ -768,71 +772,76 @@ def intersect3(cutpos, pb1, pb2, height):
     s.printXYtoGroup(signature, 80-len(signature), int(height),svggroup)
     # s.currentdwg = buffersvg
 
+def intersect3b():
 
-####intersect3
-columns = 80
-height = 69
-charlist1 = ["O","|","-","+","/"]
-charlist2 = ['!','#','%','^', '&', '}', "o", ">", "~"]
-ra = random.randint(3,8)
-b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, charlist1[random.randint(0,len(charlist1)-1)])
-# print(b1)
-pb1 = sd.padMidMax(b1,columns,height)
-# print(pb1)
-b2w = random.randint(6,35)
-b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), charlist2[random.randint(0,len(charlist2)-1)])
-pb2 = sd.padMidMax(b2,columns,height)
+    ####intersect3
+    columns = 80
+    height = 69
+    charlist1 = ["O","|","-","+","/"]
+    charlist2 = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    ra = random.randint(3,8)
+    b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, charlist1[random.randint(0,len(charlist1)-1)])
+    # print(b1)
+    pb1 = sd.padMidMax(b1,columns,height)
+    # print(pb1)
+    b2w = random.randint(6,35)
+    b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), charlist2[random.randint(0,len(charlist2)-1)])
+    pb2 = sd.padMidMax(b2,columns,height)
 
-b2start = int((columns - b2w)/2 )
-# s.svgfile = 'intersect'+str(cutpos)+'.svg'
-s.svgfile = 'intersectmulti.svg'
-s.openfile(s.svgfile)
-for x in range(10,70):
-    intersect3(x, pb1, pb2, height)
+    b2start = int((columns - b2w)/2 )
+    # s.svgfile = 'intersect'+str(cutpos)+'.svg'
+    s.svgfile = 'intersectmulti.svg'
+    s.openfile(s.svgfile)
+    for x in range(10,70):
+        intersect3(x, pb1, pb2, height)
 
-jsscript = '''
+    jsscript = '''
 
-    startframe = 10;
-    endframe = 69;
-    var frame = startframe;
-    var framemult = 1;
-    var framecounter = 0;
-    var scrollspeed = 1;
-    function animate() {
-        if (framecounter%scrollspeed == 0) {
-            var hideElements = document.getElementsByClassName("intersector");
-            for(var counter = 0; counter < hideElements.length; counter++){
-                hideElements[counter].setAttribute("visibility", "hidden");
+        startframe = 10;
+        endframe = 69;
+        var frame = startframe;
+        var framemult = 1;
+        var framecounter = 0;
+        var scrollspeed = 1;
+        var page = document.getElementsByClassName("svgpage");
+        page[0].setAttribute("ViewBox", "20 20 800 1140");
+        page[0].setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+        function animate() {
+            if (framecounter%scrollspeed == 0) {
+                var hideElements = document.getElementsByClassName("intersector");
+                for(var counter = 0; counter < hideElements.length; counter++){
+                    hideElements[counter].setAttribute("visibility", "hidden");
+                }
+                showframe = document.getElementById("intersect" + String(frame));
+                showframe.setAttribute("visibility", "visible");
+                
+                if (frame >= endframe){
+                    framemult = -1;
+                } else if (frame <= startframe) {
+                    framemult = 1;
+                } 
+                if (frame > 35 && frame < 45 ) {
+                    scrollspeed = 10;
+                    // console.log("changing scrollspeed");
+                }
+                else {
+                    scrollspeed = 1;
+                    // console.log("changing scrollspeed again");
+                }
+                frame = frame + framemult;
+            // console.log(frame);
             }
-            showframe = document.getElementById("intersect" + String(frame));
-            showframe.setAttribute("visibility", "visible");
-            
-            if (frame >= endframe){
-                framemult = -1;
-            } else if (frame <= startframe) {
-                framemult = 1;
-            } 
-            if (frame > 35 && frame < 45 ) {
-                scrollspeed = 10;
-                console.log("changing scrollspeed");
-            }
-            else {
-                scrollspeed = 1;
-                console.log("changing scrollspeed again");
-            }
-            frame = frame + framemult;
-        // console.log(frame);
+            framecounter = framecounter +1;
+            requestAnimationFrame(animate);
         }
-        framecounter = framecounter +1;
+
         requestAnimationFrame(animate);
-    }
 
-    requestAnimationFrame(animate);
-
-'''
-svgscript = s.currentdwg.add(s.currentdwg.script(href=None,  type="text/javascript"))
-svgscript.append(jsscript)
-s.closefile()
+    '''
+    svgscript = s.currentdwg.add(s.currentdwg.script(href=None,  type="text/javascript"))
+    svgscript.append(jsscript)
+    s.closefile()
 
 def overlapstudy():
     s.svgfile = 'overlapstudy.svg'
@@ -997,7 +1006,27 @@ def randomCircles(times):
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "circle study")
 
-def noisecircle(circleradius, x, y, density, noisechar, circlechar, octaves, seed):
+def noisecircle(circleradius="", x="", y="", density="", noisechar="", circlechar="", octaves="", seed=""):
+    chars = ['!','#','%','^', '&', '}']
+    nchars = ["o", ">", "~", "X", "K", "S", "?"]
+    print("nchars= ", len(nchars))
+    if circlechar ==  "":
+        circlechar = chars[random.randint(0,len(chars)-2)]
+    if noisechar == "":
+        noisechar = chars[random.randint(0,len(nchars)-2)]
+    # noiseoctaves = random.randint(1,10)
+    if circleradius == "":
+        circleradius = random.randint(12,40)
+    if x =="":
+        x = random.randint(0,35)
+    if y == "":
+        y = random.randint(0,50)
+    if density == "":
+        density = random.randint(6,16)
+    if octaves == "":
+        octaves = random.randint(1,10)
+    if seed == "":
+        seed = random.randint(0,5000)
     # s.svgfile = 'noisecircles.svg'
     # columns = 80
     # height = p.pageheight
@@ -1053,8 +1082,8 @@ def randomNoiseCircles(times):
     for x in range(times):
         chars = ['!','#','%','^', '&', '}']
         nchars = [ "o", ">", "~", "X", "K", "S", "?"]
-        circlechar = chars[random.randint(0,len(chars)-1)]
-        noisechar = chars[random.randint(0,len(nchars)-1)]
+        circlechar = chars[random.randint(0,len(chars)-2)]
+        noisechar = chars[random.randint(0,len(nchars)-2)]
         noiseoctaves = random.randint(1,10)
         circleradius = random.randint(12,40)
         x = random.randint(0,35)
@@ -1330,10 +1359,10 @@ def stripessquares():
 # feedmeweirdtxt()
 # perspsquares()
 # perspsquares2(True, True)
-# intersect()
+intersect()
 # intersect2()
 # overlapstudy()
-# interference1patterns()
+# interferencepatterns()
 # circletime()
 # randomCircles(3)
 # noisecircle()
@@ -1343,7 +1372,7 @@ def stripessquares():
 # anomalybanner()
 # cuber()
 # xorPoints()
-# xorfield()
+xorfield()
 # prefilledbuffer = ""
 # for i in range(maxheight):
 #     prefilledbuffer = prefilledbuffer + columns * " " + "\n"

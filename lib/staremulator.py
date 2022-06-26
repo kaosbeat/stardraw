@@ -18,7 +18,7 @@ def openfile(filename):
     global svgfile
     global currentdwg
     svgfile = filename
-    currentdwg = svgwrite.Drawing(filename, size=("210mm","297mm"), profile='full')
+    currentdwg = svgwrite.Drawing(filename, size=("210mm","297mm"), profile='full', class_='svgpage')
     currentdwg.defs.add(currentdwg.style('svg {background-color: white;'))
     currentdwg.defs.add(currentdwg.style('.txt {white-space: pre; }'))
     currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm","297mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')
@@ -31,7 +31,7 @@ def openmultipagefile(filename, pages):
     global currentdwg
     svgfile = filename
     length = str(297*pages)
-    currentdwg = svgwrite.Drawing(filename, size=("210mm",length+"mm"), profile='full')
+    currentdwg = svgwrite.Drawing(filename, size=("210mm",length+"mm"), profile='full', class_='svgpage multi')
     currentdwg.defs.add(currentdwg.style('svg {background-color: white;'))
     currentdwg.defs.add(currentdwg.style('.txt {white-space: pre; }'))
     currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm",length+"mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')

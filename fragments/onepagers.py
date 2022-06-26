@@ -14,6 +14,10 @@ import lib.font_anomaly as fa
 import lib.font_anomaly_phone as fap
 from pyfiglet import Figlet
 
+def signstring(title):
+    string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+    string = "kaotec []<> " + title + " " + string
+    return string
 
 ## all functions bvelow should print a onepager
 
@@ -106,6 +110,54 @@ def printbanner():
     s.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed)+ 10)
     s.closefile()
 
+def nameiter():
+    return iter(fap.getNextDiscordname())
+
+
+def printVersumBanner():
+    rev = False
+    mirror = False
+    rs = "m__m"
+    words = rs
+    # words = "tE"
+    print(rs)
+    s.svgfile = 'm__mbanner.svg'
+    # # words = "No, I have no Facebook!"
+    # wordlist=["your data", "data communism", "data capitalism", "algorithmic happiness"]
+    # words = "data communism"
+    if rev:
+        words = words[::-1]
+    print(words)
+    pages = len(words)
+    s.openmultipagefile(s.svgfile,pages)
+    density = 7
+    p.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    s.setNewDensityAndGotoTop(density, p.pageheight, p.linefeed)
+    height = int(p.pageheight*12/p.linefeed)
+    totalheight = height*pages
+    x = 5
+    y = 7
+    size = int(p.columns/(x+1))
+    margin = int((p.columns - (x*size)) / x)
+    for i,l in enumerate(words):
+        buffer = fap.letter2page4versum(l, (x,y), margin, True, nameiter)
+        if rev:
+            revbuffer = ""
+            for line in reversed(buffer.splitlines()):
+                if mirror:
+                    line = line[::-1]
+                revbuffer = revbuffer + line + "\n"
+            buffer = revbuffer
+        p.printBuffer(buffer,0,(height*i)+15,totalheight)
+        s.printBuffer(buffer,0,(height*i)+15,totalheight)
+
+    signature = signstring("data anomaly squares - " + rs)
+    p.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed)+ 10)
+    s.printXY(signature, 80-len(signature), totalheight-int(2*12/p.linefeed)+ 10)
+    s.closefile()
+
+printVersumBanner()
+
 
 
 #############################################
@@ -146,10 +198,6 @@ phone = '''
            +_________________+
 '''
 
-def signstring(title):
-    string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-    string = "kaotec []<> " + title + " " + string
-    return string
 
 def captcha():
     p.setNewDensityAndGotoTop(10, p.pageheight, p.linefeed)

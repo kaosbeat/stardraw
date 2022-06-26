@@ -4,7 +4,7 @@ from lib.starDraw import cube
 import lib.starLC20 as p
 import lib.staremulator as s
 import random
-from onepagers import cuber, printbanner
+from onepagers import cuber, printbanner, printVersumBanner
 import time
 import mido
 import sqlite3
@@ -189,7 +189,7 @@ printing = False
 # app()
 
 
-printbanner()
+printVersumBanner()
 
 
 

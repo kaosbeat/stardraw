@@ -229,6 +229,36 @@ def parallelogram(height, width, dirchange, char):
             buffer = buffer + line + "\n"
     return buffer
 
+def parallelogram_charlist(height, width, dirchange, charlist):
+    # parallelogram is (int(width/dirchange)+height high and width wide)
+    buffer = ""
+    h = height
+    realheight = int(width/dirchange)+height
+    a = dirchange
+    b = width
+    # if realheight*width > len(charlist):
+    #     charlist = (realheight*width / len(charlist))*charlist
+    line =""
+    if a == 0:
+        r = h
+        a = width
+    else:
+        r = int(b/a)+h+1
+    for y in range(r):
+        # print("y =", y)
+        if (y > h):
+            line = " "*a + line
+        elif len(line) < b:
+            for c in range(a):
+                line = line + charlist.pop()
+        # line = line[:b-1]
+        if not line.isspace():
+            buffer = buffer + line + "\n"
+        line = ""
+    return buffer
+
+
+
 
 def circle(radius, basefontsize, linefeed, char):
     #density is current linefeed density >> n/72inch,

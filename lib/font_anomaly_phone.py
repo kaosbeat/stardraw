@@ -7,7 +7,7 @@ import sqlite3
 # showtime
 
 
-con=sqlite3.connect('Belgium14.sqlite')
+con=sqlite3.connect('data/Belgium14.sqlite')
 cur = con.cursor()
 # cur.execute( 'SELECT * FROM db_sanitized14 WHERE relationshipstatus = "It\'s complicated"')
 # cur.execute( 'SELECT relationshipstatus FROM db_sanitized14 WHERE relationshipstatus != ""' )
@@ -563,6 +563,14 @@ font5x7 = {
     [0,0,1,1,0],
     [0,0,0,1,0],
     [0,0,1,0,0]
+    ],"_":[
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [1,1,1,1,1]
     ],"'":[
     [0,0,1,0,0],
     [0,0,1,0,0],
@@ -574,7 +582,7 @@ font5x7 = {
     ]
     }
 
-charlist = [" ", ",", "!", "'",
+charlist = ["_"," ", ",", "!", "'","0","1","2","3","4","5","6","7","8","9",
             "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
             "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 
@@ -582,6 +590,17 @@ charlist = [" ", ",", "!", "'",
 def getNextname():
     global data
     return data[random.randint(0,len(data)-1)][0]
+
+from data.discordusers import dusers 
+namelist = dusers
+
+
+def getNextDiscordname():
+    global namelist
+    name = namelist[random.randint(0,len(namelist)-1)]
+    print (name)
+    # return namelist[random.randint(0,len(namelist)-1)][0]
+    return name
 
 
 def letter2page(letter, dim, margin, flipV):
@@ -621,6 +640,59 @@ def letter2page(letter, dim, margin, flipV):
                             # print(curchar)
                         except StopIteration:
                             name = iter(getNextname())
+                            char = " "
+                        namebuf = namebuf + char
+                else:
+                    namebuf = (size-noisebuf)*curchar
+                linebuf = noisebuf*chars[k+l] + namebuf
+                if anomalyx[k] < size:
+                    anomalyx[k] = anomalyx[k] + 1
+                line = line + linebuf + " "*int(margin) 
+            buffer = buffer + line + "\n"
+        for i in range(margin):
+            line =""
+            buffer = buffer + line + "\n"
+    return buffer
+
+
+def letter2page4versum(letter, dim, margin, flipV,nameiter):
+    # returns str as a multiline buffer, ready to plot to a page (pw*ph)  # font5x7["a"
+    # nameiter = iter(getNextDiscordname())
+    name = nameiter()
+    # print(name)
+    chars = ["*","X", "#","+", "=", "-", "<", ">" ,".", "*","X", "#","+", "=", "-", "<", ">" ,"."]
+    # chars = ["1","2", "3","4", "5", "6", "7", "8" ,"9", "0","a", "b","c", "d", "e", "f", "g" ,"h"]
+    count=0 
+    buffer = ""
+    noise = PerlinNoise()
+    y = dim[1]
+    size = int(p.columns/(dim[0]+1))
+    margin = int((p.columns - (dim[0]*size)) / dim[0])
+    for l in range(y):
+        # size = 30
+        anomalyx = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        anomalyy = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        # size = int(columns/(x+1))
+        for i in range(size):
+            line=""
+            for k in range(dim[0]):
+                if letter not in charlist:
+                    letter = "X"
+                print (letter, l, k)
+                if font5x7[letter][l][k] == 1:
+                    curchar = "#"
+                else:
+                    curchar = "."
+                xstep = 1 / (anomalyy[k]+0.1)
+                noisebuf = int(anomalyx[k] * noise(xstep*i))
+                namebuf = ""
+                if (curchar == "#"):
+                    for x in range(size-noisebuf):
+                        try:
+                            char = next(name)
+                            # print(curchar)
+                        except StopIteration:
+                            name = nameiter()
                             char = " "
                         namebuf = namebuf + char
                 else:
