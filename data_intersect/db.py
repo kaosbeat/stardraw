@@ -102,11 +102,26 @@ def GetMostFRequentNameInRelationstatusInCity(relationshipstatus, city):
     cur16.execute(statement)
     data =  list(cur16)
     data.sort(key = lambda x: x[1])
-    # data.reverse()
+    data.reverse()
     # print(data)
     print (len(data), "persons in database with city = ", city, "and relationshipstatus = ", relationshipstatus)
     print(data[-1][0], "is the most common name for a ", relationshipstatus, " person in ", city)
     return data
+
+def GetMostFRequentNameInRelationstatus(relationshipstatus):
+    statement=  '''
+    SELECT firstname, COUNT(firstname) FROM db_sanitized16  WHERE relationshipstatus = ''' + relationshipstatus + ''' 
+    GROUP BY firstname
+    '''
+    cur16.execute(statement)
+    data =  list(cur16)
+    data.sort(key = lambda x: x[1])
+    data.reverse()
+    # print(data)
+    print (len(data), "persons in database with relationshipstatus = ", relationshipstatus)
+    print(data[-1][0], "is the most common name for a ", relationshipstatus)
+    return data
+
 
 # GetMostFRequentNameInRelationstatusInCity("\"In a relationship\"", "Antwerp")
 # data = GetMostFRequentNameInRelationstatusInCity("\"It\'s complicated\"", "Antwerp")

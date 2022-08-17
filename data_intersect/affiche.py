@@ -115,7 +115,7 @@ def namefunction():
 def printFaarBanner():
     rev = False
     mirror = False
-    rs = "DATA"
+    rs = "STUDY"
     words = rs
     # words = "tE"
     print(rs)

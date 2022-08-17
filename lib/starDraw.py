@@ -409,10 +409,10 @@ def dimensions(buffer):
 
 def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
     #pad multiline buffer
-    print("padding buffer")
+    # print("padding buffer")
     #widest bufferline?
     maxlength = len(max(buffer.splitlines(), key = len))
-    print(maxlength)
+    # print(maxlength)
     buffer1 = ""
     for y in range(ypad):
         line = " "*(xpad+maxlength+Xpad)  +"\n"
