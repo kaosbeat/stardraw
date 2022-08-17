@@ -64,32 +64,22 @@ def printFiglet(text, font, x=0, y=0, trim=True):
     if len(figtext) > 0:
         figtext = str(sd.padBuffer(figtext,1, 1, 1, 1))
         width, height = sd.dimensions(figtext)
-        if width > columns: 
-            if x <= -width:
-                figtext = ""
-            elif 0 <= x + width <= columns:
-                figtext = sd.trimbuffer(figtext, width+x, "l")
-            elif width >= x + width >= columns:
-                # figtext = "44444444444444444444444444444444444444"
-                figtext = sd.trimbuffer(figtext, width+x, "l")
-                figtext = sd.trimbuffer(figtext, columns, "r")
-                # x = 0
-            elif 0 < x < columns:
-                figtext = sd.trimbuffer(figtext, columns-x, "r")
+        if x <= -width:
+            figtext = ""
+        elif 0 <= x + width <= columns:
+            figtext = sd.trimbuffer(figtext, width+x, "l")
+        elif width >= x + width >= columns:
+            figtext = sd.trimbuffer(figtext, width+x, "l")
+            figtext = sd.trimbuffer(figtext, columns, "r")
+        elif 0 < x < columns:
+            figtext = sd.trimbuffer(figtext, columns-x, "r")
 
-            # if width > columns-x and x > 0:
-            #     figtext = sd.trimbuffer(figtext, columns-x, "r")
-            # if width > columns-2+x and x <= 0:
-            #     figtext = sd.trimbuffer(figtext, columns+x, "l")
-            # if x <= 0:
-            #     figtext = sd.trimbuffer(figtext, columns+x-width, "l")
 
-            if y >= lines:
-                figtext = sd.trimbuffer(figtext, height-y+lines, "t")
-            if height > y: #cut of the bottom
-                figtext = sd.trimbuffer(figtext, y+1, "b")
-
-            
+        if y >= lines:
+           figtext = sd.trimbuffer(figtext, height-y+lines, "t")
+        if height > y: #cut of the bottom
+            figtext = sd.trimbuffer(figtext, y, "b")
+   
         for i,l in enumerate(figtext.splitlines()):
             printonstage(l, x, y)
             y -= 1

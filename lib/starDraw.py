@@ -436,9 +436,14 @@ def trimbuffer(buffer, newsize, side):
     l cuts from the left, r from the right
     t cuts from the top, b cuts from the bottom
     """
+
+    buffer2 = ''''''
+    if len(buffer) == 0:
+        return buffer2
     buffer1 = padBuffer(buffer,0,0,0,0)
     width,height = dimensions(buffer1)
-    buffer2 = ''''''
+    
+
     if side == "r" or side == "l":
         for i,l in enumerate(buffer1.splitlines()):
             if side == "r":

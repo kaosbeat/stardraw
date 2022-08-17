@@ -283,13 +283,13 @@ ast.initstage()
 x=0
 while True:
     x = x+1
-    text = "svslsfv;sbalbffskb'sfdjb[arint"
+    text = "test is  teh worst case of eqting hotfogs"
     font = "big"
     w,h = ast.figProps(text, font)
     w = w+2
     h = h+2
-    ast.printFiglet(text, font, -w+x%(ast.columns+w), 15)
-    time.sleep(0.02)
+    ast.printFiglet(text, font, -w+x%(ast.columns+w), 6)
+    # time.sleep(0.02)
 
 
 names1 = ""
