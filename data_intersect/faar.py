@@ -265,16 +265,31 @@ data2 = db.GetMostFRequentNameInRelationstatus("\"It\'s complicated\"")
 # random.shuffle(data)
 
 ast.initstage()
-ast.printonstage("hello at 20,20", 20, 20)
-ast.printonstage("hello at 30,20", 30, 20)
-ast.printonstage("hello at 20,40", 20, 40)
-ast.printonstage("hello at 20,10", 20, 10)
+# ast.printonstage("hello at 20,20", 20, 20)
+# ast.printonstage("hello at 30,20", 30, 20)
+# ast.printonstage("hello at 20,40", 20, 40)
+# ast.printonstage("hello at 20,10", 20, 10)
 # for i in range (ast.columns-3):
 #     for j in range(ast.lines-3):
 #         ast.printonstage("!",i,j)
+
+
+# ast.printFiglet("verymuchtoolongstringtooprint", "big", 1, 50)
+
+
+
+
 # time.sleep(50)
-
-
+x=0
+while True:
+    x = x+1
+    text = "svslsfv;sbalbffskb'sfdjb[arint"
+    font = "big"
+    w,h = ast.figProps(text, font)
+    w = w+2
+    h = h+2
+    ast.printFiglet(text, font, -w+x%(ast.columns+w), 15)
+    time.sleep(0.02)
 
 
 names1 = ""
@@ -286,7 +301,8 @@ for name in data1:
     # print(name[0])
     ast.printFiglet(name[0],"big")
     # ast.printonstage(name[0], x, y)
-    time.sleep(0.01)
+    time.sleep(0.1)
+    ast.printFiglet("               ", ast.lines-1)
 names1 = list(names1)
 names2 = ""
 for name in data2:

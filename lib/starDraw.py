@@ -1,5 +1,7 @@
+from __future__ import nested_scopes
 import random
 import math
+from turtle import width
 
 def line(x1,y1,x2,y2, char):
     #draws line from.(x1,y1) to (x2,y2)  both points included using char
@@ -407,6 +409,8 @@ def dimensions(buffer):
     height = len(buffer.splitlines())
     return width, height
 
+
+
 def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
     #pad multiline buffer
     # print("padding buffer")
@@ -425,6 +429,32 @@ def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
         line = " "*(xpad+maxlength+Xpad) + "\n"
         buffer1 = buffer1 + line
     return buffer1
+
+def trimbuffer(buffer, newsize, side):
+    """trim sides of a multiline buffer
+    newsize sets desired width or height
+    l cuts from the left, r from the right
+    t cuts from the top, b cuts from the bottom
+    """
+    buffer1 = padBuffer(buffer,0,0,0,0)
+    width,height = dimensions(buffer1)
+    buffer2 = ''''''
+    if side == "r" or side == "l":
+        for i,l in enumerate(buffer1.splitlines()):
+            if side == "r":
+                l = l[:newsize]
+            if side == "l":
+                l = l[-newsize:]
+            buffer2 += l + "\n"
+    if side == "t" or side == "b":
+        for i,l in enumerate(buffer1.splitlines()):
+            if side == "t":
+                if i >= height-newsize:
+                    buffer2 += l + "\n"
+            if side == "b":
+                if i < newsize:
+                    buffer2 += l + "\n"
+    return buffer2
 
 def padMax(buffer,columns,height):
     # pad buffer to match columns/height
