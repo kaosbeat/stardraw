@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-# from numpy import convolve  
-import imp
+
 from itertools import count
 import lib.starLC20 as p
 import lib.staremulator as s
@@ -16,35 +15,105 @@ from pyfiglet import Figlet, figlet_format, print_figlet
 import db
 import time
 import lib.asciistage as ast
+import mido
+import lib.timers as tim
 
-
-
-
-
-
+########################################
+########  options ######################
+########################################
 printit = False
 # tweetit = True
 tweetit = False
+global screenit
 screenit = False
 screenit = True
+ast.screenit = screenit
+global debug
+debug = True
+debug = False
+s.debug = debug
+p.debug = debug
+db.debug = debug
+# screenit = True
 svg = True
 sign = True
 title = "starLC20"
+midicontrol = True
+# midicontrol = False
 
-def sign(title, y):
-    s.setLineSpace(12)
-    p.setLineSpace(12)
-    string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-    string = "kaotec []<> " + title + " " + string
-    s.printXY(string, s.columns - len(string), y) 
-
-
-def signstring(title):
-    string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-    string = "kaotec []<> " + title + " " + string
-    return string
+######################################
+############ globals #################
+######################################
+global printing
+printing = False
 
 
+
+
+########################################
+###########  MIDI INIT #################
+########################################
+# start rtpmidi for connections over network
+# listen to MIDI from AXO
+# if debug: print(mido.get_input_names())
+# inport = mido.open_input('Axoloti Core:Axoloti Core MIDI 1 24:0')
+# if debug: print(mido.get_output_names())
+if midicontrol:
+    portslist = mido.get_output_names()
+    inportslist = mido.get_input_names()
+    print("output", portslist  )
+    print("input", inportslist  )
+    axodevlist = [axo for axo in portslist if "Axoloti" in axo]
+    pddevlist = [pd for pd in portslist if "Pure Data" in pd]
+    if debug: print(axodevlist)
+    if debug: print(pddevlist)
+    
+    if len(axodevlist) > 0 :
+        outport = mido.open_output(axodevlist[0])
+    else:
+        # outport = mido.open_output('Midi Through:Midi Through Port-0 14:0')
+        # outport = mido.open_output('Pure Data:Pure Data Midi-Out 1 130:1')
+        # outport = mido.open_output(pddevlist[0])
+        outport= mido.open_output(portslist[-1])
+    # inport = mido.open_input('Midi Through:Midi Through Port-0 14:0')
+    # inport = mido.open_input('Pure Data:Pure Data Midi-In 1 130:0')
+    # inport = mido.open_input(inportslist[4])
+    inport = mido.open_input(inportslist[0])
+    # inport = mido.open_input('Pure Data:Pure Data Midi-Out 1 128:1')
+
+##########################################
+############ MIDI messages ###############
+##########################################
+#########
+## OUT ##
+#########
+
+def midi_printnoise():
+    if midicontrol:
+        msg = mido.Message('note_on', channel=0, note=41, velocity=127, time=0)
+        outport.send(msg)
+
+def midi_datanoise():
+    if midicontrol:
+        msg = mido.Message('note_on', channel=0, note=42, velocity=127, time=0)
+        outport.send(msg)  
+
+##########
+### IN ###
+##########
+
+def midiparse(msg):
+    global data
+    # if debug: print(msg)
+    if msg.note > 2:
+        if debug: print(data[random.randint(0,len(data)-1)][2])
+
+
+
+
+############################################
+#####   defs PAGES to print ################
+############################################
 
 #######################
 ### shape fill page ###
@@ -77,14 +146,14 @@ def shapes():
             line = ""
             for x in range(c1):
                 line = line + l1
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c2):
                 line = line + l2
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c3):
                 line = line + l3
             line = line[0:80]
-            print(line)
+            if debug: print(line)
 
             if printit:
                 p.printXY(line, 0, i)
@@ -114,15 +183,15 @@ def shapes():
             line = ""
             for x in range(c1):
                 line = line + " "
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c2):
                 line = line + names[count]
                 count = count + 1
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c3):
                 line = line + " "
             line = line[0:80]
-            print(line)
+            if debug: print(line)
 
             if printit:
                 p.printXY(line, 0, i)
@@ -141,12 +210,12 @@ def shapes():
     s.closefile()
     tweet.convertSVGtoTweet(s.svgfile, "shapefill")
 
-
 ########################################
 #### relation_shapes() #################
 ########################################
 
 def rshapes(names1, names2, title):
+    if debug: print(title)
     s.openfile('rshape.svg')
     if printit:
         p.setOnLine()
@@ -174,7 +243,7 @@ def rshapes(names1, names2, title):
             line = ""
             for x in range(c1):
                 line = line + " "
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c2):
                 try: 
                     names1[count1]
@@ -182,7 +251,7 @@ def rshapes(names1, names2, title):
                     count1 = 0
                 line = line + names1[count1]
                 count1 = count1 + 1
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c3):
                 line = line + " "
             line = line[0:80]
@@ -216,7 +285,7 @@ def rshapes(names1, names2, title):
             line = ""
             for x in range(c1):
                 line = line + " "
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c2):
                 try: 
                     names2[count2]
@@ -225,7 +294,7 @@ def rshapes(names1, names2, title):
 
                 line = line + names2[count2]
                 count2 = count2 + 1
-            # print(len(line))
+            # if debug: print(len(line))
             for x in range(c3):
                 line = line + " "
             line = line[0:80]
@@ -245,7 +314,7 @@ def rshapes(names1, names2, title):
         c1 = random.randint(0, int(columns / 2)) +1
         c2 = random.randint(0, int((columns - c1)/2))
         c3 = columns - c1 - c2
-    signature = signstring(title)
+    signature = sd.signstring(title)
     sigX = 80-len(signature)
     p.printXY(signature, sigX, int(height)+2)
     s.printXY(signature, sigX, int(height)+2)
@@ -254,15 +323,119 @@ def rshapes(names1, names2, title):
         tweet.convertSVGtoTweet(s.svgfile, "shapefill")
 
 
-# shapes()
-# data = db.getAllFromHometown("Antwerp")
-# data1 = db.GetMostFRequentNameInRelationstatusInCity("\"In a relationship\"", "Antwerp")
-# data2 = db.GetMostFRequentNameInRelationstatusInCity("\"It\'s complicated\"", "Antwerp")
 
-data1 = db.GetMostFRequentNameInRelationstatus("\"In a relationship\"")
-data2 = db.GetMostFRequentNameInRelationstatus("\"It\'s complicated\"")
 
-# random.shuffle(data)
+###############################
+##### do stuff with data ######
+###############################
+
+# if "datastuff" == "needed":\
+if True:
+    data1 = db.GetMostFRequentNameInRelationstatus("\"In a relationship\"")
+    data2 = db.GetMostFRequentNameInRelationstatus("\"It\'s complicated\"")
+    # data = db.getAllFromHometown("Antwerp")
+    # random.shuffle(data)
+    # data1 = db.GetMostFRequentNameInRelationstatusInCity("\"In a relationship\"", "Antwerp")
+    # data2 = db.GetMostFRequentNameInRelationstatusInCity("\"It\'s complicated\"", "Antwerp")
+
+    names1 = ""
+    for name in data1:
+        names1 = names1 + " " + name[0]
+        x = random.randint(2,ast.columns-len(name[0]))
+        y = random.randint(1, ast.lines-2)
+        # ast.printonstage(str(x)+", "+str(y), 0 , ast.lines-1)
+        # if debug: print(name[0])
+        # ast.printFiglet(name[0],"big")
+        # ast.printonstage(name[0], x, y)
+        # time.sleep(0.1)
+        
+    names1 = list(names1)
+    names2 = ""
+    for name in data2:
+        names2 = names2 + " " + name[0]
+    names2 = list(names2)
+    # rshapes(names1, names2, "it's a complicated relationship")
+
+
+def printjob(kind):
+    if debug: print("printing started", kind)
+    # i = random.randint(0,len(jobs)-1)
+    # jobs = [rshapes]
+    # arguments =[[names1,names2,"it's a complicated relationship"]]
+    # i = random.randint(0,len(jobs)-1)
+    # jobs[i](arguments[i])
+    dice = random.randint(0,6)
+    msg = mido.Message('note_on', channel=0, note=dice, velocity=127, time=0)
+    outport.send(msg)
+    if dice == 0:
+        rshapes(names1,names2, "it's a complicated relationship")
+    if dice == 1:
+        rshapes(names1,names2, "it's a kind of a relationship")
+    if dice == 3:
+        rshapes(names1,names2, "it's a very complicated relationship")
+    if dice == 4:
+        rshapes(names1,names2, "it's somekind of a relationship")
+    if dice == 5:
+        rshapes(names1,names2, "it's a simplified relationship")
+    if dice == 6:
+        rshapes(names1,names2, "it's a one of a kind relationship")
+
+    # p.setNewDensityAndGotoTop(12,p.pageheight,p.linefeed)
+    # p.nextTop()
+    # p.lf()
+    if debug: print("printing stopped, sleeping 120 sec")
+    time.sleep(10)
+    if debug: print("ready for new job")
+
+
+def imnotarobot(blah):
+    global printing
+    if not printing:
+        #make some sound
+        printing = True
+        if debug: print("trying to make sound")
+        msg = mido.Message('note_on', channel=0, note=41, velocity=127, time=0)
+        outport.send(msg)
+        time.sleep(10)
+        if debug: print("stopping sound")
+        msg = mido.Message('note_off', channel=0, note=41, velocity=127, time=0)
+        outport.send(msg)
+        # msg = mido.Message('control_change', channel=0, control=126, value=0)
+        # outport.send(msg)
+        printjob("from robot") ##blocking
+        printing = False
+        # rt = RepeatedTimer(30, imnotarobot, "World")
+
+
+def startprintwithdata(blagh):
+    global printing
+    if not printing:    
+        printing = True
+        if debug: print("trying to make sound")
+        printjob("from robot") ##blocking
+        printing = False
+
+rt = tim.RepeatedTimer(5, startprintwithdata, "World") # it auto-starts, no need of rt.start()
+
+
+# def app():
+#     global printing
+#     try:
+#         while True:
+#             pass
+#             time.sleep(5)
+#             print ("this ir sunning from the main")
+#             # putPersonInTable()
+#     except KeyboardInterrupt:
+#         pass    
+
+if midicontrol:
+    inport.callback = midiparse
+# app()
+
+######################################
+##### drawing data to the console ####
+######################################
 
 ast.initstage()
 # ast.printonstage("hello at 20,20", 20, 20)
@@ -280,42 +453,12 @@ ast.initstage()
 
 
 # time.sleep(50)
-x=0
-while True:
-    x = x+1
-    text = "test is  teh worst case of eqting hotfogs"
-    font = "big"
-    w,h = ast.figProps(text, font)
-    w = w+2
-    h = h+2
-    ast.printFiglet(text, font, -w+x%(ast.columns+w), 6)
-    # time.sleep(0.02)
+ast.scrollFiglet("welcome to data intersections", "big", 15, 0.01, 5)
 
+ast.printFiglet("DATA", "big", 2, 42)
+ast.printFiglet("INTERSECT", "big", 2, 32)
+ast.printFiglet("STUDY", "big", 2, 22)
 
-names1 = ""
-for name in data1:
-    names1 = names1 + " " + name[0]
-    x = random.randint(2,ast.columns-len(name[0]))
-    y = random.randint(1, ast.lines-2)
-    # ast.printonstage(str(x)+", "+str(y), 0 , ast.lines-1)
-    # print(name[0])
-    ast.printFiglet(name[0],"big")
-    # ast.printonstage(name[0], x, y)
-    time.sleep(0.1)
-    ast.printFiglet("               ", ast.lines-1)
-names1 = list(names1)
-names2 = ""
-for name in data2:
-    names2 = names2 + " " + name[0]
-names2 = list(names2)
-
-
-
-
-rshapes(names1, names2, "it's a complicated relationship")
-
-
-
-
+ast.doNoise(2, ast.columns-2 , 1 , ast.lines-1, 0.01)
 
 

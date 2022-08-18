@@ -6,6 +6,7 @@ import os
 import time
 
 warnings = False  ## enable to see emulation problems at stdout
+debug = False
 # allowLineWrap = True
 dropOverPrint = True ## if trying to print beyond column 80 drop it so lines don't wrap
 # lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
@@ -14,6 +15,8 @@ dummy = os.open("/dev/null", os.O_RDWR)
 dev = dummy
 columns = 80
 # lines = 120
+
+
 
 basefontsize = 16 # 4.233 mm or 1.666 inch  or 120/7.5
 linefeed = 16 # setLineSpace(120/7.5)  120 matches default 16
@@ -78,7 +81,7 @@ def setLineSpace(n):
     # If n=0,the linespacing is set to O
     # n = 10 => 0.35cm
     data = "1B41"+"{:02x}".format(n,'x')
-    # print(data)
+    # if debug: print(data)
     os.write(dev,bytes.fromhex(data))
     # commit the new line spacing value
     data = "1B32"
@@ -125,8 +128,8 @@ def printXY(string,x,y):
     whitespace = ' ' * x
     if (x + len(string)> columns):
         if warnings:
-            print("WARNING LINE WILL WRAP ON PRINTER!!!!")
-            print("CUTTING LINE TO PREVENT WRAP")
+            if debug: print("WARNING LINE WILL WRAP ON PRINTER!!!!")
+            if debug: print("CUTTING LINE TO PREVENT WRAP")
         if dropOverPrint:
             string = string[0:columns - x]
     if (y > cursorY):

@@ -12,3 +12,8 @@
 - start program with interesting output
 - log in remotely from PC that will be copy display
 - screen -x tot attach to other screen.
+
+
+### start faar.py in stardraw environment.
+- if screenit is True you will see a output to the console
+- for developing midi can be used as a debug, see debug.pd [pure data]

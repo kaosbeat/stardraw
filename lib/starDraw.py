@@ -1,6 +1,7 @@
 from __future__ import nested_scopes
 import random
 import math
+import datetime
 from turtle import width
 
 def line(x1,y1,x2,y2, char):
@@ -549,3 +550,20 @@ def mergeBuffers(buffer1,buffer2,xpos):
 def consoleBuffer(buffer):
     for l in buffer.splitlines():
         print(l)
+
+
+
+def signstring(title):
+    """p.printXY(signstring(title), p.columns - len(string), y)"""
+
+    string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+    string = "kaotec []<> " + title + " " + string
+    return string
+
+
+# def sign(title, y):
+#     s.setLineSpace(12)
+#     p.setLineSpace(12)
+#     string = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+#     string = "kaotec []<> " + title + " " + string
+#     s.printXY(string, s.columns - len(string), y) 

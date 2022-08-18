@@ -13,6 +13,7 @@ cursorYoffset = 0 # used for extending pages longer than 1 page setTopAtCurrent
 svgfile = "page 0"
 currentdwg = ""
 pagecounter = 0
+debug = False
 
 def openfile(filename):
     global svgfile
@@ -63,9 +64,9 @@ def printXY(string,x,y):
     global cursorY
     if (len(string) + x > 80):
         if warnings:
-            print("WARNING LINE WILL WRAP ON PRINTER!!!!")
-            print("CUTTING LINE TO PREVENT WRAP")
-            print("Line =" , str(len(string) + x) )
+            if debug: print("WARNING LINE WILL WRAP ON PRINTER!!!!")
+            if debug: print("CUTTING LINE TO PREVENT WRAP")
+            if debug: print("Line =" , str(len(string) + x) )
         string = string[0:80-x]
     if (y > cursorY):
         # print ("emu advancing ", y - cursorY) 
@@ -87,9 +88,9 @@ def printXYtoGroup(string,x,y, svggroup):
     global cursorY
     if (len(string) + x > 80):
         if warnings:
-            print("WARNING LINE WILL WRAP ON PRINTER!!!!")
-            print("CUTTING LINE TO PREVENT WRAP")
-            print("Line =" , str(len(string) + x) )
+            if debug: print("WARNING LINE WILL WRAP ON PRINTER!!!!")
+            if debug: print("CUTTING LINE TO PREVENT WRAP")
+            if debug: print("Line =" , str(len(string) + x) )
         string = string[0:80-x]
     if (y > cursorY):
         # print ("emu advancing ", y - cursorY) 
@@ -119,7 +120,7 @@ def currentTop():
     global cursorY
     global lineCursorY
     global cursorYoffset 
-    print( cursorY, lineCursorY, cursorYoffset)
+    if debug: print( cursorY, lineCursorY, cursorYoffset)
     # for i in range(cursorY):
     #     rlf()
     cursorY = 0

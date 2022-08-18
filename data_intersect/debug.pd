@@ -1,0 +1,51 @@
+#N canvas 3436 217 977 893 12;
+#X floatatom 98 104 3 0 0 0 - - - 0;
+#X obj 38 52 notein;
+#X obj 38 78 stripnote;
+#X floatatom 38 103 3 0 0 0 - - - 0;
+#X text 38 28 MIDI IN;
+#X obj 38 129 bng 20 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 207 243 select 41 42;
+#X obj 195 467 soundfiler;
+#X text 257 342 load table;
+#X obj 212 323 loadbang;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array sample1 65664 float 0;
+#X coords 0 1 65663 -1 250 200 1 0 0;
+#X restore 687 41 graph;
+#X obj 113 683 output~;
+#X obj 44 457 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array sample2 236160 float 0;
+#X coords 0 1 236159 -1 250 200 1 0 0;
+#X restore 687 278 graph;
+#X obj 277 558 tabplay~ sample2;
+#X obj 295 520 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 289 430 read -resize /home/kaos/samples/spacesamples/Soyuz3commandoff.wav
+sample2;
+#X msg 177 388 read -resize /home/kaos/samples/spacesamples/expl1sh.wav
+sample1;
+#X msg 264 356 87;
+#X obj 117 542 tabplay~ sample1;
+#X connect 1 0 2 0;
+#X connect 1 1 2 1;
+#X connect 2 0 3 0;
+#X connect 2 0 6 0;
+#X connect 2 1 0 0;
+#X connect 3 0 5 0;
+#X connect 6 0 19 0;
+#X connect 6 1 14 0;
+#X connect 9 0 17 0;
+#X connect 9 0 16 0;
+#X connect 9 0 18 0;
+#X connect 12 0 19 0;
+#X connect 14 0 11 0;
+#X connect 14 0 11 1;
+#X connect 15 0 14 0;
+#X connect 16 0 7 0;
+#X connect 17 0 7 0;
+#X connect 19 0 11 0;
+#X connect 19 0 11 1;

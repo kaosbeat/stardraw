@@ -15,6 +15,8 @@ cur16 = con16.cursor()
 global relationshipstatusses
 relationshipstatusses = ["\"In a relationship\"",  "\"It\'s complicated\"", "\"Divorced\"", "\"Engaged\"", "\"Widowed\"", "\"Single\"", "\"Married\"", "\"\""] 
 global data
+global debug
+debug = False
 data = []
 
 
@@ -25,7 +27,7 @@ def getnewList(datatype):
     rs = relationshipstatusses[datatype]
     # statement = 'SELECT phone FROM db_sanitized14 WHERE relationshipstatus =' + rs + 'AND phone != ""'
     statement = 'SELECT firstname FROM db_sanitized14 WHERE relationshipstatus =' + rs + 'AND firstname != ""'
-    # print(statement)
+    # if debug: if debug: print(statement)
     cur.execute(statement)
     data = list(cur)
 
@@ -55,10 +57,10 @@ def getMaxNamecount(rs):
                     )
                     '''
     # statement = statement + statement2
-    # print(statement)
+    # if debug: print(statement)
     cur.execute(statement)
     data = list(cur)
-    # print(data)
+    # if debug: print(data)
     return data
 
 # data = getMaxNamecount("\"In a relationship\"")
@@ -83,7 +85,7 @@ def getAllFromHometown(city):
     # cur16.execute(statement, (hometown) )
     data =  list(cur16)
     # print (len(data))
-    # print(data[2][0])
+    # if debug: print(data[2][0])
     return data
 
 # data = getAllFromHometown('Antwerp')
@@ -103,9 +105,9 @@ def GetMostFRequentNameInRelationstatusInCity(relationshipstatus, city):
     data =  list(cur16)
     data.sort(key = lambda x: x[1])
     data.reverse()
-    # print(data)
+    # if debug: print(data)
     print (len(data), "persons in database with city = ", city, "and relationshipstatus = ", relationshipstatus)
-    print(data[-1][0], "is the most common name for a ", relationshipstatus, " person in ", city)
+    if debug: print(data[-1][0], "is the most common name for a ", relationshipstatus, " person in ", city)
     return data
 
 def GetMostFRequentNameInRelationstatus(relationshipstatus):
@@ -117,9 +119,9 @@ def GetMostFRequentNameInRelationstatus(relationshipstatus):
     data =  list(cur16)
     data.sort(key = lambda x: x[1])
     data.reverse()
-    # print(data)
-    print (len(data), "persons in database with relationshipstatus = ", relationshipstatus)
-    print(data[-1][0], "is the most common name for a ", relationshipstatus)
+    # if debug: print(data)
+    if debug: print(len(data), "persons in database with relationshipstatus = ", relationshipstatus)
+    if debug: print(data[-1][0], "is the most common name for a ", relationshipstatus)
     return data
 
 
@@ -129,7 +131,7 @@ def GetMostFRequentNameInRelationstatus(relationshipstatus):
 
 
 # for i in range(10):
-#     print(getRandomname(data))
+#     if debug: print(getRandomname(data))
 
 # for i in range(10):
-#     print(getName(data, i))
+#     if debug: print(getName(data, i))
