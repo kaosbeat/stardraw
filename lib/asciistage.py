@@ -12,15 +12,6 @@ global screenit
 screenit = True
 
 
-def initstage():
-    global columns, lines
-    print("creating stage")
-    print("#"*columns)
-    # sleeptime = 0.1
-    for i in range(lines-2):
-        print("#" + " "*(columns-2) + "#")
-        # time.sleep(sleeptime*0.5)
-    print("#"*columns, end='',flush=False)
 
 
 def gotoline(y):
@@ -28,6 +19,8 @@ def gotoline(y):
     if screenit:
         ## value to print to go back a line: \033[F
         global line
+        if y > lines: y = lines
+        if y < 0: y = 0
         if (y > line):
             for i in range(y-line):
                 print(f"\033[F", end='\r', flush=True)
@@ -38,7 +31,21 @@ def gotoline(y):
             print('\b',end='',flush=True)
         line = y
 
-
+def initstage(scrolltype="scroll"):
+    global columns, lines
+    # print("creating stage")
+    if scrolltype == "clear":
+        gotoline(lines)
+        # "clear" seems to be buggy!
+    if scrolltype == "scroll":
+        gotoline(0)
+    print("#"*columns)
+    sleeptime = 0.1
+    for i in range(lines-2):
+        print("#" + " "*(columns-2) + "#")
+        time.sleep(sleeptime*0.5)
+    print("#"*columns, end='',flush=False)
+    print(f"\b",end='', flush=True)
 
 def printonstage(text, x, y):
     global screenit
@@ -49,16 +56,22 @@ def printonstage(text, x, y):
         # print(f"\b", flush=True)
         col = 0
 
+def printMultilineonstage(multilinebuffer, x, y):
+    global screenit
+    global line,col
+    width, height = sd.dimensions(multilinebuffer)
+    if screenit: 
+        for i,l in enumerate(multilinebuffer.splitlines()):
+            printonstage(l, x, y)
+            y -= 1
 
 def figProps(text, font):
-    """returns the string width and height of rendered figlet"""
+    """returns the string, width and height of rendered figlet"""
     global columns
-    global screenit
-    if screenit:
-        f = Figlet(font=font, width=2000)
-        figtext = f.renderText(text)
-        width, height = sd.dimensions(figtext)
-        return width, height
+    f = Figlet(font=font, width=2000)
+    figtext = f.renderText(text)
+    width, height = sd.dimensions(figtext)
+    return width, height, figtext
 
 def printFiglet(text, font, x=1, y=1, trim=True):
     """print a figlet from 'text' in 'font' at x, y 
@@ -73,7 +86,7 @@ def printFiglet(text, font, x=1, y=1, trim=True):
         f = Figlet(font=font, width=2000)
         figtext = f.renderText(text)
         if len(figtext) > 0:
-            figtext = str(sd.padBuffer(figtext,1, 1, 1, 1))
+            # figtext = str(sd.padBuffer(figtext,1, 1, 1, 1))
             width, height = sd.dimensions(figtext)
             if x <= -width:
                 figtext = ""
@@ -94,6 +107,7 @@ def printFiglet(text, font, x=1, y=1, trim=True):
             for i,l in enumerate(figtext.splitlines()):
                 printonstage(l, x, y)
                 y -= 1
+            return width,height,figtext
 
 def printFigletAtRandomLoc(text, font):
     global lines, columns
@@ -102,13 +116,52 @@ def printFigletAtRandomLoc(text, font):
         f = Figlet(font=font)
         figtext = f.renderText(text)
         if len(figtext) > 0:
-            figtext = str(sd.padBuffer(figtext,1, 1, 1, 1))
+            # figtext = str(sd.padBuffer(figtext,1, 1, 1, 1))
             width, height = sd.dimensions(figtext)
             x = random.randint(2,columns-width-2)
             y = random.randint(1,lines-height-2)
             for i,l in enumerate(figtext.splitlines()):
                 printonstage(l, x, height+y)
                 y -= 1
+
+def spacesquare(w,h):
+    """
+    generate w*h spaces in multiline buffer
+    """
+
+    buffer = """"""
+    l = w*" " + "\n"
+    for x in range(h):
+        buffer = buffer + l
+    return buffer
+
+
+def blinkFiglet(x1 ,y1 ,text1, font1, x2 ,y2, text2=None, font2=None, interval=0.1, loop=4):
+    single = False
+    if font2==None: font2=font1
+    w1,h1,figtext1 = printFiglet(text1, font1, x1, y1)
+    blanktext1 = spacesquare(w1,h1)
+    if text2!=None: 
+        w2,h2,figtext2 = printFiglet(text2, font2, x2, y2)
+        blanktext2 = spacesquare(w2,h2)
+    else: 
+        single = True
+    
+    for x in range(loop):
+        printMultilineonstage(figtext1,x1,y1)
+        time.sleep(interval)
+        printMultilineonstage(blanktext1,x1,y1)
+        if not single:
+            printMultilineonstage(figtext2,x2,y2)
+            time.sleep(interval)
+            printMultilineonstage(blanktext2,x2,y2)
+        else: 
+            time.sleep(interval)
+    
+    
+    
+
+
 
 
 def scrollFiglet(text, font, y, speed, loop):
@@ -123,7 +176,7 @@ def scrollFiglet(text, font, y, speed, loop):
         # for i in range(loop):
         while looping:
             x = x+1
-            w,h = figProps(text, font)
+            w,h,figtext = figProps(text, font)
             w = w+2
             h = h+2
             printFiglet(text, font, -w+x%(columns+w), y)
@@ -133,15 +186,79 @@ def scrollFiglet(text, font, y, speed, loop):
                 looping = False 
             time.sleep(speed)
 
+def mergeFiglets (text1,text2,x1,y1,x2,y2):
+    """
+    pass in figlets as "w,h,text1 = figProps(text, font)"
+    or pass you own multilinebuffer to
+    merge two figlets or multilinebuffers and 
+    draw to screen at x1,x2,y1,y2, space = empty 
+    also returns the merged buffer for printing
+    currently only support text1 top left of text2
+    
 
 
-def doNoise(x, X, y, Y, speed):
+     +-pl-+--------s1x-------+--p1r---+
+     pt                      !        !
+     +----┌──────────────────┐--------+
+     !  x1,y1                │        !
+     !    │                  │       p2t
+    s1y   │                  │        !
+     !    │     ┌────────────┼────────┐--+
+     !    │   x2,y2          │        │  !
+     !    │     │            │        │  !
+     +----└─────┼────────────┘        │  s2y
+     !    !     │                     │  !
+    p1b   !     │                     │  !
+     !    !     │                     │  !
+     +----+-p2l-└─────────────────────┘--+
+                !                     !
+                +----------s2x--------+
+    
+
+    
+    """
+
+    buffer = """"""
+    # calculate paddings
+    s1x, s1y = sd.dimensions(text1)
+    s2x, s2y = sd.dimensions(text2)
+    p2l = x2 - x1
+    p1r = s2x + p2l - s1x
+    p2t = y2 - y1
+    p1b = s2y + p2t - s1y
+
+    # first pad buffers to make them the same size
+    buffer1 = ""
+    buffer2 = ""
+    buffer1 = sd.padBuffer(text1, 0, 0, p1r, p1b)
+    buffer2 = sd.padBuffer(text2, p2l, p2t, 0, 0)
+    buffer1 = buffer1.splitlines()
+    buffer2 = buffer2.splitlines()
+
+    for y in range(len(buffer1)):
+        line = ""
+        for x in range(len(buffer1[0])):
+            c = buffer1[y][x]
+            if (c != " "):
+                c = buffer1[y][x]
+            else:
+                c = buffer2[y][x]
+            line = line + c
+        # print (line)
+        buffer = buffer + line + "\n"
+    # print(buffer)
+    return buffer
+
+
+def doNoise(x, X, y, Y, speed, iterations):
     global screenit
+    count = 0
     if screenit:
-        while True:
+        while count < iterations:
             chars = ["@", "!", "%"]
             i = random.randint(x,X)
             j = random.randint(y,Y)
             c = random.choice(chars)
             printonstage(c,i,j)
             time.sleep(speed)
+            count += 1

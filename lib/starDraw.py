@@ -2,7 +2,7 @@ from __future__ import nested_scopes
 import random
 import math
 import datetime
-from turtle import width
+# from turtle import width
 
 def line(x1,y1,x2,y2, char):
     #draws line from.(x1,y1) to (x2,y2)  both points included using char
@@ -413,9 +413,12 @@ def dimensions(buffer):
 
 
 def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
-    #pad multiline buffer
-    # print("padding buffer")
-    #widest bufferline?
+    """
+    pad multiline buffer
+    print("padding buffer")
+    """
+
+    # widest bufferline?
     maxlength = len(max(buffer.splitlines(), key = len))
     # print(maxlength)
     buffer1 = ""
@@ -515,9 +518,12 @@ def padMidMax(buffer,columns,height):
 
 
 def mergeBuffers(buffer1,buffer2,xpos):
-    # merge 2 buffers leaving buffer1 in front until xpos
-    # pad until same height and width using padBuffer
-    # buffers should have equal width/height
+    """
+    merge 2 buffers leaving buffer1 in front until xpos
+    pad until same height and width using padBuffer
+    buffers should have equal width/height
+    """
+    
     print(dimensions(buffer1))
     print(dimensions(buffer2))
     

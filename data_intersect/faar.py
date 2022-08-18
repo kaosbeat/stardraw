@@ -1,22 +1,27 @@
 #!/usr/bin/python3
 
-
-from itertools import count
+#from itertools import count
+########################
+####  imports ##########
+########################
+# own libraries
 import lib.starLC20 as p
 import lib.staremulator as s
-import random
-from perlin_noise import PerlinNoise
-import datetime
 import lib.starDraw as sd
 import lib.tweetprint as tweet
 import lib.font_anomaly as fa
 import lib.recaptcha as rc
+import lib.timers as tim
+import lib.asciistage as ast
+
+# other libs
 from pyfiglet import Figlet, figlet_format, print_figlet
+import random
+from perlin_noise import PerlinNoise
+import datetime
 import db
 import time
-import lib.asciistage as ast
 import mido
-import lib.timers as tim
 
 ########################################
 ########  options ######################
@@ -39,7 +44,7 @@ svg = True
 sign = True
 title = "starLC20"
 midicontrol = True
-# midicontrol = False
+midicontrol = False
 
 ######################################
 ############ globals #################
@@ -47,6 +52,14 @@ midicontrol = True
 global printing
 printing = False
 
+######################################
+########## quicktests ################
+######################################
+
+# w,h,text1 = ast.figProps("DATA", "big")
+# w,h,text2 = ast.figProps("INTERSECT", "big")
+# ast.mergeFiglets (text1,text2, 2,12,12,-5)
+# time.sleep(20)
 
 
 
@@ -415,7 +428,7 @@ def startprintwithdata(blagh):
         printjob("from robot") ##blocking
         printing = False
 
-rt = tim.RepeatedTimer(5, startprintwithdata, "World") # it auto-starts, no need of rt.start()
+# rt = tim.RepeatedTimer(5, startprintwithdata, "World") # it auto-starts, no need of rt.start()
 
 
 # def app():
@@ -437,7 +450,7 @@ if midicontrol:
 ##### drawing data to the console ####
 ######################################
 
-ast.initstage()
+
 # ast.printonstage("hello at 20,20", 20, 20)
 # ast.printonstage("hello at 30,20", 30, 20)
 # ast.printonstage("hello at 20,40", 20, 40)
@@ -453,12 +466,101 @@ ast.initstage()
 
 
 # time.sleep(50)
-ast.scrollFiglet("welcome to data intersections", "big", 15, 0.01, 5)
+# ast.scrollFiglet("welcome to data intersections", "big", 15, 0.01, 5)
 
-ast.printFiglet("DATA", "big", 2, 42)
-ast.printFiglet("INTERSECT", "big", 2, 32)
-ast.printFiglet("STUDY", "big", 2, 22)
+# ast.printFiglet("DATA", "big", 2, 42)
+# ast.printFiglet("INTERSECT", "big", 2, 32)
+# ast.printFiglet("STUDY", "big", 2, 22)
 
-ast.doNoise(2, ast.columns-2 , 1 , ast.lines-1, 0.01)
+# ast.doNoise(2, ast.columns-2 , 1 , ast.lines-1, 0.01)
+
+
+
+########################################
+####### scenes or soundscapes ##########
+########################################
+#########################
+##### boot sequence #####
+#########################
+
+#1 Booting KaOS, bleeps and
+def bootseq():
+
+    framewait = 0.5
+    ast.initstage("scroll")
+    ast.printFiglet("DATA ", "big", 2, ast.lines-2)
+    time.sleep(framewait)
+    ast.printFiglet("INTERSECT", "big", 8, ast.lines-11)
+    ast.printFiglet("#@7@", "big", 2, ast.lines-2)
+    time.sleep(framewait)
+    ast.printFiglet("DATA ", "big", 2, ast.lines-2)
+    ast.printFiglet("/n13%$&CT", "big", 2, ast.lines-11)
+    time.sleep(framewait)
+    ast.printFiglet("INTERSECT", "big", 2, ast.lines-11)
+    time.sleep(framewait)
+    w,h,text1 = ast.figProps("DATA", "big")
+    w,h,text2 = ast.figProps("INTERSECT", "big")
+    # print(text1)
+    for i in range(10):
+        time.sleep(framewait)
+        mergestep = ast.mergeFiglets (text1,text2, 0,0,8,11-i)
+        # print(mergestep)
+        ast.printMultilineonstage(mergestep, 2, ast.lines-2)
+    ast.scrollFiglet("STUDY", "big", 10, 0.01, 2)
+    #2 data intersect studies  ,
+    #3  waiting for signal
+    ast.initstage()
+    ast.blinkFiglet(2,20,"waiting for","big", 2,20,"signal!",None,0.5,)
+    time.sleep(framewait)
+    ast.doNoise(1,ast.columns-1,1,ast.lines-1,0.01,100)
+    ast.initstage
+    
+
+
+bootseq()
+time.sleep(10)
+################
+#### signal ####
+################
+
+#1 receive trigger
+#2 harsh noises emitted, they fade out into delay, meanwhile 
+#3 printer starts printing
+#3 print signal! (lines?, overlapscapes, perspsquares, shape)
+
+###########################
+#### signal processing ####
+###########################
+
+#1 saw
+#2 2nd saw
+#3 3rd saw
+#4 LFOs to tune/detune
+#5 printing of waves feedmeweirdtext(), interferencepatterns(), overlapstudy()  
+
+###########################
+##### signal or noise #####
+###########################
+
+#  fillingsquares()
+
+
+
+
+
+
+
+
+
+########################
+#### signal to data ####
+########################
+
+
+
+# cube()
+
+
+# midi_printnoise
 
 
