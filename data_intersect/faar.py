@@ -46,7 +46,7 @@ svg = True
 sign = True
 title = "starLC20"
 midicontrol = True
-midicontrol = False
+# midicontrol = False
 
 ######################################
 ############ globals #################
@@ -90,8 +90,8 @@ if midicontrol:
     else:
         # outport = mido.open_output('Midi Through:Midi Through Port-0 14:0')
         # outport = mido.open_output('Pure Data:Pure Data Midi-Out 1 130:1')
-        # outport = mido.open_output(pddevlist[0])
-        outport= mido.open_output(portslist[-1])
+        outport = mido.open_output(pddevlist[0])
+        # outport= mido.open_output(portslist[-1])
     # inport = mido.open_input('Midi Through:Midi Through Port-0 14:0')
     # inport = mido.open_input('Pure Data:Pure Data Midi-In 1 130:0')
     # inport = mido.open_input(inportslist[4])
@@ -104,6 +104,21 @@ if midicontrol:
 #########
 ## OUT ##
 #########
+
+def midi_playsample(sample=41):
+    """
+    41 = explsh1
+    42 = Soyuz3commando
+    """
+    if midicontrol:
+        msg = mido.Message('note_on', channel=0, note=sample, velocity=127, time=0)
+        outport.send(msg)
+
+def midi_sawglitch():
+    if midicontrol:
+        msg = mido.Message('note_on', channel=0, note=43, velocity=127, time=0)
+        outport.send(msg)
+
 
 def midi_printnoise():
     if midicontrol:
@@ -540,6 +555,7 @@ def perspsquaressignal(times):
     s.setLineSpace(density) 
     height = int(height*12/density)
     for k in range(times):
+        midi_playsample(41)
         sx = random.randint(1,columns)
         sy =  random.randint(1,height)
         size =  random.randint(8,18)
@@ -569,25 +585,106 @@ def perspsquaressignal(times):
                 # print (prevbuffer)
                 prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
                 ast.printMultilineonstage(prevbuffer, 0, h)
-                time.sleep(0.01)
+                time.sleep(0.1)
             if printit:
                 for i,l in enumerate(buffer.splitlines()):
                     if (i<=height-1):
                         if (l != ""):
                             s.printXY(l, 0, height-h+i)
                             s.printXY(l, 0, height-h+i)
-        # signature = signstring("squares")
-    # p.printXY(signature, 0, int(height))
-    # s.printXY(signature, 0, int(height))
+    signature = sd.signstring("signal squares")
+    p.printXY(signature, 0, int(height))
+    s.printXY(signature, 0, int(height))
     s.closefile() 
     # time.sleep(5)
     if tweetit:
-        tweet.convertSVGtoTweet(s.svgfile, "testing squares")
+        tweet.convertSVGtoTweet(s.svgfile, "signal received")
+
+
+############################
+##### repeating signal #####
+############################
+
+def repSignal():
+    # ast.blinkFiglet(10, ast.lines-10, "incoming signal", "big", 10, ast.lines - 25, "processing ...", "big", 0.5, 3)
+    ### generate 1 row
+    s.svgfile = 'repSignal.svg'
+    columns = 80
+    height = 69
+    s.openfile(s.svgfile)
+    s.setLineSpace(12)
+    # s.setLineSpace(7)
+    p.setLineSpace(12)
+    # p.setLineSpace(7)
+    x = 6
+    y = 5 # y=5 fits page with setLineSpace 12, when using setLinespace(7), y can be 8 
+    size = int(columns/(x+1))
+    margin = int((columns - (x*size)) / x)
+    chars = ["*","X", "#","+", "=", "-", "<", ">" ,".", "*","X", "#","+", "=", "-", "<", ">" ,"."]
+    # chars = ["1","2", "3","4", "5", "6", "7", "8" ,"9", "0","a", "b","c", "d", "e", "f", "g" ,"h"]
+    count=0 
+    buffer = ""
+    pagebuffer = ""
+    screenbuffer = []
+    noise = PerlinNoise()
+    for l in range(y):
+        # size = 30
+        anomalyx = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        anomalyy = [random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size),random.randint(0,size),random.randint(0,size) ,random.randint(0,size) ,random.randint(0,size)]
+        # size = int(columns/(x+1))
+        for i in range(size):
+            line=""
+            for k in range(x):
+                xstep = 1 / (anomalyy[k]+0.2)
+                noisebuf = int(anomalyx[k] * noise(xstep*i))
+                linebuf = noisebuf*chars[k+l] + (size-noisebuf)*chars[random.randint(0,len(chars)-1)]
+                if anomalyx[k] < size:
+                    anomalyx[k] = anomalyx[k] + 1
+                line = line + linebuf + " "*int(margin) 
+            buffer = buffer + line + "\n"
+        for i in range(margin):
+            line =""
+            buffer = buffer + line + "\n"
+            # buffer = buffer + "\n\n"
+        # ast.printMultilineonstage(buffer, 3, ast.lines - size*l - count -2)
+        screenbuffer.append(buffer)
+        pagebuffer = pagebuffer + buffer
+        buffer = ""
+        count += 1
+    # s.printBuffer(pagebuffer,0,5,int(height*12/p.linefeed))
+    # p.printBuffer(pagebuffer,0,5,int(height*12/p.linefeed))
+    l=0
+    for b in screenbuffer:
+        # ast.printMultilineonstage(b, 3, ast.lines - size*l - l -2, 0.1)
+        for i,L in enumerate(b.splitlines()):
+            ast.printonstage(L,3, ast.lines-size*l-l-2-i)
+            midi_sawglitch()
+            time.sleep(0.1)
+        
+        s.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
+        p.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
+        l += 1
+        time.sleep(1)
+
+    signature = sd.signstring("signalsquares")
+    p.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(1*12/p.linefeed))
+    s.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(1*12/p.linefeed))
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
+    s.closefile()    
+
+
+
 #1 receive trigger
 ast.initstage()
-perspsquaressignal(10)
+# perspsquaressignal(10)
+repSignal()
+ast.quickinit()
+repSignal()
+ast.quickinit()
 
-ast.printonstage("test", 23, 20)
+
+# ast.printonstage("test", 23, 20)
 
 #2 harsh noises emitted, they fade out into delay, meanwhile 
 #3 printer starts printing

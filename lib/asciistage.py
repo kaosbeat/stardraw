@@ -47,6 +47,15 @@ def initstage(scrolltype="scroll"):
     print("#"*columns, end='',flush=False)
     print(f"\b",end='', flush=True)
 
+def quickinit():
+    global columns, lines
+    gotoline(0)
+    print("\n"+"#"*columns)
+    for i in range(lines-2):
+        print("#" + " "*(columns-2) + "#")
+    print("#"*columns, end='',flush=False)
+    print(f"\r",end='', flush=True)
+
 def printonstage(text, x, y):
     global screenit
     global line,col
@@ -58,13 +67,15 @@ def printonstage(text, x, y):
         # print(f"\b", flush=True)
         col = 0
 
-def printMultilineonstage(multilinebuffer, x, y):
+def printMultilineonstage(multilinebuffer, x, y, lineForLine=False):
     global screenit
     global line,col
     width, height = sd.dimensions(multilinebuffer)
     if screenit: 
         for i,l in enumerate(multilinebuffer.splitlines()):
             printonstage(l, x, y)
+            if lineForLine: 
+                time.sleep(lineForLine)
             y -= 1
 
 def figProps(text, font):
