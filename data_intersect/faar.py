@@ -45,7 +45,7 @@ svg = True
 sign = True
 title = "starLC20"
 midicontrol = True
-midicontrol = False
+# midicontrol = False
 
 ######################################
 ############ globals #################
