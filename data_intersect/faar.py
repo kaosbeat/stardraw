@@ -654,14 +654,13 @@ def repSignal():
     # p.printBuffer(pagebuffer,0,5,int(height*12/p.linefeed))
     l=0
     for b in screenbuffer:
+        s.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
+        p.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
         # ast.printMultilineonstage(b, 3, ast.lines - size*l - l -2, 0.1)
         for i,L in enumerate(b.splitlines()):
             ast.printonstage(L,3, ast.lines-size*l-l-2-i)
             midi_sawglitch()
             time.sleep(0.5)
-        
-        s.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
-        p.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
         l += 1
         time.sleep(1)
 
