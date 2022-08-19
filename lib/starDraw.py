@@ -144,6 +144,18 @@ def square(x1,y1,x2,y2,charh,charv):
     d = line(x2,y1,x2,y2,charv)
     return [a, b, c, d]
 
+def square2(x1,y1,x2,y2,charh,charv):
+    buffer = x1*" "+(x2-x1)*charh+"\n"
+    for i in range(y2-y1-2):
+        if (x2-x1-2) >= 0:
+            buffer = buffer + x1*" "+ charv + (x2-x1-2)*" " + charv +"\n"
+        else:
+            buffer = buffer + x1*" "+ charv + "\n"
+    if (x2-x1) > 0:
+            buffer = buffer + x1*" "+(x2-x1)*charh
+    return buffer
+
+
 # def filledsquare(size, angle, char):
 #     # 0 < angle < size/2 
 #     buffer  = ""
@@ -406,9 +418,12 @@ def cube(w,h,d,c1,c2,c3):
 
 
 def dimensions(buffer):
-    width = len(max(buffer.splitlines(), key = len))    
-    height = len(buffer.splitlines())
-    return width, height
+    if len(buffer) != 0:
+        width = len(max(buffer.splitlines(), key = len))    
+        height = len(buffer.splitlines())
+        return width, height
+    else: 
+        return 0,0
 
 
 
@@ -419,7 +434,10 @@ def padBuffer(buffer, xpad,ypad,Xpad, Ypad ):
     """
 
     # widest bufferline?
-    maxlength = len(max(buffer.splitlines(), key = len))
+    if len(buffer) != 0:
+        maxlength = len(max(buffer.splitlines(), key = len))
+    else:
+        maxlength = 0
     # print(maxlength)
     buffer1 = ""
     for y in range(ypad):
@@ -524,8 +542,8 @@ def mergeBuffers(buffer1,buffer2,xpos):
     buffers should have equal width/height
     """
     
-    print(dimensions(buffer1))
-    print(dimensions(buffer2))
+    # print(dimensions(buffer1))
+    # print(dimensions(buffer2))
     
     buffer1 = buffer1.splitlines()
     buffer2 = buffer2.splitlines()
@@ -546,7 +564,7 @@ def mergeBuffers(buffer1,buffer2,xpos):
                 else:
                     c = buffer1[y][x]
             line = line + c
-        print (line)
+        # print (line)
         buffer = buffer + line + "\n"
     return buffer
 

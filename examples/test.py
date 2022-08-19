@@ -620,7 +620,7 @@ def perspsquares():
         tweet.convertSVGtoTweet(s.svgfile, "testing squares")
 
 def perspsquares2(flip, flipV):
-    s.svgfile = 'perspsquares.svg'
+    s.svgfile = 'perspsquares2.svg'
     # columns = 80
     # height = 69
     s.openfile(s.svgfile)
@@ -1357,9 +1357,9 @@ def stripessquares():
 # eighty1ties()
 # overlapscape()
 # feedmeweirdtxt()
-# perspsquares()
-# perspsquares2(True, True)
-intersect()
+perspsquares()
+perspsquares2(True, True)
+# intersect()
 # intersect2()
 # overlapstudy()
 # interferencepatterns()
@@ -1372,7 +1372,7 @@ intersect()
 # anomalybanner()
 # cuber()
 # xorPoints()
-xorfield()
+# xorfield()
 # prefilledbuffer = ""
 # for i in range(maxheight):
 #     prefilledbuffer = prefilledbuffer + columns * " " + "\n"

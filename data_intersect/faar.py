@@ -5,6 +5,7 @@
 ####  imports ##########
 ########################
 # own libraries
+from sre_parse import State
 import lib.starLC20 as p
 import lib.staremulator as s
 import lib.starDraw as sd
@@ -27,6 +28,7 @@ import mido
 ########  options ######################
 ########################################
 printit = False
+printit = True
 # tweetit = True
 tweetit = False
 global screenit
@@ -51,6 +53,8 @@ midicontrol = False
 ######################################
 global printing
 printing = False
+global state
+state = "init"
 
 ######################################
 ########## quicktests ################
@@ -485,7 +489,8 @@ if midicontrol:
 
 #1 Booting KaOS, bleeps and
 def bootseq():
-
+    global state
+    state = "boot"
     framewait = 0.5
     ast.initstage("scroll")
     ast.printFiglet("DATA ", "big", 2, ast.lines-2)
@@ -514,16 +519,76 @@ def bootseq():
     time.sleep(framewait)
     ast.doNoise(1,ast.columns-1,1,ast.lines-1,0.01,100)
     ast.initstage
-    
+    state = "done"
 
 
-bootseq()
-time.sleep(10)
+# bootseq()
+# time.sleep(10)
+
 ################
 #### signal ####
 ################
-
+def perspsquaressignal(times):
+    s.svgfile = 'perspsquaressignal.svg'
+    columns = max(80,ast.columns)
+    height = max(ast.lines,69)
+    s.openfile(s.svgfile)
+    chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    # chars= ["o"]
+    density = 8
+    p.setLineSpace(density)
+    s.setLineSpace(density) 
+    height = int(height*12/density)
+    for k in range(times):
+        sx = random.randint(1,columns)
+        sy =  random.randint(1,height)
+        size =  random.randint(8,18)
+        h = random.randint(size,ast.lines-1)
+        # size = 10
+        dx = random.randint(0,4) - 2
+        dy = random.randint(0,4) - 2
+        ds = random.randint(0,4) - 2
+        prevbuffer=""""""
+        for i in range(size):
+            # prevbuffer=""""""
+            x1 = sx + i*dx
+            x2 = sx + i + i*dx 
+            y1 = sy + i*dy
+            y2 = sy + i + i*dy
+            # print (x1,y1,x2,y2)
+            # szie = size - 1
+            charh = chars[random.randint(0,len(chars)-1)]
+            charv = chars[random.randint(0,len(chars)-1)]
+            # this here 
+            # charh = "-"
+            # charv = "|"
+            buffer = sd.square2(x1,y1,x2,y2,charh,charv)
+            # w,h = sd.dimensions(prevbuffer)
+            
+            if screenit:
+                # print (prevbuffer)
+                prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
+                ast.printMultilineonstage(prevbuffer, 0, h)
+                time.sleep(0.01)
+            if printit:
+                for i,l in enumerate(buffer.splitlines()):
+                    if (i<=height-1):
+                        if (l != ""):
+                            s.printXY(l, 0, height-h+i)
+                            s.printXY(l, 0, height-h+i)
+        # signature = signstring("squares")
+    # p.printXY(signature, 0, int(height))
+    # s.printXY(signature, 0, int(height))
+    s.closefile() 
+    # time.sleep(5)
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "testing squares")
 #1 receive trigger
+ast.initstage()
+perspsquaressignal(10)
+
+ast.printonstage("test", 23, 20)
+
 #2 harsh noises emitted, they fade out into delay, meanwhile 
 #3 printer starts printing
 #3 print signal! (lines?, overlapscapes, perspsquares, shape)

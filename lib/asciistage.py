@@ -52,7 +52,9 @@ def printonstage(text, x, y):
     global line,col
     if screenit:
         gotoline(y)
-        print(f"\033[{x}G" + text, end='',  flush=False)
+        s = f"\033[{x}G" + text
+        S = s[:columns] 
+        print(S, end='',  flush=False)
         # print(f"\b", flush=True)
         col = 0
 
@@ -232,17 +234,24 @@ def mergeFiglets (text1,text2,x1,y1,x2,y2):
     buffer2 = ""
     buffer1 = sd.padBuffer(text1, 0, 0, p1r, p1b)
     buffer2 = sd.padBuffer(text2, p2l, p2t, 0, 0)
+    # print("buffer1length = " , str(len(buffer1)))
     buffer1 = buffer1.splitlines()
     buffer2 = buffer2.splitlines()
 
     for y in range(len(buffer1)):
         line = ""
         for x in range(len(buffer1[0])):
-            c = buffer1[y][x]
+            try:
+                c = buffer1[y][x]
+            except:
+                c =" "
             if (c != " "):
                 c = buffer1[y][x]
             else:
-                c = buffer2[y][x]
+                try: 
+                    c = buffer2[y][x]
+                except:
+                    c=""
             line = line + c
         # print (line)
         buffer = buffer + line + "\n"
