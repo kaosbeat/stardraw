@@ -319,7 +319,7 @@ sample1;
 #X msg -108 188 bang;
 #X obj -132 225 t b b;
 #X obj -161 319 random 999999;
-#X msg -150 402 665666;
+#X msg -150 402 708131;
 #X text 56 106 reset;
 #N canvas 311 117 713 632 counter 0;
 #X obj 278 497 + 1;
@@ -1098,7 +1098,7 @@ sample1;
 #X msg -360 317 seed \$1;
 #X obj -360 296 + 44;
 #X obj -304 -75 loadbang;
-#X msg -312 -3 665666;
+#X msg -312 -3 708131;
 #X obj -378 -44 t b b b;
 #X msg -236 -23 847052;
 #X obj -329 348 random 11;
@@ -1954,8 +1954,8 @@ sample1;
 #X obj -83 538 random 7;
 #X obj 177 1086 tabwrite~ \$0sample1;
 #X obj 10 907 line~;
-#X msg -22 875 0.335938;
-#X msg 80 884 1 2656.25;
+#X msg -22 875 0.554688;
+#X msg 80 884 1 1781.25;
 #X msg -43 832 set \$1;
 #X obj -496 508 moses 0.01;
 #X obj -316 495 moses 0.01;
@@ -2306,17 +2306,25 @@ sample1;
 #X connect 18 0 1 0;
 #X restore 598 562 pd noiseshapes;
 #N canvas 3708 521 450 300 controls 1;
-#X obj 105 104 bng 15 250 50 0 empty empty BOOT 17 7 0 10 #00ff04 #000000
+#X obj 104 103 bng 15 250 50 0 empty empty BOOT 17 7 0 10 #00ff04 #000000
 #000000;
-#X obj 104 123 bng 15 250 50 0 empty empty SIGNAL1 17 7 0 10 #00faff
+#X obj 105 121 bng 15 250 50 0 empty empty SIGNAL1 17 7 0 10 #00faff
 #000000 #000000;
-#X obj 104 141 bng 15 250 50 0 empty empty SIGNAL2 17 7 0 10 #00faff
+#X obj 105 139 bng 15 250 50 0 empty empty SIGNAL2 17 7 0 10 #00faff
 #000000 #000000;
 #X obj 104 50 makenote;
 #X msg 100 195 0;
-#X obj 99 239 noteout 1;
+#X obj 100 236 noteout 3;
+#X msg 137 200 1;
+#X msg 209 196 23;
+#X msg 173 199 2;
 #X connect 0 0 4 0;
+#X connect 1 0 6 0;
+#X connect 2 0 8 0;
 #X connect 4 0 5 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
 #X coords 0 -1 1 1 85 60 1 100 100;
 #X restore 271 50 pd controls;
 #X connect 1 0 2 0;
