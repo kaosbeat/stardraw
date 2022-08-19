@@ -28,7 +28,7 @@ def gotoline(y):
             for i in range(line-y):
                 print(f"", flush=True)
         else:
-            print('\b',end='',flush=True)
+            print('\r',end='',flush=True)
         line = y
 
 def initstage(scrolltype="scroll"):
@@ -63,8 +63,8 @@ def printonstage(text, x, y):
         gotoline(y)
         s = f"\033[{x}G" + text
         S = s[:columns] 
-        print(S, end='',  flush=False)
-        col = 0
+        print(S, end='',  flush=True)
+        # col = 0
         
 
 def printMultilineonstage(multilinebuffer, x, y, lineForLine=False):

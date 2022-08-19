@@ -5,6 +5,7 @@
 ####  imports ##########
 ########################
 # own libraries
+from os import stat
 import lib.starLC20 as p
 import lib.staremulator as s
 import lib.starDraw as sd
@@ -54,7 +55,7 @@ midicontrol = True
 global printing
 printing = False
 global state
-state = "init"
+state = "done"
 
 ######################################
 ########## quicktests ################
@@ -82,6 +83,7 @@ if midicontrol:
     print("input", inportslist  )
     axodevlist = [axo for axo in portslist if "Axoloti" in axo]
     pddevlist = [pd for pd in portslist if "Pure Data" in pd]
+    pddevlistin = [pd for pd in inportslist if "Pure Data" in pd]
     if debug: print(axodevlist)
     if debug: print(pddevlist)
     
@@ -95,7 +97,8 @@ if midicontrol:
     # inport = mido.open_input('Midi Through:Midi Through Port-0 14:0')
     # inport = mido.open_input('Pure Data:Pure Data Midi-In 1 130:0')
     # inport = mido.open_input(inportslist[4])
-    inport = mido.open_input(inportslist[0])
+    # inport = mido.open_input(inportslist[0])
+    inport = mido.open_input(pddevlistin[0])
     # inport = mido.open_input('Pure Data:Pure Data Midi-Out 1 128:1')
 
 ##########################################
@@ -135,10 +138,20 @@ def midi_datanoise():
 ##########
 
 def midiparse(msg):
-    global data
-    # if debug: print(msg)
-    if msg.note > 2:
-        if debug: print(data[random.randint(0,len(data)-1)][2])
+    global state
+    # print(msg)
+    ast.printonstage("incoming data channel " + str(msg.channel+1) + "data: " + str(msg.note) + "current state =" + state, 0, ast.lines-1)
+    if debug: print(msg)
+    # if msg.note > 2:
+    #     if debug: print(data[random.randint(0,len(data)-1)][2])
+    if state == "done":
+        if msg.channel == 2:
+            if (msg.note == 0):
+                bootseq()
+            if (msg.note == 1):
+                perspsquaressignal(5)
+            if (msg.note == 2):
+                repSignal()
 
 
 
@@ -612,7 +625,7 @@ def perspsquaressignal(times):
 
 def repSignal():
     global state
-    state = "signal"
+    state = "signal2"
     # ast.blinkFiglet(10, ast.lines-10, "incoming signal", "big", 10, ast.lines - 25, "processing ...", "big", 0.5, 3)
     ### generate 1 row
     s.svgfile = 'repSignal.svg'
@@ -677,27 +690,28 @@ def repSignal():
     s.printXY(signature, 80-len(signature), int(height*12/p.linefeed)-int(1*12/p.linefeed))
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
-    s.closefile()    
+    s.closefile()
+    state="done"    
 
 def finishSignalCapture():
     global state
-    state = "signaldone"
+    state = "signalfinal"
     buffer = aa.phone
     ast.printMultilineonstage(aa.phone, 2,ast.lines - 3)
     # ast.blinkFiglet(buffer,1,2)
-
+    state = "done"
 
 #1 receive trigger
 # ast.initstage()
-ast.quickinit()
+# ast.quickinit()
+# perspsquaressignal(10)
+# ast.quickinit()
+# repSignal()
 
-perspsquaressignal(10)
-# repSignal()
-# ast.quickinit()
-# repSignal()
-# ast.quickinit()
-# finishSignalCapture()
-time.sleep(1)
+# # repSignal()
+# # ast.quickinit()
+# # finishSignalCapture()
+# time.sleep(1)
 # ast.printonstage("test", 23, 20)
 
 #2 harsh noises emitted, they fade out into delay, meanwhile 
@@ -739,4 +753,31 @@ time.sleep(1)
 
 # midi_printnoise
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######################################################
+##############  playoout ##############################
+#######################################################
+state == "done"
+ast.quickinit()
+while True:
+    # pass
+    if state == "done":
+        ast.printonstage("awaiting signal/data", 0,0)
+        time.sleep(0.1)
+        ast.printonstage("####################", 0,0)
+        time.sleep(0.1)
+        ast.printonstage("--------------------", 0,0)
+        time.sleep(0.1)
 
