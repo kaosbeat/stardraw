@@ -582,21 +582,21 @@ def perspsquaressignal(times):
             # charv = "|"
             buffer = sd.square2(x1,y1,x2,y2,charh,charv)
             # w,h = sd.dimensions(prevbuffer)
-            
-            if screenit:
-                prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
-                ast.printMultilineonstage(prevbuffer, 0, h)
-                time.sleep(0.1)
-                
             if printit:
                 for i,l in enumerate(buffer.splitlines()):
                     if (i<=height-1):
                         if (l != ""):
                             s.printXY(l, 0, height-h+i)
                             s.printXY(l, 0, height-h+i)
+            if screenit:
+                prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
+                ast.printMultilineonstage(prevbuffer, 0, h)
+                time.sleep(0.1)
+                
+
 
         midi_playsample(9)
-        time.sleep(5*random.random())
+        # time.sleep(5*random.random())
     signature = sd.signstring("signal squares")
     p.printXY(signature, 0, int(height))
     s.printXY(signature, 0, int(height))
