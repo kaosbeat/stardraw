@@ -13,6 +13,7 @@ import lib.font_anomaly as fa
 import lib.recaptcha as rc
 import lib.timers as tim
 import lib.asciistage as ast
+import faarasciiart as aa
 
 # other libs
 from pyfiglet import Figlet, figlet_format, print_figlet
@@ -671,17 +672,21 @@ def repSignal():
         tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
     s.closefile()    
 
+def finishSignalCapture():
+    buffer = aa.phone
+    ast.printMultilineonstage(aa.phone, 2,ast.lines - 3)
+    # ast.blinkFiglet(buffer,1,2)
 
 
 #1 receive trigger
 ast.initstage()
 # perspsquaressignal(10)
-repSignal()
+# repSignal()
 # ast.quickinit()
 # repSignal()
 # ast.quickinit()
-
-
+finishSignalCapture()
+time.sleep(1)
 # ast.printonstage("test", 23, 20)
 
 #2 harsh noises emitted, they fade out into delay, meanwhile 

@@ -64,8 +64,8 @@ def printonstage(text, x, y):
         s = f"\033[{x}G" + text
         S = s[:columns] 
         print(S, end='',  flush=False)
-        # print(f"\b", flush=True)
         col = 0
+        
 
 def printMultilineonstage(multilinebuffer, x, y, lineForLine=False):
     global screenit
@@ -77,6 +77,7 @@ def printMultilineonstage(multilinebuffer, x, y, lineForLine=False):
             if lineForLine: 
                 time.sleep(lineForLine)
             y -= 1
+        print(f"\b", flush=True)
 
 def figProps(text, font):
     """returns the string, width and height of rendered figlet"""
