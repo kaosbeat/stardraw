@@ -658,7 +658,7 @@ def repSignal():
         for i,L in enumerate(b.splitlines()):
             ast.printonstage(L,3, ast.lines-size*l-l-2-i)
             midi_sawglitch()
-            time.sleep(0.3)
+            time.sleep(0.5)
         
         s.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
         p.printBuffer(b,0,5+l*size+l,int(height*12/p.linefeed))
