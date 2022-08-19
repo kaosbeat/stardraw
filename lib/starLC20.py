@@ -9,10 +9,10 @@ warnings = False  ## enable to see emulation problems at stdout
 debug = False
 # allowLineWrap = True
 dropOverPrint = True ## if trying to print beyond column 80 drop it so lines don't wrap
-# lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
-dummy = os.open("/dev/null", os.O_RDWR)
-# dev = lp0 
-dev = dummy
+lp0 = os.open("/dev/usb/lp0", os.O_RDWR)
+# dummy = os.open("/dev/null", os.O_RDWR)
+dev = lp0 
+# dev = dummy
 columns = 80
 # lines = 120
 
