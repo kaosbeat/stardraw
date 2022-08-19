@@ -5,7 +5,6 @@
 ####  imports ##########
 ########################
 # own libraries
-from sre_parse import State
 import lib.starLC20 as p
 import lib.staremulator as s
 import lib.starDraw as sd
