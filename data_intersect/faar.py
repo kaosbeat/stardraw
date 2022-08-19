@@ -587,7 +587,7 @@ def perspsquaressignal(times):
                     if (i<=height-1):
                         if (l != ""):
                             s.printXY(l, 0, height-h+i)
-                            s.printXY(l, 0, height-h+i)
+                            p.printXY(l, 0, height-h+i)
             if screenit:
                 prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
                 ast.printMultilineonstage(prevbuffer, 0, h)
