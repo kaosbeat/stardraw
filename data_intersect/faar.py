@@ -544,6 +544,8 @@ def bootseq():
 #### signal ####
 ################
 def perspsquaressignal(times):
+    global state
+    state = "signal"
     s.svgfile = 'perspsquaressignal.svg'
     columns = max(80,ast.columns)
     height = max(ast.lines,69)
@@ -555,11 +557,11 @@ def perspsquaressignal(times):
     s.setLineSpace(density) 
     height = int(height*12/density)
     for k in range(times):
-        midi_playsample(41)
-        sx = random.randint(1,columns)
-        sy =  random.randint(1,height)
+        midi_playsample(random.randint(1,8))
         size =  random.randint(8,18)
-        h = random.randint(size,ast.lines-1)
+        sx = random.randint(1,columns-size-3)
+        sy =  random.randint(1,height-size-3)
+        h = random.randint(size+3,ast.lines-3)
         # size = 10
         dx = random.randint(0,4) - 2
         dy = random.randint(0,4) - 2
@@ -582,16 +584,19 @@ def perspsquaressignal(times):
             # w,h = sd.dimensions(prevbuffer)
             
             if screenit:
-                # print (prevbuffer)
                 prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
                 ast.printMultilineonstage(prevbuffer, 0, h)
                 time.sleep(0.1)
+                
             if printit:
                 for i,l in enumerate(buffer.splitlines()):
                     if (i<=height-1):
                         if (l != ""):
                             s.printXY(l, 0, height-h+i)
                             s.printXY(l, 0, height-h+i)
+
+        midi_playsample(9)
+        time.sleep(5*random.random())
     signature = sd.signstring("signal squares")
     p.printXY(signature, 0, int(height))
     s.printXY(signature, 0, int(height))
@@ -599,13 +604,15 @@ def perspsquaressignal(times):
     # time.sleep(5)
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "signal received")
-
+    state = "done"
 
 ############################
 ##### repeating signal #####
 ############################
 
 def repSignal():
+    global state
+    state = "signal"
     # ast.blinkFiglet(10, ast.lines-10, "incoming signal", "big", 10, ast.lines - 25, "processing ...", "big", 0.5, 3)
     ### generate 1 row
     s.svgfile = 'repSignal.svg'
@@ -673,19 +680,23 @@ def repSignal():
     s.closefile()    
 
 def finishSignalCapture():
+    global state
+    state = "signaldone"
     buffer = aa.phone
     ast.printMultilineonstage(aa.phone, 2,ast.lines - 3)
     # ast.blinkFiglet(buffer,1,2)
 
 
 #1 receive trigger
-ast.initstage()
-# perspsquaressignal(10)
+# ast.initstage()
+ast.quickinit()
+
+perspsquaressignal(10)
 # repSignal()
 # ast.quickinit()
 # repSignal()
 # ast.quickinit()
-finishSignalCapture()
+# finishSignalCapture()
 time.sleep(1)
 # ast.printonstage("test", 23, 20)
 

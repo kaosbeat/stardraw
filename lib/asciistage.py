@@ -77,7 +77,8 @@ def printMultilineonstage(multilinebuffer, x, y, lineForLine=False):
             if lineForLine: 
                 time.sleep(lineForLine)
             y -= 1
-        print(f"\b", flush=True)
+            # line = y
+        # print(f"\b", flush=True)
 
 def figProps(text, font):
     """returns the string, width and height of rendered figlet"""
