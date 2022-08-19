@@ -678,9 +678,9 @@ def repSignal():
 ast.initstage()
 # perspsquaressignal(10)
 repSignal()
-ast.quickinit()
-repSignal()
-ast.quickinit()
+# ast.quickinit()
+# repSignal()
+# ast.quickinit()
 
 
 # ast.printonstage("test", 23, 20)
