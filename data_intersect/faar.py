@@ -139,7 +139,7 @@ def midi_datanoise():
 
 def midiparse(msg):
     global state
-    # print(msg)
+    print(msg)
     ast.printonstage("incoming data channel " + str(msg.channel+1) + "data: " + str(msg.note) + "current state =" + state, 0, ast.lines-1)
     if debug: print(msg)
     # if msg.note > 2:
@@ -147,11 +147,12 @@ def midiparse(msg):
     if state == "done":
         if msg.channel == 2:
             if (msg.note == 0):
-                bootseq()
+                # bootseq()
+                state = "boot"
             if (msg.note == 1):
-                perspsquaressignal(5)
+                state = "perspsignal"
             if (msg.note == 2):
-                repSignal()
+                state = "repsignal"
 
 
 
@@ -771,6 +772,9 @@ def finishSignalCapture():
 #######################################################
 state == "done"
 ast.quickinit()
+# 
+
+# 
 while True:
     # pass
     if state == "done":
@@ -780,4 +784,12 @@ while True:
         time.sleep(0.1)
         ast.printonstage("--------------------", 0,0)
         time.sleep(0.1)
-
+    if state == "boot":
+        bootseq()
+    if state == "perspsignal":
+        perspsquaressignal(5)
+    if state == "repsignal":
+        repSignal()
+    if state == "signalfinal":
+        finishSignalCapture()
+        
