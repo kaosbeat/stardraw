@@ -17,3 +17,14 @@
 ### start faar.py in stardraw environment.
 - if screenit is True you will see a output to the console
 - for developing midi can be used as a debug, see debug.pd [pure data]
+
+
+
+
+
+# text
+spaced spacing space
+
+I've got data in my mind
+but I need space in my head
+

@@ -5,6 +5,7 @@
 ####  imports ##########
 ########################
 # own libraries
+from calendar import c
 from os import stat
 import lib.starLC20 as p
 import lib.staremulator as s
@@ -24,6 +25,7 @@ import datetime
 import db
 import time
 import mido
+import unicodedata as ud
 
 ########################################
 ########  options ######################
@@ -133,12 +135,24 @@ def midi_datanoise():
         msg = mido.Message('note_on', channel=0, note=42, velocity=127, time=0)
         outport.send(msg)  
 
+def midi_datascrollerbeat(cursor, status):
+    try:
+        sample = db.relationshipstatussesstripped.index(status)
+    except ValueError:
+        sample = 0
+    if cursor%2 == 0:
+        midi_playsample(44)
+    
+    midi_playsample(sample+61)
+        
+
 ##########
 ### IN ###
 ##########
 
 def midiparse(msg):
     global state
+    state = "done"
     print(msg)
     ast.printonstage("incoming data channel " + str(msg.channel+1) + "data: " + str(msg.note) + "current state =" + state, 0, ast.lines-1)
     if debug: print(msg)
@@ -153,6 +167,8 @@ def midiparse(msg):
                 state = "perspsignal"
             if (msg.note == 2):
                 state = "repsignal"
+            if (msg.note == 3):
+                state = "datascroller"
 
 
 
@@ -543,11 +559,21 @@ def bootseq():
     ast.scrollFiglet("STUDY", "big", 10, 0.01, 2)
     #2 data intersect studies  ,
     #3  waiting for signal
+    # ast.initstage()
+    # ast.blinkFiglet(15,15,"21 oktober 2022","big", 15,20,"@atelier _ FAAR \n Deurne",None,0.8,8)
+    # time.sleep(framewait)
+    # ast.doNoise(1,ast.columns-1,1,ast.lines-1,0.01,100)
+    
+    # ast.initstage()
+    # time.sleep(framewait)
+    # ast.printFiglet("expo        - 18u", "big", 6, ast.lines-2)
+    # time.sleep(framewait)
+    # ast.printFiglet("modular set - 20u30", "big", 6, ast.lines-8)
+    # time.sleep(framewait)
+    # ast.printFiglet("DJ Dago    -  21u30 ", "big", 6, ast.lines-15)
     ast.initstage()
-    ast.blinkFiglet(2,20,"waiting for","big", 2,20,"signal!",None,0.5,)
-    time.sleep(framewait)
-    ast.doNoise(1,ast.columns-1,1,ast.lines-1,0.01,100)
-    ast.initstage
+    ast.blinkFiglet(15,20,"waiting \n for signal","big", 15,20," ",None,0.8,8)
+
     state = "done"
 
 
@@ -702,6 +728,38 @@ def finishSignalCapture():
     # ast.blinkFiglet(buffer,1,2)
     state = "done"
 
+def strip2ascii(str):
+    if str.isascii() == False:
+        asciistring = ""
+        for c in str:
+            if ord(c) < 128:
+                asciistring+=c
+            else:
+                asciistring+="X"
+    else:
+        asciistring = str 
+    return asciistring   
+
+
+def scrollNumbersData():
+    global state
+    state = "datascroller"
+    data = db.getAntwerpNamesAndData()
+    cursor = 0
+    while (state == "datascroller" and cursor < len(data)):
+        status = strip2ascii( data[cursor][9] )
+        if status == "": status  = " "
+        name = strip2ascii( data[cursor][2] )
+        ast.blinkFiglet(2, ast.lines-2,status, "big", 2, ast.lines-2," ","big",0.01,1)
+        ast.blinkFiglet(2, ast.lines-10,name, "big", 2, ast.lines-10,"____________________________________________","big",0.01,4)
+        ast.printFiglet(name,"big", 2, ast.lines-10)
+        midi_datascrollerbeat(cursor, status)
+        cursor += 1
+    state = "done"
+
+
+
+
 #1 receive trigger
 # ast.initstage()
 # ast.quickinit()
@@ -785,6 +843,7 @@ while True:
         ast.printonstage("--------------------", 0,0)
         time.sleep(0.1)
     if state == "boot":
+        # scrollNumbersData()
         bootseq()
     if state == "perspsignal":
         perspsquaressignal(5)
@@ -792,4 +851,5 @@ while True:
         repSignal()
     if state == "signalfinal":
         finishSignalCapture()
-        
+    if state == "datascroller":
+        scrollNumbersData()

@@ -1,4 +1,4 @@
-#N canvas 167 0 977 893 12;
+#N canvas 3257 168 1233 1152 12;
 #X floatatom 98 104 3 0 0 0 - - - 0;
 #X obj 37 23 notein;
 #X obj 37 49 stripnote;
@@ -6,29 +6,28 @@
 #X text 37 -1 MIDI IN;
 #X obj 38 129 bng 20 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 358 248 soundfiler;
+#X obj 746 206 soundfiler;
 #X text 420 123 load table;
 #X obj 375 104 loadbang;
 #N canvas 0 0 450 300 (subpatch) 0;
 #X array sample1 65664 float 0;
 #X coords 0 1 65663 -1 250 200 1 0 0;
-#X restore 687 41 graph;
+#X restore 343 856 graph;
 #X obj 44 457 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #N canvas 0 0 450 300 (subpatch) 0;
 #X array sample2 236160 float 0;
 #X coords 0 1 236159 -1 250 200 1 0 0;
-#X restore 687 278 graph;
+#X restore 613 857 graph;
 #X obj 277 558 tabplay~ sample2;
 #X obj 295 520 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X msg 452 211 read -resize /home/kaos/samples/spacesamples/Soyuz3commandoff.wav
+#X msg 793 74 read -resize /home/kaos/samples/spacesamples/Soyuz3commandoff.wav
 sample2;
-#X msg 340 169 read -resize /home/kaos/samples/spacesamples/expl1sh.wav
+#X msg 794 33 read -resize /home/kaos/samples/spacesamples/expl1sh.wav
 sample1;
 #X msg 427 137 87;
 #X obj 117 542 tabplay~ sample1;
-#X obj 39 177 select 41 42 43;
 #N canvas 3207 96 992 777 sawshapes 0;
 #X obj 77 315 phasor~;
 #X obj 106 121 bng 35 250 50 0 empty empty empty 17 7 0 10 #00faff
@@ -319,7 +318,7 @@ sample1;
 #X msg -108 188 bang;
 #X obj -132 225 t b b;
 #X obj -161 319 random 999999;
-#X msg -150 402 300902;
+#X msg -150 402 769034;
 #X text 56 106 reset;
 #N canvas 311 117 713 632 counter 0;
 #X obj 278 497 + 1;
@@ -1098,7 +1097,7 @@ sample1;
 #X msg -360 317 seed \$1;
 #X obj -360 296 + 44;
 #X obj -304 -75 loadbang;
-#X msg -312 -3 300902;
+#X msg -312 -3 769034;
 #X obj -378 -44 t b b b;
 #X msg -236 -23 847052;
 #X obj -329 348 random 11;
@@ -1954,8 +1953,8 @@ sample1;
 #X obj -83 538 random 7;
 #X obj 177 1086 tabwrite~ \$0sample1;
 #X obj 10 907 line~;
-#X msg -22 875 0.3125;
-#X msg 80 884 1 2750;
+#X msg -22 875 0.609375;
+#X msg 80 884 1 1562.5;
 #X msg -43 832 set \$1;
 #X obj -496 508 moses 0.01;
 #X obj -316 495 moses 0.01;
@@ -2304,51 +2303,167 @@ sample1;
 #X connect 17 0 15 1;
 #X connect 17 0 18 1;
 #X connect 18 0 1 0;
-#X restore 598 562 pd noiseshapes;
-#N canvas 822 455 450 300 controls 0;
-#X obj 104 103 bng 15 250 50 0 empty empty BOOT 17 7 0 10 #00ff04 #000000
+#X restore 785 607 pd noiseshapes;
+#N canvas 3405 212 488 410 controls 0;
+#X obj 103 117 bng 15 250 50 0 empty empty BOOT 17 7 0 10 #00ff04 #000000
 #000000;
-#X obj 105 121 bng 15 250 50 0 empty empty SIGNAL1 17 7 0 10 #00faff
+#X obj 104 135 bng 15 250 50 0 empty empty SIGNAL1 17 7 0 10 #00faff
 #000000 #000000;
-#X obj 105 139 bng 15 250 50 0 empty empty SIGNAL2 17 7 0 10 #00faff
+#X obj 104 153 bng 15 250 50 0 empty empty SIGNAL2 17 7 0 10 #00faff
 #000000 #000000;
 #X obj 104 50 makenote;
-#X msg 100 195 0;
-#X obj 100 236 noteout 3;
-#X msg 137 200 1;
-#X msg 209 196 23;
-#X msg 173 199 2;
+#X msg 101 273 0;
+#X obj 101 314 noteout 3;
+#X msg 138 278 1;
+#X msg 174 277 2;
+#X obj 105 170 bng 15 250 50 0 empty empty SIGNAL3 17 7 0 10 #00faff
+#000000 #000000;
+#X msg 210 274 3;
 #X connect 0 0 4 0;
 #X connect 1 0 6 0;
-#X connect 2 0 8 0;
+#X connect 2 0 7 0;
 #X connect 4 0 5 0;
 #X connect 6 0 5 0;
 #X connect 7 0 5 0;
-#X connect 8 0 5 0;
-#X coords 0 -1 1 1 85 60 1 100 100;
+#X connect 8 0 9 0;
+#X connect 9 0 5 0;
+#X coords 0 -1 1 1 85 120 1 100 100;
 #X restore 271 50 pd controls;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array kick 16415 float 0;
+#X coords 0 1 16414 -1 250 200 1 0 0;
+#X restore 52 850 graph;
+#X msg 791 159 read -resize /home/kaos/samples/tidal/samples-extra/kick/KICK39.wav
+kick;
+#X obj 653 536 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 587 563 tabplay~ kick;
+#X obj 22 177 select 41 42 43 44;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare1 17280 float 0;
+#X coords 0 1 17279 -1 250 200 1 0 0;
+#X restore 53 1094 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare2 8852 float 0;
+#X coords 0 1 8851 -1 250 200 1 0 0;
+#X restore 326 1095 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare3 8833 float 0;
+#X coords 0 1 8832 -1 250 200 1 0 0;
+#X restore 593 1094 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare4 8897 float 0;
+#X coords 0 1 8896 -1 250 200 1 0 0;
+#X restore 866 1095 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare5 13057 float 0;
+#X coords 0 1 13056 -1 250 200 1 0 0;
+#X restore 53 1333 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare6 15105 float 0;
+#X coords 0 1 15104 -1 250 200 1 0 0;
+#X restore 326 1334 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare7 7505 float 0;
+#X coords 0 1 7504 -1 250 200 1 0 0;
+#X restore 593 1333 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array snare8 7553 float 0;
+#X coords 0 1 7552 -1 250 200 1 0 0;
+#X restore 866 1334 graph;
+#X msg 751 246 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE1.wav
+snare1, f 63;
+#X msg 756 287 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE2.wav
+snare2, f 63;
+#X msg 758 412 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE5.wav
+snare5, f 63;
+#X msg 749 328 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE3.wav
+snare3, f 63;
+#X msg 754 369 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE4.wav
+snare4, f 63;
+#X msg 763 453 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE6.wav
+snare6, f 63;
+#X msg 756 494 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE7.wav
+snare7, f 63;
+#X msg 761 535 read -resize /home/kaos/samples/tidal/samples-extra/snare/SNARE8.wav
+snare8, f 63;
+#X obj 1233 256 tabplay~ snare1;
+#X obj 1351 257 dac~;
+#X obj 1357 295 dac~;
+#X obj 1237 294 tabplay~ snare2;
+#X obj 1357 341 dac~;
+#X obj 1360 375 dac~;
+#X obj 1238 342 tabplay~ snare3;
+#X obj 1239 379 tabplay~ snare4;
+#X obj 1362 419 dac~;
+#X obj 1359 459 dac~;
+#X obj 1360 506 dac~;
+#X obj 1354 543 dac~;
+#X obj 1239 420 tabplay~ snare5;
+#X obj 1238 458 tabplay~ snare6;
+#X obj 1239 506 tabplay~ snare7;
+#X obj 1240 543 tabplay~ snare8;
+#X obj 1235 210 select 61 62 63 64 65 66 67 68;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
 #X connect 2 0 3 0;
-#X connect 2 0 18 0;
-#X connect 2 0 21 0;
+#X connect 2 0 20 0;
+#X connect 2 0 26 0;
+#X connect 2 0 59 0;
 #X connect 2 1 0 0;
 #X connect 3 0 5 0;
 #X connect 8 0 15 0;
 #X connect 8 0 14 0;
 #X connect 8 0 16 0;
 #X connect 10 0 17 0;
-#X connect 12 0 20 0;
-#X connect 12 0 20 1;
+#X connect 12 0 19 0;
+#X connect 12 0 19 1;
 #X connect 13 0 12 0;
 #X connect 14 0 6 0;
 #X connect 15 0 6 0;
-#X connect 17 0 20 0;
-#X connect 17 0 20 1;
-#X connect 18 0 17 0;
-#X connect 18 1 12 0;
-#X connect 18 2 19 0;
-#X connect 19 0 20 0;
-#X connect 19 1 20 1;
-#X connect 21 0 20 0;
-#X connect 21 1 20 1;
+#X connect 17 0 19 0;
+#X connect 17 0 19 1;
+#X connect 18 0 19 0;
+#X connect 18 1 19 1;
+#X connect 20 0 19 0;
+#X connect 20 1 19 1;
+#X connect 23 0 6 0;
+#X connect 24 0 25 0;
+#X connect 25 0 19 0;
+#X connect 25 0 19 1;
+#X connect 26 0 17 0;
+#X connect 26 1 12 0;
+#X connect 26 2 18 0;
+#X connect 26 3 25 0;
+#X connect 35 0 6 0;
+#X connect 36 0 6 0;
+#X connect 37 0 6 0;
+#X connect 38 0 6 0;
+#X connect 39 0 6 0;
+#X connect 40 0 6 0;
+#X connect 41 0 6 0;
+#X connect 42 0 6 0;
+#X connect 43 0 44 0;
+#X connect 43 0 44 1;
+#X connect 46 0 45 0;
+#X connect 46 0 45 1;
+#X connect 49 0 47 0;
+#X connect 49 0 47 1;
+#X connect 50 0 48 0;
+#X connect 50 0 48 1;
+#X connect 55 0 51 0;
+#X connect 55 0 51 1;
+#X connect 56 0 52 0;
+#X connect 56 0 52 1;
+#X connect 57 0 53 0;
+#X connect 57 0 53 1;
+#X connect 58 0 54 0;
+#X connect 58 0 54 1;
+#X connect 59 0 43 0;
+#X connect 59 1 46 0;
+#X connect 59 2 49 0;
+#X connect 59 3 50 0;
+#X connect 59 4 55 0;
+#X connect 59 5 56 0;
+#X connect 59 6 57 0;
+#X connect 59 7 58 0;

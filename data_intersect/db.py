@@ -13,7 +13,10 @@ cur16 = con16.cursor()
 # cur.execute( 'SELECT * FROM db_sanitized14 WHERE relationshipstatus = "It\'s complicated"')
 # cur.execute( 'SELECT relationshipstatus FROM db_sanitized14 WHERE relationshipstatus != ""' )
 global relationshipstatusses
-relationshipstatusses = ["\"In a relationship\"",  "\"It\'s complicated\"", "\"Divorced\"", "\"Engaged\"", "\"Widowed\"", "\"Single\"", "\"Married\"", "\"\""] 
+global relationshipstatussesstripped
+relationshipstatusses = ["\"In a relationship\"",  "\"It\'s complicated\"", "\"Divorced\"", "\"Engaged\"", "\"Widowed\"", "\"Single\"", "\"Married\"", "\"In an open relationship\"",  "\"\""] 
+relationshipstatussesstripped = ["In a relationship",  "It\'s complicated", "Divorced", "Engaged", "Widowed", "Single", "Married", "In an open relationship"," "] 
+
 global data
 global debug
 debug = False
@@ -122,6 +125,30 @@ def GetMostFRequentNameInRelationstatus(relationshipstatus):
     # if debug: print(data)
     if debug: print(len(data), "persons in database with relationshipstatus = ", relationshipstatus)
     if debug: print(data[-1][0], "is the most common name for a ", relationshipstatus)
+    return data
+
+
+def getDivorcedNamesAndData():
+    relationshipstatus = "\"Divorced\""
+    city = "Antwerp"
+    statement=  '''
+    SELECT * FROM db_sanitized16  WHERE relationshipstatus = ''' + relationshipstatus + ''' AND (city LIKE '%'''+city+'''%' OR workcity LIKE '%'''+city+'''%')
+    '''
+    cur16.execute(statement)
+    data =  list(cur16)
+    return data
+
+
+def getAntwerpNamesAndData():
+    city = "Antwerp"
+    # status1 =
+    # status2 =
+    # status3 = 
+    statement=  '''
+    SELECT * FROM db_sanitized16  WHERE (city LIKE '%'''+city+'''%' OR workcity LIKE '%'''+city+'''%') AND (relationshipstatus = \"Divorced\" OR relationshipstatus = \"Single\" OR relationshipstatus = \"Married\")
+    '''
+    cur16.execute(statement)
+    data =  list(cur16)
     return data
 
 
