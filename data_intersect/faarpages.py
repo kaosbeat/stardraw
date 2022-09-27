@@ -20,7 +20,7 @@ from itertools import cycle
 import random
 
 tweetit = True
-# tweetit = False
+tweetit = False
 
 
 def invertedCat(word, scale, spacing, xmov):
@@ -30,7 +30,7 @@ def invertedCat(word, scale, spacing, xmov):
     """    
     global state
     global height, columns 
-    columns = 80
+    columns = 78
     height = 69
     state = "invertedCat"
     
@@ -107,6 +107,6 @@ def invertedCat(word, scale, spacing, xmov):
         tweet.convertSVGtoTweet(s.svgfile, "prompts context, inverted " + word)
     state = "done"
 
-invertedCat("very", 4, 6, 15 )
+invertedCat("psychedelic", 4, 8, 15 )
 
 # print(pq.wordContext("cat"))
