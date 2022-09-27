@@ -19,6 +19,10 @@ import lib.promptqueries as pq
 from itertools import cycle
 import random
 
+tweetit = True
+# tweetit = False
+
+
 def invertedCat(word, scale, spacing, xmov):
     """
     inverted cat writes cat by leaving out cat and filling 
@@ -99,8 +103,10 @@ def invertedCat(word, scale, spacing, xmov):
                 sc+=1
         t += 1 
     s.closefile() 
+    if tweetit:
+        tweet.convertSVGtoTweet(s.svgfile, "prompts context, inverted " + word)
     state = "done"
 
-invertedCat("sound", 3, 7, 15 )
+invertedCat("very", 4, 6, 15 )
 
 # print(pq.wordContext("cat"))
