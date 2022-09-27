@@ -13,7 +13,7 @@ import lib.timers as tim
 import lib.asciistage as ast
 import faarasciiart as aa
 import lib.promptqueries as pq
-
+from lib.asciitools import strip2ascii
 
 ### other imports
 from itertools import cycle
@@ -55,7 +55,7 @@ def invertedCat(word, scale, spacing, xmov):
             letterline = ""
             for c in line:
                 if c == "x":
-                    letterline += next(words)
+                    letterline += strip2ascii(next(words))
                 else:
                     letterline += " "
             line = letterline 
@@ -79,7 +79,7 @@ def invertedCat(word, scale, spacing, xmov):
                     letterline = ""
                     for c in line:
                         if c == "x":
-                            letterline += next(words)
+                            letterline += strip2ascii(next(words))
                         else:
                             letterline += " "
                     line = letterline 
@@ -93,7 +93,7 @@ def invertedCat(word, scale, spacing, xmov):
                 letterline = ""
                 for c in line:
                     if c == "x":
-                        letterline += next(words)
+                        letterline += strip2ascii(next(words))
                     else:
                         letterline += " "
                 line = letterline 
@@ -107,6 +107,6 @@ def invertedCat(word, scale, spacing, xmov):
         tweet.convertSVGtoTweet(s.svgfile, "prompts context, inverted " + word)
     state = "done"
 
-invertedCat("diving", 4, 8, 15 )
+invertedCat("artificial", 4, 8, 15 )
 
 # print(pq.wordContext("cat"))
