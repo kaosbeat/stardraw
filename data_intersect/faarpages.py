@@ -107,6 +107,6 @@ def invertedCat(word, scale, spacing, xmov):
         tweet.convertSVGtoTweet(s.svgfile, "prompts context, inverted " + word)
     state = "done"
 
-invertedCat("data", 4, 8, 15 )
+invertedCat("diving", 4, 8, 15 )
 
 # print(pq.wordContext("cat"))
