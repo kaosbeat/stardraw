@@ -37,6 +37,9 @@ def invertedCat(word, scale, spacing, xmov):
     p.setLineSpace(spacing)
     words = cycle(pq.wordContext(word))
     # scale = 2
+    if  2*xmov > columns - 5*scale:
+        xmov = int((columns - 5*scale) / 2) -1
+
     
     times = 1
     t = 0
@@ -57,7 +60,7 @@ def invertedCat(word, scale, spacing, xmov):
             ycursor += 1 
             sc+=1
         for letter in word:
-            xoffset = random.randint(0,columns - 5*scale) 
+            xoffset = random.randint(xmov,columns - 5*scale) 
             for l in fa.font5x7[letter]:
                 sc = 0
                 while sc < scale:
@@ -98,6 +101,6 @@ def invertedCat(word, scale, spacing, xmov):
     s.closefile() 
     state = "done"
 
-invertedCat("cyber", 3, 7, 0 )
+invertedCat("sexy", 4, 6, 10 )
 
 # print(pq.wordContext("cat"))
