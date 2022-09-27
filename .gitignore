@@ -1,3 +1,5 @@
+data/prompts.db
+
 *.sqlite
 *.csv
 # Byte-compiled / optimized / DLL files
