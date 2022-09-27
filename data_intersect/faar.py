@@ -16,6 +16,7 @@ import lib.recaptcha as rc
 import lib.timers as tim
 import lib.asciistage as ast
 import faarasciiart as aa
+from lib.asciitools import strip2ascii
 
 # other libs
 from pyfiglet import Figlet, figlet_format, print_figlet
@@ -728,17 +729,6 @@ def finishSignalCapture():
     # ast.blinkFiglet(buffer,1,2)
     state = "done"
 
-def strip2ascii(str):
-    if str.isascii() == False:
-        asciistring = ""
-        for c in str:
-            if ord(c) < 128:
-                asciistring+=c
-            else:
-                asciistring+="X"
-    else:
-        asciistring = str 
-    return asciistring   
 
 
 def scrollNumbersData():
