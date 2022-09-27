@@ -60,7 +60,7 @@ def invertedCat(word, scale, spacing, xmov):
             ycursor += 1 
             sc+=1
         for letter in word:
-            xoffset = random.randint(xmov,columns - 5*scale) 
+            xoffset = random.randint(xmov,columns - 5*scale-xmov) 
             for l in fa.font5x7[letter]:
                 sc = 0
                 while sc < scale:
@@ -101,6 +101,6 @@ def invertedCat(word, scale, spacing, xmov):
     s.closefile() 
     state = "done"
 
-invertedCat("sexy", 4, 6, 10 )
+invertedCat("sound", 3, 7, 15 )
 
 # print(pq.wordContext("cat"))
