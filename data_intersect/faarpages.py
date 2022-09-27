@@ -17,9 +17,9 @@ import lib.promptqueries as pq
 
 ### other imports
 from itertools import cycle
+import random
 
-
-def invertedCat(word, scale):
+def invertedCat(word, scale, spacing, xmov):
     """
     inverted cat writes cat by leaving out cat and filling 
     the rest of the page with charachters and words associated with the word
@@ -32,9 +32,9 @@ def invertedCat(word, scale):
     
     s.svgfile = 'invertedcat.svg'
     s.openfile(s.svgfile)
-    s.setLineSpace(6)
+    s.setLineSpace(spacing)
     # s.setLineSpace(7)
-    p.setLineSpace(6)
+    p.setLineSpace(spacing)
     words = cycle(pq.wordContext(word))
     # scale = 2
     
@@ -57,6 +57,7 @@ def invertedCat(word, scale):
             ycursor += 1 
             sc+=1
         for letter in word:
+            xoffset = random.randint(0,columns - 5*scale) 
             for l in fa.font5x7[letter]:
                 sc = 0
                 while sc < scale:
@@ -66,7 +67,8 @@ def invertedCat(word, scale):
                             bl = bl + " "*scale
                         else:
                             bl = bl + "x"*scale 
-                    line = "x"*int(columns/2-len(bl)/2) + bl + "x"*int(columns/2-len(bl)/2)
+                    # line = "x"*int(columns/2-len(bl)/2) + bl + "x"*int(columns/2-len(bl)/2)
+                    line = "x"*xoffset + bl + "x"*int(columns-len(bl)-xoffset)
                     letterline = ""
                     for c in line:
                         if c == "x":
@@ -96,6 +98,6 @@ def invertedCat(word, scale):
     s.closefile() 
     state = "done"
 
-invertedCat("space", 3)
+invertedCat("cyber", 3, 7, 0 )
 
 # print(pq.wordContext("cat"))
