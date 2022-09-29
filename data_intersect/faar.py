@@ -5,8 +5,6 @@
 ####  imports ##########
 ########################
 # own libraries
-from calendar import c
-from os import stat
 import lib.starLC20 as p
 import lib.staremulator as s
 import lib.starDraw as sd
@@ -15,7 +13,8 @@ import lib.font_anomaly as fa
 import lib.recaptcha as rc
 import lib.timers as tim
 import lib.asciistage as ast
-from faarpages import invertedCat
+# from faarpages import invertedCat
+import faarscreens as fs
 import faarasciiart as aa
 from lib.asciitools import strip2ascii
 
@@ -50,8 +49,8 @@ db.debug = debug
 svg = True
 sign = True
 title = "starLC20"
-# midicontrol = True
-midicontrol = False
+midicontrol = True
+# midicontrol = False
 
 ######################################
 ############ globals #################
@@ -60,7 +59,8 @@ global printing
 printing = False
 global state
 state = "done"
-
+global invertedcatstates
+invertedcatstates = {"word": "test", "masktype": "fill", "cyclepoint":0.5, "cyclewidth":0.2 }
 ######################################
 ########## quicktests ################
 ######################################
@@ -90,7 +90,7 @@ if midicontrol:
     pddevlistin = [pd for pd in inportslist if "Pure Data" in pd]
     if debug: print(axodevlist)
     if debug: print(pddevlist)
-    
+
     if len(axodevlist) > 0 :
         outport = mido.open_output(axodevlist[0])
     else:
@@ -135,7 +135,7 @@ def midi_printnoise():
 def midi_datanoise():
     if midicontrol:
         msg = mido.Message('note_on', channel=0, note=42, velocity=127, time=0)
-        outport.send(msg)  
+        outport.send(msg)
 
 def midi_datascrollerbeat(cursor, status):
     try:
@@ -144,20 +144,22 @@ def midi_datascrollerbeat(cursor, status):
         sample = 0
     if cursor%2 == 0:
         midi_playsample(44)
-    
+
     midi_playsample(sample+61)
-        
+
 
 ##########
 ### IN ###
 ##########
 
 def midiparse(msg):
-    global state
+    global state, invertedcatstates
     state = "done"
-    print(msg)
-    ast.printonstage("incoming data channel " + str(msg.channel+1) + "data: " + str(msg.note) + "current state =" + state, 0, ast.lines-1)
-    if debug: print(msg)
+    # print(msg)
+    if debug: 
+        print(msg)
+        ast.printonstage("incoming data channel " + str(msg.channel+1) + "data: " + str(msg.note) + "current state =" + state, 0, ast.lines-1)
+    
     # if msg.note > 2:
     #     if debug: print(data[random.randint(0,len(data)-1)][2])
     if state == "done":
@@ -165,13 +167,29 @@ def midiparse(msg):
             if (msg.note == 0):
                 # bootseq()
                 state = "boot"
-            if (msg.note == 1):
+            elif (msg.note == 1):
                 state = "perspsignal"
-            if (msg.note == 2):
+            elif (msg.note == 2):
                 state = "repsignal"
-            if (msg.note == 3):
+            elif (msg.note == 3):
                 state = "datascroller"
-
+            elif (msg.note == 4):
+                state = "invertedcat"
+                if msg.velocity == 1:
+                    invertedcatstates["masktype"] = "fill"
+                elif msg.velocity == 2:
+                    invertedcatstates["masktype"] = "noise"
+                elif msg.velocity == 3:
+                    invertedcatstates["masktype"] = "invert"                
+                elif msg.velocity == 4:
+                    invertedcatstates["masktype"] = "none"
+            elif (msg.note == 5):
+                state = "invertedcat"
+                invertedcatstates["cyclepoint"] = msg.velocity/127
+            elif msg.note == 6:
+                state = "invertedcat"
+                invertedcatstates["cyclewidth"]= msg.velocity/127
+                    
 
 
 
@@ -309,7 +327,7 @@ def rshapes(names1, names2, title):
                 line = line + " "
             # if debug: print(len(line))
             for x in range(c2):
-                try: 
+                try:
                     names1[count1]
                 except IndexError:
                     count1 = 0
@@ -351,7 +369,7 @@ def rshapes(names1, names2, title):
                 line = line + " "
             # if debug: print(len(line))
             for x in range(c2):
-                try: 
+                try:
                     names2[count2]
                 except IndexError:
                     count2 = 0
@@ -412,7 +430,7 @@ if True:
         # ast.printFiglet(name[0],"big")
         # ast.printonstage(name[0], x, y)
         # time.sleep(0.1)
-        
+
     names1 = list(names1)
     names2 = ""
     for name in data2:
@@ -473,7 +491,7 @@ def imnotarobot(blah):
 
 def startprintwithdata(blagh):
     global printing
-    if not printing:    
+    if not printing:
         printing = True
         if debug: print("trying to make sound")
         printjob("from robot") ##blocking
@@ -491,7 +509,7 @@ def startprintwithdata(blagh):
 #             print ("this ir sunning from the main")
 #             # putPersonInTable()
 #     except KeyboardInterrupt:
-#         pass    
+#         pass
 
 if midicontrol:
     inport.callback = midiparse
@@ -565,7 +583,7 @@ def bootseq():
     # ast.blinkFiglet(15,15,"21 oktober 2022","big", 15,20,"@atelier _ FAAR \n Deurne",None,0.8,8)
     # time.sleep(framewait)
     # ast.doNoise(1,ast.columns-1,1,ast.lines-1,0.01,100)
-    
+
     # ast.initstage()
     # time.sleep(framewait)
     # ast.printFiglet("expo        - 18u", "big", 6, ast.lines-2)
@@ -596,7 +614,7 @@ def perspsquaressignal(times):
     # chars= ["o"]
     density = 8
     p.setLineSpace(density)
-    s.setLineSpace(density) 
+    s.setLineSpace(density)
     height = int(height*12/density)
     for k in range(times):
         midi_playsample(random.randint(1,8))
@@ -612,14 +630,14 @@ def perspsquaressignal(times):
         for i in range(size):
             # prevbuffer=""""""
             x1 = sx + i*dx
-            x2 = sx + i + i*dx 
+            x2 = sx + i + i*dx
             y1 = sy + i*dy
             y2 = sy + i + i*dy
             # print (x1,y1,x2,y2)
             # szie = size - 1
             charh = chars[random.randint(0,len(chars)-1)]
             charv = chars[random.randint(0,len(chars)-1)]
-            # this here 
+            # this here
             # charh = "-"
             # charv = "|"
             buffer = sd.square2(x1,y1,x2,y2,charh,charv)
@@ -634,7 +652,7 @@ def perspsquaressignal(times):
                 prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
                 ast.printMultilineonstage(prevbuffer, 0, h)
                 time.sleep(0.1)
-                
+
 
 
         midi_playsample(9)
@@ -642,7 +660,7 @@ def perspsquaressignal(times):
     signature = sd.signstring("signal squares")
     p.printXY(signature, 0, int(height))
     s.printXY(signature, 0, int(height))
-    s.closefile() 
+    s.closefile()
     # time.sleep(5)
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "signal received")
@@ -666,12 +684,12 @@ def repSignal():
     p.setLineSpace(12)
     # p.setLineSpace(7)
     x = 6
-    y = 5 # y=5 fits page with setLineSpace 12, when using setLinespace(7), y can be 8 
+    y = 5 # y=5 fits page with setLineSpace 12, when using setLinespace(7), y can be 8
     size = int(columns/(x+1))
     margin = int((columns - (x*size)) / x)
     chars = ["*","X", "#","+", "=", "-", "<", ">" ,".", "*","X", "#","+", "=", "-", "<", ">" ,"."]
     # chars = ["1","2", "3","4", "5", "6", "7", "8" ,"9", "0","a", "b","c", "d", "e", "f", "g" ,"h"]
-    count=0 
+    count=0
     buffer = ""
     pagebuffer = ""
     screenbuffer = []
@@ -689,7 +707,7 @@ def repSignal():
                 linebuf = noisebuf*chars[k+l] + (size-noisebuf)*chars[random.randint(0,len(chars)-1)]
                 if anomalyx[k] < size:
                     anomalyx[k] = anomalyx[k] + 1
-                line = line + linebuf + " "*int(margin) 
+                line = line + linebuf + " "*int(margin)
             buffer = buffer + line + "\n"
         for i in range(margin):
             line =""
@@ -720,7 +738,7 @@ def repSignal():
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "anomaly squares")
     s.closefile()
-    state="done"    
+    state="done"
 
 def finishSignalCapture():
     global state
@@ -755,10 +773,16 @@ def scrollNumbersData():
 ######## inverted CAT ############
 ##################################
 def invertcatstage():
-    buffer = invertedCat("study", 3, 8, 15 )
-    ast.printMultilineonstage(buffer, 0,ast.lines)        
-
-
+    global invertedcatstates, state
+    testword = "cyborg"
+    mask = fs.cyclemask(testword,invertedcatstates["cyclepoint"],invertedcatstates["cyclewidth"])
+    if invertedcatstates["masktype"] == "none":
+        mask = " "*len(testword)
+    buffer = fs.invertedHorizontalCat(testword, mask, invertedcatstates["masktype"] , ast.columns, ast.lines)
+    ast.printMultilineonstage(buffer, 0,ast.lines)
+    # ast.printonstage(str(invertedcatstates), 0, 0)
+    time.sleep(0.1)
+    state = "invertcatstagedone"
 
 
 #1 receive trigger
@@ -774,7 +798,7 @@ def invertcatstage():
 # time.sleep(1)
 # ast.printonstage("test", 23, 20)
 
-#2 harsh noises emitted, they fade out into delay, meanwhile 
+#2 harsh noises emitted, they fade out into delay, meanwhile
 #3 printer starts printing
 #3 print signal! (lines?, overlapscapes, perspsquares, shape)
 
@@ -786,7 +810,7 @@ def invertcatstage():
 #2 2nd saw
 #3 3rd saw
 #4 LFOs to tune/detune
-#5 printing of waves feedmeweirdtext(), interferencepatterns(), overlapstudy()  
+#5 printing of waves feedmeweirdtext(), interferencepatterns(), overlapstudy()
 
 ###########################
 ##### signal or noise #####
@@ -832,9 +856,9 @@ def invertcatstage():
 state = "done"
 state = "invertedcat"
 ast.quickinit()
-# 
+#
 
-# 
+#
 while True:
     # pass
     if state == "done":

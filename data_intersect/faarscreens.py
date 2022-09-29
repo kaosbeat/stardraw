@@ -88,6 +88,8 @@ def invertedHorizontalCat(word, mask, masktype , columns, height):
                 if mask[i] == "x":
                     xline = fa.font5x7[c][c_row]
                 else:
+                    if masktype == "none":
+                        xline = fa.font5x7[c][c_row]
                     if masktype == "fill":
                         xline = [1,1,1,1,1]
                     elif masktype == "noise":
@@ -123,13 +125,13 @@ def invertedHorizontalCat(word, mask, masktype , columns, height):
         letterbuffer +=letterline +"\n"
         
     return letterbuffer
-testword = "cyborg"
+# testword = "cyborg"
 
-while(True):
-    for i in range(len(testword)):
-        bf = invertedHorizontalCat (testword,cyclemask(testword, 1/len(testword)*i, 0.5) , "invert", 120, 40)
-        ast.printMultilineonstage(bf,0,40)
-        time.sleep(0.3)
+# while(True):
+#     for i in range(len(testword)):
+#         bf = invertedHorizontalCat (testword,cyclemask(testword, 1/len(testword)*i, 0.5) , "invert", 120, 40)
+#         ast.printMultilineonstage(bf,0,40)
+#         time.sleep(0.3)
 #     # bf = invertedHorizontalCat ("cyborg", randomMask("cyborg", 0.1), "invert", 120, 40)
 #     # ast.printMultilineonstage(bf,0,40)
 #     # time.sleep(0.5*random.random())
