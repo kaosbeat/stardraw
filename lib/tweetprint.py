@@ -10,8 +10,8 @@ import os
 import subprocess               # May want to use subprocess32 instead
 
 
-print("invoking TWEEEEEETING")
-print(platform.system())
+# print("invoking TWEEEEEETING")
+# print(platform.system())
 
 # ## get ourselves the image we need (convert svg to jpg)
 # with Image(filename=sys.argv[2]) as img:
@@ -41,7 +41,7 @@ print(platform.system())
 
 
 def convertSVGtoTweet(svg, tweettext):
-    print(svg)
+    # print(svg)
     pltfrm = platform.system()
     if (pltfrm == 'Darwin'):
         cmd_list = [ '/Applications/Inkscape.app/Contents/MacOS/inkscape','--export-filename=tweet.png', svg ]
@@ -59,7 +59,7 @@ def convertSVGtoTweet(svg, tweettext):
     api = tweepy.API(auth) 
     tweet = tweettext
     image_path = "tweet.png" # png created above
-    print(image_path, tweet)
+    # print(image_path, tweet)
     # to attach the media file 
     #status = 
 
@@ -69,7 +69,7 @@ def convertSVGtoTweet(svg, tweettext):
     ## new method
     file=open(image_path, 'rb')
     media_id = api.simple_upload(filename=image_path, file=file)
-    print(media_id)
+    # print(media_id)
     #https://docs.tweepy.org/en/v4.0.0/api.html#tweepy.API.simple_upload
     api.update_status(tweet, media_ids=[media_id.media_id_string])
     #https://stackoverflow.com/questions/37050450/tweepy-python-library-media-ids-parameter-is-invalid-and-tweet-must-not-have

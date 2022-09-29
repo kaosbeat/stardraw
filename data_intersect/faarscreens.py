@@ -5,6 +5,7 @@
 # import lib.starLC20 as p
 # import lib.staremulator as s
 # import lib.stardisplay as d
+from tracemalloc import start
 import lib.starDraw as sd
 import lib.tweetprint as tweet
 import lib.font_anomaly as fa
@@ -20,6 +21,46 @@ from itertools import cycle
 import random
 import time
 # tweetit = True
+
+
+def randomMask(word, chance):
+    mask = ""
+    for l in word:
+        if random.random() > chance:
+            mask += "x"
+        else:
+            mask += " "
+    return mask
+
+def cyclemask(word, cyclepoint, width):
+    """
+    cyclemask is float between 0,1
+    width is size of wordpart, float beween 0,1
+    """
+    masklength = int(len(word)*width)
+    if masklength == 0: masklength = 1
+    startpoint = int(len(word)*cyclepoint)-int(masklength/2)
+    endpoint = startpoint+masklength-1
+    # print (startpoint, endpoint)
+    if startpoint < 0:
+        startpoint = 0
+    if startpoint > len(word)-1:
+        startpoint = len(word)-1
+    if endpoint >= len(word):
+        endpoint = len(word)
+    mask=""
+    # print (startpoint, endpoint)
+    for i in range(len(word)):
+        if i < startpoint:
+            mask+=" "
+        elif i >= startpoint and i <= endpoint:
+            mask+="x"
+        else:
+            mask+=" "
+    return mask
+
+
+
 
 def invertedHorizontalCat(word, mask, masktype , columns, height):
     """
@@ -82,20 +123,13 @@ def invertedHorizontalCat(word, mask, masktype , columns, height):
         letterbuffer +=letterline +"\n"
         
     return letterbuffer
-
-
-def randomMask(word, chance):
-    mask = ""
-    for l in word:
-        if random.random() > chance:
-            mask += "x"
-        else:
-            mask += " "
-    return mask
-
+testword = "cyborg"
 
 while(True):
-     
-    bf = invertedHorizontalCat ("cyborg", randomMask("cyborg", 0.1), "invert", 120, 40)
-    ast.printMultilineonstage(bf,0,40)
-    time.sleep(0.5*random.random())
+    for i in range(len(testword)):
+        bf = invertedHorizontalCat (testword,cyclemask(testword, 1/len(testword)*i, 0.5) , "invert", 120, 40)
+        ast.printMultilineonstage(bf,0,40)
+        time.sleep(0.3)
+#     # bf = invertedHorizontalCat ("cyborg", randomMask("cyborg", 0.1), "invert", 120, 40)
+#     # ast.printMultilineonstage(bf,0,40)
+#     # time.sleep(0.5*random.random())

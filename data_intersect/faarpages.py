@@ -19,9 +19,8 @@ from lib.asciitools import strip2ascii
 from itertools import cycle
 import random
 
-tweetit = True
 tweetit = False
-
+# tweetit = True
 
 def invertedCat(word, scale, spacing, xmov):
     """
@@ -30,10 +29,10 @@ def invertedCat(word, scale, spacing, xmov):
     """    
     global state
     global height, columns 
-    columns = 78
+    columns = 120
     height = 69
+    buffer = """"""
     state = "invertedCat"
-    
     s.svgfile = 'invertedcat.svg'
     s.openfile(s.svgfile)
     s.setLineSpace(spacing)
@@ -61,6 +60,7 @@ def invertedCat(word, scale, spacing, xmov):
             line = letterline 
             s.printXY(line,0,ycursor)
             p.printXY(line,0,ycursor)
+            buffer += line + "\n"
             ycursor += 1 
             sc+=1
         for letter in word:
@@ -85,6 +85,7 @@ def invertedCat(word, scale, spacing, xmov):
                     line = letterline 
                     s.printXY(line,0,ycursor)
                     p.printXY(line,0,ycursor)
+                    buffer += line + "\n"
                     ycursor += 1 
                     sc+=1
             sc = 0
@@ -99,14 +100,13 @@ def invertedCat(word, scale, spacing, xmov):
                 line = letterline 
                 s.printXY(line,0,ycursor)
                 p.printXY(line,0,ycursor)
+                buffer += line + "\n"
                 ycursor += 1 
                 sc+=1
         t += 1 
     s.closefile() 
     if tweetit:
         tweet.convertSVGtoTweet(s.svgfile, "prompts context, inverted " + word)
-    state = "done"
+    # state = "done"
+    return buffer
 
-invertedCat("cortex", 4, 8, 15 )
-
-# print(pq.wordContext("cat"))

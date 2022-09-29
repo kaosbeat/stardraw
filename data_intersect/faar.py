@@ -15,6 +15,7 @@ import lib.font_anomaly as fa
 import lib.recaptcha as rc
 import lib.timers as tim
 import lib.asciistage as ast
+from faarpages import invertedCat
 import faarasciiart as aa
 from lib.asciitools import strip2ascii
 
@@ -49,8 +50,8 @@ db.debug = debug
 svg = True
 sign = True
 title = "starLC20"
-midicontrol = True
-# midicontrol = False
+# midicontrol = True
+midicontrol = False
 
 ######################################
 ############ globals #################
@@ -749,6 +750,17 @@ def scrollNumbersData():
 
 
 
+
+##################################
+######## inverted CAT ############
+##################################
+def invertcatstage():
+    buffer = invertedCat("study", 3, 8, 15 )
+    ast.printMultilineonstage(buffer, 0,ast.lines)        
+
+
+
+
 #1 receive trigger
 # ast.initstage()
 # ast.quickinit()
@@ -817,7 +829,8 @@ def scrollNumbersData():
 #######################################################
 ##############  playoout ##############################
 #######################################################
-state == "done"
+state = "done"
+state = "invertedcat"
 ast.quickinit()
 # 
 
@@ -842,3 +855,5 @@ while True:
         finishSignalCapture()
     if state == "datascroller":
         scrollNumbersData()
+    if state == "invertedcat":
+        invertcatstage()

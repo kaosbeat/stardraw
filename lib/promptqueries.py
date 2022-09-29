@@ -52,7 +52,7 @@ def create_wordcount(conn, word, totalcount):
 def wordContext(word):
     strippedword = word.strip("'")
     selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")"
-    print(selectQuery)
+    # print(selectQuery)
     cur.execute(selectQuery)
     data = list(cur)
     wordlist = []
