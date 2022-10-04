@@ -31,6 +31,12 @@ def gotoline(y):
             print('\r',end='',flush=True)
         line = y
 
+def clearstage(c=" "):
+    global colums,lines
+    for i in range(lines):
+        print(c*columns)
+
+
 def initstage(scrolltype="scroll"):
     global columns, lines
     # print("creating stage")

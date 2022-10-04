@@ -17,11 +17,136 @@ import lib.promptqueries as pq
 from lib.asciitools import strip2ascii
 
 ### other imports
-from itertools import cycle
+
 import random
 import time
 # tweetit = True
 
+
+def bootseq(framewait = 0.5):
+    ast.initstage("scroll")
+    ast.printFiglet("DATA ", "big", 2, ast.lines-2)
+    time.sleep(framewait)
+    ast.printFiglet("INTERSECT", "big", 8, ast.lines-11)
+    ast.printFiglet("#@7@", "big", 2, ast.lines-2)
+    time.sleep(framewait)
+    ast.printFiglet("DATA ", "big", 2, ast.lines-2)
+    ast.printFiglet("/n13%$&CT", "big", 2, ast.lines-11)
+    time.sleep(framewait)
+    ast.printFiglet("INTERSECT", "big", 2, ast.lines-11)
+    time.sleep(framewait)
+    w,h,text1 = ast.figProps("DATA", "big")
+    w,h,text2 = ast.figProps("INTERSECT", "big")
+    for i in range(10):
+        time.sleep(framewait)
+        mergestep = ast.mergeFiglets (text1,text2, 0,0,8,11-i)
+        ast.printMultilineonstage(mergestep, 2, ast.lines-2)
+    ast.scrollFiglet("STUDY", "big", 10, 0.01, 2)
+    ast.initstage()
+   
+    
+################
+#### signal ####
+################
+def perspsquaressignal(times):
+    columns = ast.columns
+    height = ast.lines
+    chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+
+    for k in range(times):
+        # midi_playsample(random.randint(1,8))
+        size =  random.randint(8,18)
+        sx = random.randint(1,columns-size-3)
+        sy =  random.randint(1,height-size-3)
+        h = random.randint(size+3,ast.lines-3)
+        # size = 10
+        dx = random.randint(0,4) - 2
+        dy = random.randint(0,4) - 2
+        ds = random.randint(0,4) - 2
+        prevbuffer=""""""
+        for i in range(size):
+            x1 = sx + i*dx
+            x2 = sx + i + i*dx
+            y1 = sy + i*dy
+            y2 = sy + i + i*dy
+            charh = chars[random.randint(0,len(chars)-1)]
+            charv = chars[random.randint(0,len(chars)-1)]
+            buffer = sd.square2(x1,y1,x2,y2,charh,charv)
+            prevbuffer = ast.mergeFiglets (prevbuffer,buffer,0,0,0,0)
+            ast.printMultilineonstage(prevbuffer, 0, h)
+            time.sleep(0.01)
+        # midi_playsample(9)
+
+def cuber():
+    columns = ast.columns
+    height = ast.lines
+    charset1 = ["+","\\", "/", "|", ">", "<", ":" ]
+    charset2 = ["Y","#", "%", "&", "^", "!", "}" ]
+    charset3 = [")","`", "'", ".", "@", "*", "{" ]
+    w,h,d = random.randint(3,14), random.randint(3,14), random.randint(3,14)
+    buffer = sd.cube(w,h,d,charset1[random.randint(0,len(charset1)-1)],charset2[random.randint(0,len(charset2)-1)],charset3[random.randint(0,len(charset3)-1)])
+    xdim,ydim = sd.dimensions(buffer)
+    # if xdim <= 0: xdim = 1
+    # if ydim <= 0: ydim = 1
+    # dims = "xdim= ", xdim, " ydim = ", ydim
+    # ast.printonstage(str(dims), 0,0)
+    x,y = random.randint(0,columns-xdim),random.randint(0+ydim,height)
+    ast.printMultilineonstage(buffer, x, y)
+
+
+def squares(amount):
+    columns = ast.columns
+    height = ast.lines
+    chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    for k in range(amount):
+        x1 = random.randint(1,columns)
+        x2 = random.randint(1,columns)
+        y1 = random.randint(1,height)
+        y2 = random.randint(1,height)
+        charh = chars[random.randint(0,len(chars)-1)]
+        charv = chars[random.randint(0,len(chars)-1)]
+        bufferlist = sd.square(x1,y1,x2,y2,charh,charv)
+        for buffer in bufferlist:
+            for i,l in enumerate(buffer.splitlines()):
+                count = 0
+                for j in l:
+                    if j == " ":
+                        count += 1
+                    else:
+                        count += 1
+                        ast.printonstage(j,count,i)
+
+
+
+def lines(amount, words = None):
+    columns = ast.columns
+    height = ast.lines
+    chars = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    for i in range(amount):
+        x1 = random.randint(1,columns)
+        x2 = random.randint(1,columns)
+        y1 = random.randint(1,height)
+        y2 = random.randint(1,height)
+        char = chars[random.randint(0,len(chars)-1)]
+        buffer = sd.line(x1,y1,x2,y2,char)
+        for i,l in enumerate(buffer.splitlines()):
+            count = 0
+            for j in l:
+                if j == " ":
+                    count += 1
+            if words != None:
+                 char = next(words)
+            ast.printonstage(char,count,i)
+ 
+
+
+
+  
+
+
+######################
+###### inverted cat###
+######################
 
 def randomMask(word, chance):
     mask = ""
@@ -59,19 +184,14 @@ def cyclemask(word, cyclepoint, width):
             mask+=" "
     return mask
 
-
-
-
-def invertedHorizontalCat(word, mask, masktype , columns, height):
+def invertedHorizontalCat(word, words, mask, masktype , columns, height):
     """
     inverted cat writes cat by leaving out cat and filling 
     the rest of the page with charachters and words associated with the word
     scale scales the font
     returns multilinebuffer
     """    
-
     buffer = """"""
-    words = cycle(pq.wordContext(word))
     partssize = int(columns/len(word))
     scale = int((partssize - 2)/5)
     if scale > 5 : scale = 5
@@ -79,17 +199,18 @@ def invertedHorizontalCat(word, mask, masktype , columns, height):
     blankrows = int((height - 7*scale)/ 2) 
     buffer += ("x"*columns+"\n")*blankrows
     c_row = 0
-    while c_row < 7:
+    while c_row < 9:
         sc = 0
         while sc < scale:
             bl = "x"*int(scale/2)
             # bl += "x"*int(partssize/2)
             for i,c in enumerate(word):
                 if mask[i] == "x":
-                    xline = fa.font5x7[c][c_row]
+                    print("##################", word)
+                    xline = fa.font5x9[c][c_row]
                 else:
                     if masktype == "none":
-                        xline = fa.font5x7[c][c_row]
+                        xline = fa.font5x9[c][c_row]
                     if masktype == "fill":
                         xline = [1,1,1,1,1]
                     elif masktype == "noise":
@@ -119,7 +240,12 @@ def invertedHorizontalCat(word, mask, masktype , columns, height):
         letterline = ""
         for c in line:
             if c == "x":
-                letterline += strip2ascii(next(words))
+                try:
+                    worderror = next(words)
+                    letterline += strip2ascii(worderror)
+                except StopIteration:
+                    time.sleep(0.1) ## DIRTY HACK for co-routine error
+                    letterline += ""
             else:
                 letterline += " "
         letterbuffer +=letterline +"\n"

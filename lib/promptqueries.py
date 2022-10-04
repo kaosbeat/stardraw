@@ -1,4 +1,5 @@
 import sqlite3
+from random import choice
 
 '''
 sqlite> Select count(*) from prompts Where prompt LIKE '%word%';
@@ -51,13 +52,32 @@ def create_wordcount(conn, word, totalcount):
 
 def wordContext(word):
     strippedword = word.strip("'")
-    selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")"
+    # selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")"
+    selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")  ORDER BY RANDOM() LIMIT 10"
     # print(selectQuery)
     cur.execute(selectQuery)
     data = list(cur)
     wordlist = []
+    # print (data)
     for p in data:
         for w in p[0]:
-            wordlist.append(w)
+            w = w.strip("|[]()'\"%$#@!^&*,:")
+            if w != '':
+                wordlist.append(w)
     return wordlist
         
+def getrandomwordlist():
+    
+    selectQuery = "SELECT word, length(word) FROM words WHERE (length(word) > 4 and length(word) < 8)"
+    # print(selectQuery)
+    cur.execute(selectQuery)
+    data = list(cur)
+    wordlist = []
+    for d in data:
+        w = d[0].strip("|[]()'\"%$#@!^&*,:")
+        wordlist.append(w)
+    return wordlist
+
+
+
+print (wordContext("cyborg"))
