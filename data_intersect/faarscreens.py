@@ -20,6 +20,7 @@ from lib.asciitools import strip2ascii
 
 import random
 import time
+from perlin_noise import PerlinNoise
 # tweetit = True
 
 
@@ -83,7 +84,7 @@ def cuber():
     charset1 = ["+","\\", "/", "|", ">", "<", ":" ]
     charset2 = ["Y","#", "%", "&", "^", "!", "}" ]
     charset3 = [")","`", "'", ".", "@", "*", "{" ]
-    w,h,d = random.randint(3,14), random.randint(3,14), random.randint(3,14)
+    w,h,d = random.randint(3,24), random.randint(3,24), random.randint(3,24)
     buffer = sd.cube(w,h,d,charset1[random.randint(0,len(charset1)-1)],charset2[random.randint(0,len(charset2)-1)],charset3[random.randint(0,len(charset3)-1)])
     xdim,ydim = sd.dimensions(buffer)
     # if xdim <= 0: xdim = 1
@@ -138,10 +139,98 @@ def lines(amount, words = None):
                  char = next(words)
             ast.printonstage(char,count,i)
  
+def circle(circleradius = "", x ="",y ="", noisestep = "", seed = ""):
+    columns = ast.columns
+    height = ast.lines
+    if seed == "":
+        seed = random.randint(0,5000)
+    # def noisecircle(circleradius="", x="", y="", density="", noisechar="", circlechar="", octaves="", seed=""):
+    chars = ['!','#','%', "@", '&', '/', ">"]
+    nchars = [".", "<", "'", "~", "^", "\\" ]
+    # if circlechar ==  "":
+    random.seed(seed)
+    circlechar = chars[random.randint(0,len(chars)-1)]
+    # if noisechar == "":
+    noisechar = nchars[random.randint(0,len(nchars)-1)]
+    # noiseoctaves = random.randint(1,10)
+    if circleradius == "":
+        # circleradius = random.randint(4,int(min(columns/6,height/6)))
+        circleradius = random.randint(4,int(min(columns,height)/2)-1)
+
+        # y = ast.lines+1
+    # if density == "":
+        # density = random.randint(6,16)
+    # if octaves == "":
+    octaves = random.randint(1,10)
+
+    buffer = sd.circle(circleradius,12,12,circlechar)
+    xnoise, ynoise = sd.dimensions(buffer)
+    noise = PerlinNoise(octaves=octaves, seed=seed)
+    if noisestep == "" : noisestep = 0.0
+    noisebuffer = [[noise([i/xnoise + noisestep, j/ynoise + noisestep]) for j in range(xnoise)] for i in range(ynoise)]
+    # noisechar = nchars[random.randint(0,len(nchars)-1)]
+    mergedbuffer = ""
+    for i,l in enumerate(buffer.splitlines()):
+        line = ""
+        for j,c in enumerate(l):
+            if c != " ":
+                if noisebuffer[i][j] > 0:
+                    c = noisechar
+            line = line + c
+        mergedbuffer = mergedbuffer + line + "\n"
+    if x =="":
+        x = random.randint(0,columns-xnoise)
+    if x == "mid":
+        x = int(columns/2 - xnoise/2)
+    if y == "":
+        y = random.randint(ynoise,height)
+    if y == "mid":
+        y = int(height/2 + ynoise/2)
+
+    # ast.clearstage()
+    # ast.quickinit()
+    # ast.quickclear()
+    ast.printMultilineonstage(mergedbuffer,x,y)
+
+
+def intersect(size, framewait):
+    columns = ast.columns
+    height = ast.lines
+    charlist1 = ["O","|","-","+","/"]
+    charlist2 = ['!','#','%','^', '&', '}', "o", ">", "~"]
+    ra = random.randint(3,8)
+    b1 = sd.parallelogram(random.randint(6,19), random.randint(40,60),ra, charlist1[random.randint(0,len(charlist1)-1)])
+    pb1 = sd.padMidMax(b1,columns,height)
+    b2w = random.randint(6,35)
+    b2 = sd.parallelogram(random.randint(30,50),b2w, random.randint(3,8), charlist2[random.randint(0,len(charlist2)-1)])
+    pb2 = sd.padMidMax(b2,columns,height)
+    size = min(columns/4, size)
+    for x in range(int(columns/2) - size ,int(columns/2) + size):
+        mb = sd.mergeBuffers(pb1, pb2, x )
+        ast.printMultilineonstage(mb,0,ast.lines)
+        time.sleep(framewait)
 
 
 
-  
+def rtext(font="big", word1 = "data", word2 = "intersect"):
+    # ast.clearstage()
+    ast.printonstage("", 0, 0)
+    ast.printFigletAtRandomLoc(word1, font)
+    # time.sleep(0.1)
+    # ast.clearstage()
+    ast.printFigletAtRandomLoc(word2, font)
+
+def text(x,y,font="big", word1 = "data", word2 = "intersect"):
+    
+    # ast.printonstage(str(y),0,0)
+    ast.printonstage("", 0, 0)
+    w,h,t = ast.printFiglet(word1, font, x=x, y=y)
+    ast.printFiglet(word2, font, x, y-h)
+
+
+
+
+
 
 
 ######################

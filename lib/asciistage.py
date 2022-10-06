@@ -62,6 +62,13 @@ def quickinit():
     print("#"*columns, end='',flush=False)
     print(f"\r",end='', flush=True)
 
+def quickclear():
+    global columns, lines
+    gotoline(0)
+    for i in range(lines):      
+        print(" "*columns, end='',flush=False)
+    print(f"\r",end='', flush=True)
+
 def printonstage(text, x, y):
     global screenit
     global line,col
@@ -73,10 +80,10 @@ def printonstage(text, x, y):
         # col = 0
         
 
-def printMultilineonstage(multilinebuffer, x, y, lineForLine=False):
+def printMultilineonstage(multilinebuffer, x, y, lineForLine=False, overdrop=True ):
     global screenit
     global line,col
-    width, height = sd.dimensions(multilinebuffer)
+    # width, height = sd.dimensions(multilinebuffer)
     if screenit: 
         for i,l in enumerate(multilinebuffer.splitlines()):
             printonstage(l, x, y)
@@ -94,7 +101,7 @@ def figProps(text, font):
     width, height = sd.dimensions(figtext)
     return width, height, figtext
 
-def printFiglet(text, font, x=1, y=1, trim=True):
+def printFiglet(text, font="big", x=1, y=1, trim=True):
     """print a figlet from 'text' in 'font' at x, y 
        output is trimmed by default if it's wider/heigher 
        than available terminal space.
@@ -130,17 +137,21 @@ def printFiglet(text, font, x=1, y=1, trim=True):
                 y -= 1
             return width,height,figtext
 
-def printFigletAtRandomLoc(text, font):
+def printFigletAtRandomLoc(text, font="big"):
     global lines, columns
     global screenit
     if screenit:
-        f = Figlet(font=font)
+        if font == "none":
+             font="big"
+        f = Figlet(font=font, width=columns)
         figtext = f.renderText(text)
         if len(figtext) > 0:
             # figtext = str(sd.padBuffer(figtext,1, 1, 1, 1))
             width, height = sd.dimensions(figtext)
-            x = random.randint(2,columns-width-2)
-            y = random.randint(1,lines-height-2)
+            maxx = columns - width - 2
+            maxy = lines - height - 2 
+            x = random.randint(2,max(maxx,3))
+            y = random.randint(1,max(maxy, 2))
             for i,l in enumerate(figtext.splitlines()):
                 printonstage(l, x, height+y)
                 y -= 1

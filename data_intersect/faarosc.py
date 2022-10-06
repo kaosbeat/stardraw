@@ -5,6 +5,7 @@ import faarscreens as fs
 import lib.asciistage as ast
 import lib.promptqueries as pq
 from lib.asciitools import strip2ascii
+import db
 
 
 import time
@@ -17,12 +18,16 @@ state = "done"
 global invertedcatstates
 invertedcatstates = {"word": "test", "masktype": "fill", "cyclepoint":0.5, "cyclewidth":0.2 }
 bootstates = {"command":"next"}
-signalstates = {"command":"next"}
+signalstates = {"command":"next", "option": "clear"}
+textstates = {"command": "clear", "font": "banner3-D", "word1":"data", "word2":"intersect", "x":10, "y":30}
+datastates = {"datascroller":1}
+intersectstates = {"size":5, "framewait":0.05}
+circlestates = {"circleradius": 10, "x" :"", "y" :"", "noisestep" : 0.01, "seed" :1337, "framewait":0.05}
 global promptwordlist, words, prewords
 prewords = cycle(pq.wordContext(invertedcatstates["word"]))
 words = prewords
 promptwordlist = pq.getrandomwordlist()
-
+data = cycle(db.getAntwerpNamesAndData())
 
 ##############3
 ###osc#########
@@ -44,15 +49,22 @@ def piviz(address, *args):
     command = args[1]
     option = args[2]
     size = args[3]
-    width = args[4]
+    speed = args[4]
+    framewait = args[5]
+    amount = args[6]
+    word1 = args[7]
+    word2 = args[8]
+    vizx = int(args[9])
+    vizy = int(args[10])
+
     if state == "boot":
         bootstates["command"] = command
         bootstates["framewait"] = size    
     if state == "signal":
         signalstates["command"] = command
         signalstates["option"] = option
-        signalstates["framewait"] = size
-        signalstates["amount"] = int(width)
+        signalstates["framewait"] = framewait
+        signalstates["amount"] = int(amount)
     if state == "invertedcat":
         if command == "next":
             invertedcatstates["word"] =  strip2ascii(choice(promptwordlist))
@@ -60,7 +72,39 @@ def piviz(address, *args):
             prewords = words
         invertedcatstates["masktype"] = option
         invertedcatstates["cyclepoint"] = size
-        invertedcatstates["cyclewidth"] = width
+        invertedcatstates["cyclewidth"] = speed
+    if state == "rtext":
+        if option == "none" : option = "big"
+        textstates["font"] = option
+        # if word1 == "x": word1 = "" # weird bug
+        textstates["word1"] = word1
+        if word2 == "x": word2 = ""
+        textstates["word2"] = word2
+    if state == "text":
+        textstates["command"] = command
+        if option == "none" : option = "big"
+        textstates["font"] = option
+        # if word1 == "x": word1 = "" # weird bug
+        textstates["word1"] = word1
+        if word2 == "x": word2 = ""
+        textstates["word2"] = word2
+        textstates["x"] = vizx
+        textstates["y"] = vizy
+        
+    if state == "data":
+        textstates["word1"] = word1
+        textstates["word2"] = word2
+    if state == "intersect":
+        intersectstates["size"] = int(size)
+        intersectstates["framewait"] = framewait
+    if state == "circle":
+        circlestates["circleradius"] = int(size)
+        circlestates["noisestep"] = float(speed)
+        circlestates["seed"] = int(amount)
+        circlestates["framewait"] = framewait
+
+
+    
 
 
 
@@ -112,6 +156,9 @@ async def signal():
         fs.lines(signalstates["amount"], words )
     elif signalstates["command"] == "squares":
         fs.squares(signalstates["amount"])
+    elif signalstates["command"] == "circles":
+        fs.circle()    
+
     state = "done"
 
 
@@ -137,9 +184,56 @@ async def invertcatstage():
 
 
 
+####################################
+############ text #################
+#####################################
+async def textseq():
+    global textstates, state
+    status = str(textstates["font"] + " " + textstates["word1"] + " " + textstates["word2"])
+    if textstates["command"] == "clear":
+        ast.clearstage()
+    fs.text(textstates["x"], textstates["y"],textstates["font"],textstates["word1"],textstates["word2"])
+    # ast.printonstage(status, 0,0)
+    state = "done"
 
+async def rtextseq():
+    global textstates, state
+    status = str(textstates["font"] + " " + textstates["word1"] + " " + textstates["word2"])
+    fs.rtext(textstates["font"],textstates["word1"],textstates["word2"])
+    # ast.printonstage(status, 0,0)
+    state = "done"
 
+###################################
+##########  data   ################
+###################################
+async def dataseq():
+    global datastates,state
+    ast.clearstage()
+    dpoint = next(data)
+    status = strip2ascii(dpoint[9])
+    if status == "": status  = " "
+    name = strip2ascii(dpoint[2])
+    ast.blinkFiglet(2, ast.lines-2,status, "big", 2, ast.lines-2," ","big",0.03,2)
+    ast.blinkFiglet(2, ast.lines-10,name, "big", 2, ast.lines-10,"____________________________________________","big",0.01,4)
+    ast.printFiglet(name,"big", 2, ast.lines-10)
+    # midi_datascrollerbeat(cursor, status)
+    state = "done"
 
+async def interseq():
+    global datastates,state
+    ast.clearstage()
+
+    fs.intersect(intersectstates["size"],intersectstates["framewait"])
+    state = "done"
+
+async def circle():
+    global datastates,state
+    # ast.clearstage()
+    radius = int(min(ast.columns/2, ast.lines/2))
+    fs.circle(radius, "mid", "mid" , circlestates["noisestep"],circlestates["seed"])
+    # time.sleep(circlestates["framewait"])
+    
+    state = "done"
 
 
 async def loop():
@@ -157,6 +251,16 @@ async def loop():
             await signal()
         elif state == "invertedcat":
             await invertcatstage()
+        elif state == "text":
+            await textseq()
+        elif state == "rtext":
+            await rtextseq()
+        elif state == "data":
+            await dataseq()
+        elif state == "intersect":
+            await interseq() 
+        elif state == "circle":
+            await circle()
         else:
             # print(f"WrongLoop {i}")
             await asyncio.sleep(0.01)

@@ -302,7 +302,7 @@ def circle(radius, basefontsize, linefeed, char):
         # factor = 7.03125 # ok for linespace 9  
         # factor = 8.125 # ok for linespace ??
         factor = 7.5 # ok for linespace 10, size 10 
-        factor = 7 # ok for linespace 14, size 14
+        # factor = 7 # ok for linespace 14, size 14
         # factor = 6.5 # ok for linespace 16, size 16
 
 
@@ -315,11 +315,11 @@ def circle(radius, basefontsize, linefeed, char):
     # print(buffer)
     buffer2 = ""
     xsize,ysize = dimensions(buffer)
-    print("xsize = ",xsize)
+    # print("xsize = ",xsize)
 
     for i,l in enumerate(buffer.splitlines()):
         # print("t"+l+"t")
-        print (len(l))
+        # print (len(l))
 
         pad = xsize - len(l)
         line = "\n" +" " * pad + 2*l + " " * pad
@@ -328,8 +328,8 @@ def circle(radius, basefontsize, linefeed, char):
         # print(line)
     # print(basefontsize*(basefontsize + linefeed)/linefeed)
     # print(linefeed*(basefontsize + linefeed)/basefontsize)
-    print("factor = ",factor)
-    print(buffer2)
+    # print("factor = ",factor)
+    # print(buffer2)
     return buffer2
 
 
