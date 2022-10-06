@@ -1,0 +1,2 @@
+rxvt-unicode -name aterm-ws2 -tr -fn -artwiz-cure-*-*-*-*-*-*-*-*-*-*-*-* -fg yellow -bg [80]blue +sb --depth 32 
+
