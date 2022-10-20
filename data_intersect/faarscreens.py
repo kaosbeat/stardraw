@@ -13,7 +13,7 @@ import lib.recaptcha as rc
 import lib.timers as tim
 import lib.asciistage as ast
 import faarasciiart as aa
-import lib.promptqueries as pq
+import lib.promptqueriesfake as pq
 from lib.asciitools import strip2ascii
 
 ### other imports
@@ -24,7 +24,7 @@ from perlin_noise import PerlinNoise
 # tweetit = True
 
 
-def bootseq(framewait = 0.5):
+def bootseq(framewait = 0.05):
     ast.initstage("scroll")
     ast.printFiglet("DATA ", "big", 2, ast.lines-2)
     time.sleep(framewait)

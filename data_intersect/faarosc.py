@@ -3,7 +3,7 @@ from pythonosc.dispatcher import Dispatcher
 import asyncio
 import faarscreens as fs
 import lib.asciistage as ast
-import lib.promptqueries as pq
+import lib.promptqueriesfake as pq
 from lib.asciitools import strip2ascii
 import db
 
@@ -18,13 +18,14 @@ state = "done"
 global invertedcatstates
 invertedcatstates = {"word": "test", "masktype": "fill", "cyclepoint":0.5, "cyclewidth":0.2 }
 bootstates = {"command":"next"}
-signalstates = {"command":"next", "option": "clear"}
+signalstates = {"command":"next", "option": "clear", "amount" : 1}
 textstates = {"command": "clear", "font": "banner3-D", "word1":"data", "word2":"intersect", "x":10, "y":30}
 datastates = {"datascroller":1}
 intersectstates = {"size":5, "framewait":0.05}
 circlestates = {"circleradius": 10, "x" :"", "y" :"", "noisestep" : 0.01, "seed" :1337, "framewait":0.05}
 global promptwordlist, words, prewords
 prewords = cycle(pq.wordContext(invertedcatstates["word"]))
+prewords = "words words"
 words = prewords
 promptwordlist = pq.getrandomwordlist()
 data = cycle(db.getAntwerpNamesAndData())
@@ -147,7 +148,7 @@ async def signal():
     if signalstates["command"] == "init":
         ast.clearstage()
     elif signalstates["command"] == "perspsq":
-        fs.perspsquaressignal(1)
+        fs.perspsquaressignal(signalstates["amount"] )
     elif signalstates["command"] == "cube":
         fs.cuber()
     elif signalstates["command"] == "lines":
