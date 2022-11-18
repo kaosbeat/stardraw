@@ -18,7 +18,8 @@ state = "done"
 global invertedcatstates
 invertedcatstates = {"word": "test", "masktype": "fill", "cyclepoint":0.5, "cyclewidth":0.2 }
 bootstates = {"command":"next"}
-signalstates = {"command":"next", "option": "clear"}
+signalstates = {"command":"next", "option": "once"}
+printstates = {"command":"signalline", "option": "none"}
 textstates = {"command": "clear", "font": "banner3-D", "word1":"data", "word2":"intersect", "x":10, "y":30}
 datastates = {"datascroller":1}
 intersectstates = {"size":5, "framewait":0.05}
@@ -59,7 +60,11 @@ def piviz(address, *args):
 
     if state == "boot":
         bootstates["command"] = command
-        bootstates["framewait"] = size    
+        bootstates["framewait"] = framewait    
+
+    if state == "print":
+        printstates["command"] = command
+        printstates["option"] = size
     if state == "signal":
         signalstates["command"] = command
         signalstates["option"] = option
@@ -75,6 +80,7 @@ def piviz(address, *args):
         invertedcatstates["cyclewidth"] = speed
     if state == "rtext":
         if option == "none" : option = "big"
+        textstates["command"] = command
         textstates["font"] = option
         # if word1 == "x": word1 = "" # weird bug
         textstates["word1"] = word1
@@ -113,7 +119,7 @@ dispatcher.map("/filter", filter_handler)
 dispatcher.map("/state", statechange)
 dispatcher.map("/piviz", piviz)
 
-ip = "127.0.0.1"
+ip = "0.0.0.0"
 port = 1337
 
 
@@ -199,6 +205,8 @@ async def textseq():
 async def rtextseq():
     global textstates, state
     status = str(textstates["font"] + " " + textstates["word1"] + " " + textstates["word2"])
+    if textstates["command"] == "clear":
+        ast.clearstage()
     fs.rtext(textstates["font"],textstates["word1"],textstates["word2"])
     # ast.printonstage(status, 0,0)
     state = "done"
@@ -229,7 +237,7 @@ async def interseq():
 async def circle():
     global datastates,state
     # ast.clearstage()
-    radius = int(min(ast.columns/2, ast.lines/2))
+    radius = int(min(ast.columns/2, ast.lines/4))
     fs.circle(radius, "mid", "mid" , circlestates["noisestep"],circlestates["seed"])
     # time.sleep(circlestates["framewait"])
     

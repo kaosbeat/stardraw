@@ -26,22 +26,22 @@ from perlin_noise import PerlinNoise
 
 def bootseq(framewait = 0.5):
     ast.initstage("scroll")
-    ast.printFiglet("DATA ", "big", 2, ast.lines-2)
+    ast.printFiglet("DATA ", "big", 2, ast.lines-10)
     time.sleep(framewait)
-    ast.printFiglet("INTERSECT", "big", 8, ast.lines-11)
-    ast.printFiglet("#@7@", "big", 2, ast.lines-2)
+    ast.printFiglet("INTERSECT", "big", 8, ast.lines-21)
+    ast.printFiglet("#@7@", "big", 2, ast.lines-10)
     time.sleep(framewait)
-    ast.printFiglet("DATA ", "big", 2, ast.lines-2)
-    ast.printFiglet("/n13%$&CT", "big", 2, ast.lines-11)
+    ast.printFiglet("DATA ", "big", 2, ast.lines-10)
+    ast.printFiglet("/n13%$&CT", "big", 2, ast.lines-21)
     time.sleep(framewait)
-    ast.printFiglet("INTERSECT", "big", 2, ast.lines-11)
+    ast.printFiglet("INTERSECT", "big", 2, ast.lines-21)
     time.sleep(framewait)
     w,h,text1 = ast.figProps("DATA", "big")
     w,h,text2 = ast.figProps("INTERSECT", "big")
     for i in range(10):
         time.sleep(framewait)
-        mergestep = ast.mergeFiglets (text1,text2, 0,0,8,11-i)
-        ast.printMultilineonstage(mergestep, 2, ast.lines-2)
+        mergestep = ast.mergeFiglets (text1,text2, 0,0,8,21-i)
+        ast.printMultilineonstage(mergestep, 2, ast.lines-10)
     ast.scrollFiglet("STUDY", "big", 10, 0.01, 2)
     ast.initstage()
    
@@ -155,7 +155,10 @@ def circle(circleradius = "", x ="",y ="", noisestep = "", seed = ""):
     # noiseoctaves = random.randint(1,10)
     if circleradius == "":
         # circleradius = random.randint(4,int(min(columns/6,height/6)))
-        circleradius = random.randint(4,int(min(columns,height)/2)-1)
+        if columns > height:
+            circleradius = random.randint(4,int(min(columns,height)/2)-1)
+        else:
+            circleradius = random.randint(4,12)
 
         # y = ast.lines+1
     # if density == "":
@@ -179,7 +182,9 @@ def circle(circleradius = "", x ="",y ="", noisestep = "", seed = ""):
             line = line + c
         mergedbuffer = mergedbuffer + line + "\n"
     if x =="":
-        x = random.randint(0,columns-xnoise)
+        newx = columns-xnoise
+        if newx < 0: newx = 0
+        x = random.randint(0,newx)
     if x == "mid":
         x = int(columns/2 - xnoise/2)
     if y == "":
@@ -225,7 +230,7 @@ def text(x,y,font="big", word1 = "data", word2 = "intersect"):
     # ast.printonstage(str(y),0,0)
     ast.printonstage("", 0, 0)
     w,h,t = ast.printFiglet(word1, font, x=x, y=y)
-    ast.printFiglet(word2, font, x, y-h)
+    ast.printFiglet(word2, font, x, y-h-2)
 
 
 
