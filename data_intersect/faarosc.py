@@ -26,7 +26,7 @@ intersectstates = {"size":5, "framewait":0.05}
 circlestates = {"circleradius": 10, "x" :"", "y" :"", "noisestep" : 0.01, "seed" :1337, "framewait":0.05}
 global promptwordlist, words, prewords
 prewords = cycle(pq.wordContext(invertedcatstates["word"]))
-prewords = "words words"
+prewords = cycle(["words words"])
 words = prewords
 promptwordlist = pq.getrandomwordlist()
 data = cycle(db.getAntwerpNamesAndData())
