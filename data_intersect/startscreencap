@@ -1,0 +1,16 @@
+#launch terminal
+ rxvt-unicode -name aterm-ws2 -tr -fn -artwiz-cure-*-*-*-*-17-*-*-*-*-*-*-* -fg yellow -bg [80]blue +sb --depth 32
+
+# resize it to 81x100
+
+
+#get windowID (xid in next command)
+sleep 5 ; xprop -root _NET_ACTIVE_WINDOW
+
+## launch screencap and scale according to setup
+ 
+
+gst-launch-1.0 ximagesrc xid=0x240000a  use-damage=0 ! video/x-raw,framerate=30/1 ! videoscale method=0 ! video/x-raw,width=1200,height=2160  ! ximagesink
+
+
+
