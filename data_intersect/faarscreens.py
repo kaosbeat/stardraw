@@ -335,7 +335,7 @@ def invertedHorizontalCat(word, words, mask, masktype , columns, height):
         for c in line:
             if c == "x":
                 try:
-                    print(words)
+                    #print(words)
                     worderror = next(words)
                     letterline += strip2ascii(worderror)
                 except StopIteration:

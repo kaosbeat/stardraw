@@ -34,7 +34,7 @@ for i,strat in enumerate(obstrat):
                         cfg_scale = 15,
                         strength = 0.7,
                         init_img = lastimg)
-    print("gneration ", str(i) , " of " , str(len(obstrat)))
+    print("gneration ", str(i) , " of " , str(len()))
     print(outputs)
     tweet = "obliquestrategies in stable diffusion, run 7 , outputimag goes to nextinit, neg bias for chars: \n" + strat
     try:
