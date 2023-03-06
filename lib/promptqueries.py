@@ -67,7 +67,6 @@ def wordContext(word):
     return wordlist
         
 def getrandomwordlist():
-    
     selectQuery = "SELECT word, length(word) FROM words WHERE (length(word) > 4 and length(word) < 8)"
     # print(selectQuery)
     cur.execute(selectQuery)
