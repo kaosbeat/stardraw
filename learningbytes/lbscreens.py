@@ -58,6 +58,24 @@ def keynote1(framewait = 0.5):
     ast.printMultilineonstage(aa.raes2, 93, ast.lines-1, 0.1)
     time.sleep(2)
 
+def keynote2(framewait = 0.5):
+    ast.initstage("scroll")
+    ast.printFiglet("KEYNOTE ", "starwars", 10, ast.lines-10)
+    time.sleep(2)
+    ast.printFiglet("JAck Buckley", "big", 20, ast.lines-21)
+    time.sleep(2)
+    ast.printMultilineonstage(aa.jack, 93, ast.lines-1, 0.1)
+    time.sleep(2)
+
+def panel(framewait = 0.5):
+    ast.initstage("scroll")
+    ast.printFiglet("PANEL_AI ", "starwars", 10, ast.lines-10)
+    time.sleep(2)
+    ast.printFiglet("impact  of  AI  on  education  \n and  lifelong  learning", "big", 20, ast.lines-21)
+    time.sleep(2)
+    # ast.printMultilineonstage(aa.j, 93, ast.lines-1, 0.1)
+    time.sleep(2)
+
     
 def coffee(framewait, noisestep):
     # buffersmoke = sd.padMidMax(aa.coffeesmoke, ast.columns, ast.lines)
@@ -65,6 +83,16 @@ def coffee(framewait, noisestep):
     buffercupsmoke = sd.padMidMax(noisebuffer, ast.columns, ast.lines)
     buffercup = sd.padMidMax(aa.coffee, ast.columns, ast.lines)
     total = sd.mergeBuffers(buffercup,buffercupsmoke,0)
+    ast.printMultilineonstage(total,1,ast.lines)
+    # ast.printMultilineonstage(mergedbuffer,1,ast.lines)
+
+
+def drinks(framewait, noisestep):
+    # buffersmoke = sd.padMidMax(aa.coffeesmoke, ast.columns, ast.lines)
+    noisebuffer = noiser(aa.bubbles, noisestep, 1112, "o", 4)
+    bufferbubbles = sd.padMidMax(noisebuffer, ast.columns, ast.lines)
+    bufferglass = sd.padMidMax(aa.drinks, ast.columns, ast.lines)
+    total = sd.mergeBuffers(bufferglass,bufferbubbles,0)
     ast.printMultilineonstage(total,1,ast.lines)
     # ast.printMultilineonstage(mergedbuffer,1,ast.lines)
 

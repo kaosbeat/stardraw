@@ -149,10 +149,13 @@ async def boot():
     elif bootstates["command"] == "keynote1":
         lbs.keynote1(bootstates["framewait"])
     elif bootstates["command"] == "keynote2":
-        lbs.keynote1(bootstates["framewait"])
+        lbs.keynote2(bootstates["framewait"])
+    elif bootstates["command"] == "panel":
+        lbs.panel(bootstates["framewait"])
     elif bootstates["command"] == "coffee":
         lbs.coffee(bootstates["framewait"], bootstates["noisestep"])
-    
+    elif bootstates["command"] == "drinks":
+        lbs.drinks(bootstates["framewait"], bootstates["noisestep"])    
     elif bootstates["command"] == "wait":
         ast.blinkFiglet(15,20,"downloading keynote speaker\n","big", 15,20," ",None,0.8,2)
     elif bootstates["command"] == "noise":
@@ -216,6 +219,10 @@ async def textseq():
     status = str(textstates["font"] + " " + textstates["word1"] + " " + textstates["word2"])
     if textstates["command"] == "clear":
         ast.clearstage()
+    # else:
+        # ast.doNoise(0,ast.columns, 0, ast.lines,0.1,1)
+    ast.clearstage()
+
     lbs.text(textstates["x"], textstates["y"],textstates["font"],textstates["word1"],textstates["word2"])
     # ast.printonstage(status, 0,0)
     state = "done"
