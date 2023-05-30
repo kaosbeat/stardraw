@@ -511,10 +511,10 @@ def padMax(buffer,columns,height):
 
 def padMidMax(buffer,columns,height):
     x,y = dimensions(buffer)
-    padx = columns - x
+    padx = columns - x -2
     pady = height - y
     if padx > 1:
-        prex = int(padx/2)
+        prex = int(padx/2) -1
         postx = padx - prex
     elif padx == 1:
         prex = 1
