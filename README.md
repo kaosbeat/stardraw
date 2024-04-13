@@ -22,6 +22,9 @@ depends on SVGwrite > pip3 install svgwrite (or similar)
 # stardraw 
 library of convenient ascii elements ready to be printed
 
+# neigbour
+simple library to emulate drawing stuff on the 019 neighbour-display
+
 
 # to play with it, activate the python env
 ## create
