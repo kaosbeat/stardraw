@@ -7,8 +7,8 @@
 # import lib.stardisplay as d
 from tracemalloc import start
 import lib.starDraw as sd
-import lib.tweetprint as tweet
-import lib.font_anomaly as fa
+#import lib.tweetprint as tweet
+#import lib.font_anomaly as fa
 import lib.recaptcha as rc
 import lib.timers as tim
 import asciiart as aa
@@ -21,7 +21,7 @@ from lib.asciitools import strip2ascii
 
 import random
 import time
-from perlin_noise import PerlinNoise
+#from perlin_noise import PerlinNoise
 # tweetit = True
 
 
