@@ -235,6 +235,8 @@ def circle(circleradius = "", x ="",y ="", noisestep = "", seed = ""):
 
     buffer = sd.circle(circleradius,12,12,circlechar)
     xnoise, ynoise = sd.dimensions(buffer)
+    if seed == 0:
+        seed = 1
     noise = PerlinNoise(octaves=octaves, seed=seed)
     if noisestep == "" : noisestep = 0.0
     noisebuffer = [[noise([i/xnoise + noisestep, j/ynoise + noisestep]) for j in range(xnoise)] for i in range(ynoise)]
