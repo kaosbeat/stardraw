@@ -78,7 +78,7 @@ async def loop():
             await asyncio.sleep(0.01)
         elif state == "lips":
             ast.clearstage()
-            ast.printMultilineonstage( multilinemouth("all fine"), 0, 20, center=True)
+            ast.printMultilineonstage( multilinemouth("Lets Get This Party Started"), 0, 20, center=True)
             await asyncio.sleep(0.05)
             
         # elif state == "signal":
