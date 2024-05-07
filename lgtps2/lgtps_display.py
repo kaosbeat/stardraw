@@ -84,7 +84,7 @@ async def loop():
                 repeater += 1
                 await asyncio.sleep(0.05)
             repeater = 0
-            while repeater < 2:
+            while repeater < 1:
                 ast.clearstage()
                 ast.printFigletAtRandomLoc("Let's", font="big")
                 await asyncio.sleep(1)
@@ -102,7 +102,35 @@ async def loop():
                 await asyncio.sleep(1)
                 ast.clearstage()
                 repeater += 1
-            
+            repeater =0
+            while repeater < 1:
+                ast.printMultilineonstage(aa.phones, 0, 0, center=True, lineForLine=0.05)
+                repeater += 1
+                await asyncio.sleep(2)
+            repeater = 0
+            while repeater < 1:
+                ast.clearstage()
+                ast.printFiglet("Two", font="univers", x=30, y=ast.lines-4)
+                ast.printFiglet("Phones", font="univers", x=8, y=ast.lines-13)
+                await asyncio.sleep(1)
+                ast.clearstage()
+                ast.printFiglet("Two", font="univers", x=21, y=24)
+                ast.printFiglet("AI  Bots", font="univers", x=4, y=12)
+                await asyncio.sleep(1)
+                ast.clearstage()
+                # ast.printFiglet("Two", font="univers", x=21, y=24)
+                # ast.printFiglet("AI  Bots", font="univers", x=4, y=12)
+                # await asyncio.sleep(1)
+                repeater += 1
+            repeater = 0
+            while repeater < 1:
+                ast.printMultilineonstage(aa.lgtps, 0, 0, center=True, lineForLine=1)
+                repeater += 1
+                await asyncio.sleep(10)
+            repeater = 0
+
+            # while repeater < 1:
+            #     ast.clearstage()
         # elif state == "signal":
         #     await signal()
         else:
