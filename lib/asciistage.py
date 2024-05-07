@@ -5,6 +5,8 @@ import lib.starDraw as sd
 from pyfiglet import Figlet
 import random
 
+
+time.sleep(2)
 columns, lines = os.get_terminal_size() 
 line = 0 # 0 is bottom line
 col = 0 # 0 is left

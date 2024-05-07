@@ -29,7 +29,9 @@ done
 
 echo $command
 
-rxvt-unicode -name aterm-ws2 -tr -fn -artwiz-cure-*-*-*-*-11-*-*-*-*-*-*-* -fg yellow -bg [20]$color +sb --depth 32  -e $command &
+#rxvt-unicode -name aterm-ws2 -tr -fn -artwiz-cure-*-*-*-*-11-*-*-*-*-*-*-* -fg yellow -bg [20]$color +sb --depth 32  -e $command &
+
+rxvt-unicode -name aterm-ws2 -tr -fn "xft:Press Start 2P:pixelsize=25" -fg red -bg black +sb --depth 32 -hold -e $command &
 
 # get rxvt PID list
 
