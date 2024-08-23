@@ -5,6 +5,8 @@ import lib.starDraw as sd
 from pyfiglet import Figlet
 import random
 
+
+time.sleep(2)
 columns, lines = os.get_terminal_size() 
 line = 0 # 0 is bottom line
 col = 0 # 0 is left
@@ -55,7 +57,7 @@ def initstage(scrolltype="scroll"):
 
 def quickinit():
     global columns, lines
-    gotoline(0)
+    gotoline(1)
     print("\n"+"#"*columns)
     for i in range(lines-2):
         print("#" + " "*(columns-2) + "#")
@@ -64,7 +66,7 @@ def quickinit():
 
 def quickclear():
     global columns, lines
-    gotoline(0)
+    gotoline(1)
     for i in range(lines):      
         print(" "*columns, end='',flush=False)
     print(f"\r",end='', flush=True)
@@ -80,10 +82,13 @@ def printonstage(text, x, y):
         # col = 0
         
 
-def printMultilineonstage(multilinebuffer, x, y, lineForLine=False, overdrop=True ):
+def printMultilineonstage(multilinebuffer, x, y, lineForLine=False, overdrop=True, center=False ):
     global screenit
     global line,col
-    # width, height = sd.dimensions(multilinebuffer)
+    width, height = sd.dimensions(multilinebuffer)
+    if center:
+        x = int((columns-width)/2)
+        y = lines - int((lines-height)/2)
     if screenit: 
         for i,l in enumerate(multilinebuffer.splitlines()):
             printonstage(l, x, y)
@@ -92,6 +97,7 @@ def printMultilineonstage(multilinebuffer, x, y, lineForLine=False, overdrop=Tru
             y -= 1
             # line = y
         # print(f"\b", flush=True)
+        gotoline(1)
 
 def figProps(text, font):
     """returns the string, width and height of rendered figlet"""
@@ -180,13 +186,17 @@ def blinkFiglet(x1 ,y1 ,text1, font1, x2 ,y2, text2=None, font2=None, interval=0
         single = True
     
     for x in range(loop):
+        if not single:
+            printMultilineonstage(blanktext2,x2,y2)
         printMultilineonstage(figtext1,x1,y1)
+
         time.sleep(interval)
         printMultilineonstage(blanktext1,x1,y1)
         if not single:
             printMultilineonstage(figtext2,x2,y2)
+            # printMultilineonstage(blanktext1,x1,y1)
             time.sleep(interval)
-            printMultilineonstage(blanktext2,x2,y2)
+            # printMultilineonstage(blanktext2,x2,y2)
         else: 
             time.sleep(interval)
     

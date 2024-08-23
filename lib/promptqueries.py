@@ -58,16 +58,19 @@ def wordContext(word):
     cur.execute(selectQuery)
     data = list(cur)
     wordlist = []
-    # print (data)
     for p in data:
-        for w in p[0]:
-            w = w.strip("|[]()'\"%$#@!^&*,:")
-            if w != '':
-                wordlist.append(w)
+        for w in p:
+            words = w.split(' ')
+            for word in words:
+                word = word.strip("+|[]()'\"%$#@!^&*,:")
+                # print(word)
+                # print("-------------")
+                # # 
+                if word != '':
+                    wordlist.append(word)
     return wordlist
         
 def getrandomwordlist():
-    
     selectQuery = "SELECT word, length(word) FROM words WHERE (length(word) > 4 and length(word) < 8)"
     # print(selectQuery)
     cur.execute(selectQuery)
@@ -80,4 +83,6 @@ def getrandomwordlist():
 
 
 
-print (wordContext("cyborg"))
+# print (wordContext("symmetry"))
+
+print(getrandomwordlist())
