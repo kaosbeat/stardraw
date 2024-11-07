@@ -13,10 +13,9 @@ from itertools import cycle
 import argparse
 
 
-
-
 state = "done" 
 text = "lets get this party started"
+replyheard = "this is what I've heard"
 ip = "0.0.0.0"
 # ip = "localhost"
 
@@ -29,14 +28,20 @@ oscport = args.oscport[0]
 
 
 
-
 def lgtps(address, *args):
     global state, text
-    print(f"{address}: {args}")
+    # print(f"{address}: {args}")
     state = args[0]
     # command = args[1]
     text = args[1]
     # print(state)
+
+def lgtpsheard(address, *args):
+    global replyheard
+    # print(f"{address}: {args}")
+    replyheard = args[0]
+    # command = args[1]
+
 
 
 mouthframes = cycle((aa.mouth, aa.mouth1,aa.mouth2, aa.mouth3, aa.mouth4, aa.mouth5, aa.mouth6))
@@ -88,8 +93,10 @@ async def loop():
             await asyncio.sleep(0.01)
         elif state == "lips":
             ast.clearstage()
+            ast.printTextAsMultiline( replyheard,  ast.lines)
             ast.printMultilineonstage( multilinemouth(text, next(mouthframes)), 0, 20, center=True)
-            await asyncio.sleep(0.05)
+            ast.printTextAsMultiline( text, 8)
+            await asyncio.sleep(0.15)
         elif state == "shut":
             ast.clearstage()
             ast.printMultilineonstage( multilinemouth(text, aa.mouth), 0, 20, center=True)
@@ -103,6 +110,7 @@ async def loop():
 dispatcher = Dispatcher()
 
 dispatcher.map("/lgtps", lgtps)
+dispatcher.map("/heard", lgtpsheard)
 
 
 async def init_main():
