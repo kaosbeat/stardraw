@@ -569,12 +569,9 @@ def mergeBuffers(buffer1,buffer2,xpos):
     return buffer
 
 
-
-
 def consoleBuffer(buffer):
     for l in buffer.splitlines():
         print(l)
-
 
 
 def signstring(title):
