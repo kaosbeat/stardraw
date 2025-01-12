@@ -1,0 +1,7 @@
+- I took all the records from the Belgium database with a connection to Gent or Ghent or one of it's communities (Gentbtugge, ...) (79564 records)  (1.filter.,py)
+- from this list, I extracted all the first names 2.filtercsvfornames.py
+- count all characters in list 3.countchars.py
+- calculate proportion of the billboard ascii chart, using square characters
+- proportion of needed characters vs 1cm/1cm chars avail;able space on a 730*570cm billboard = 541520/416100 = 1,301417929
+- >>> 950 x 742 character
+- every character on the billboard will be about 0.768cm tall
