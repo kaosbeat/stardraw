@@ -17,6 +17,7 @@ from pyfiglet import Figlet
 
 
 printit = True
+printit = False
 tweetit = True
 tweetit = False
 svg = True
