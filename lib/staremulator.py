@@ -7,6 +7,7 @@ linefeed = 16 # setLineSpace(12)  12 matches default 16
 fontproportion = 0.6 #calculated from rules measurements
 # font = 'Wonky Pins'
 font = 'Courier New'
+fontcolor = "red"
 lineCursorY = 0 # pixel position of the cursor, because of changing linefeed this is not simply "linefeed * cursorY"
 cursorY = 0   #integer line index
 cursorYoffset = 0 # used for extending pages longer than 1 page setTopAtCurrent
@@ -14,6 +15,9 @@ svgfile = "page 0"
 currentdwg = ""
 pagecounter = 0
 debug = False
+
+
+
 
 def openfile(filename):
     global svgfile
@@ -38,6 +42,10 @@ def openmultipagefile(filename, pages):
     currentdwg.add(currentdwg.rect(("0mm", "0mm"), ("210mm",length+"mm"), stroke=svgwrite.rgb(10, 10, 16, '%'), fill='white')
 )
     # return dwg
+
+def setGlobalFont(font, size, fill="none",  strokecolor="black", strokewidth="0", fontweight="bold", fontstyle="oblique" ):
+    global currentdwg
+    currentdwg.defs.add(currentdwg.style("font-size:"+size+";font-family:"+font+";font-weight:"+fontweight+";font-style:"+fontstyle+";stroke:"+strokecolor+";stroke-width:="+strokewidth+";fill:"+fill))
 
 def lf():
     #linefeed
@@ -79,7 +87,7 @@ def printXY(string,x,y):
     if (y == cursorY):
         # print ("emu not advancing")
         pass
-    svg = currentdwg.add(currentdwg.g(id="txt", class_="txt", style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
+    svg = currentdwg.add(currentdwg.g(id="txt", class_="txt", fill=fontcolor, style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
     svg.add(currentdwg.text(string, insert=(fontproportion*basefontsize*x,lineCursorY)))  #  n * 7.5 >>> from linefeed units to px
     lf()
 
@@ -104,7 +112,7 @@ def printXYtoGroup(string,x,y, svggroup):
         # print ("emu not advancing")
         pass
     
-    svg = svggroup.add(currentdwg.g(id="txt", class_="txt", style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
+    svg = svggroup.add(currentdwg.g(id="txt", class_="txt", fill=fontcolor, style="font-size:"+str(basefontsize)+";font-family:"+font+";"))
     svg.add(currentdwg.text(string, insert=(fontproportion*basefontsize*x,lineCursorY)))  #  n * 7.5 >>> from linefeed units to px
     lf()
 
