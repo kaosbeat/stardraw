@@ -49,11 +49,13 @@ def create_wordcount(conn, word, totalcount):
     return cur.lastrowid
 
 
+blacklist = ["", " ", "4K", "4k", "8K", "8k", "HD", "HDR", "in", "on", "a", "of", "by", "the", "is", "for" , "with", "as" ,"and", "rutkowski", "trending", "artstation"]
 
 def wordContext(word):
     strippedword = word.strip("'")
+    blacklist.append(strippedword)
     # selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")"
-    selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")  ORDER BY RANDOM() LIMIT 10"
+    selectQuery = "SELECT prompt FROM prompts WHERE prompt_id IN (SELECT prompts_id FROM words WHERE word = \"" +strippedword+ "\")  ORDER BY RANDOM() LIMIT 100"
     # print(selectQuery)
     cur.execute(selectQuery)
     data = list(cur)
@@ -66,23 +68,30 @@ def wordContext(word):
                 # print(word)
                 # print("-------------")
                 # # 
-                if word != '':
+                if word in blacklist:
+                    pass
+                else:
                     wordlist.append(word)
     return wordlist
-        
+
+
 def getrandomwordlist():
     selectQuery = "SELECT word, length(word) FROM words WHERE (length(word) > 4 and length(word) < 8)"
-    # print(selectQuery)
+    print(selectQuery)
     cur.execute(selectQuery)
     data = list(cur)
     wordlist = []
     for d in data:
         w = d[0].strip("|[]()'\"%$#@!^&*,:")
-        wordlist.append(w)
+        print(w)
+        if w in blacklist:
+            pass
+        else:
+            wordlist.append(w)
     return wordlist
 
 
 
-# print (wordContext("symmetry"))
+print (wordContext("nendoroid"))
 
-print(getrandomwordlist())
+# print(getrandomwordlist())
